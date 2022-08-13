@@ -1,4 +1,4 @@
-# CHAPTER TITLE
+# Exploratory Visualizations
 
 **Learning objectives:**
 
