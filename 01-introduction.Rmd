@@ -2,9 +2,32 @@
 
 **Learning objectives:**
 
-- Recognize the structure of the book.
+- Recognize the structure of the book
 - Establish base lines for good practice
-- Define feature engineering.
+- Define feature engineering
+
+
+## Structure of the book
+
+
+The book is divided into two main parts:
+
+- Feature engineering (techniques for augmenting predictors - chapters 2-9)
+
+    * Predicting risk of Ischemic
+    * Review of the PMP (predictive modeling process)
+    * Exploratory visualization
+    * Encoding categorical predictors
+    * Engineering numeric predictors
+    * Detecting interaction effects
+    * Handling missing data
+    * Working with profile data (time series analysis)
+
+- Feature selection (methods for filtering the enhanced predictors - chapters 10-12)
+
+    * Overview
+    * Greedy search methods (simple filters and eliminations)
+    * Golbal search methods (predictor space investigations)
 
 
 ## Good Practice guidelines
@@ -24,7 +47,7 @@ All of these are not enough when model lacks on performance.
 The answer might be the in the way the predictors are presented to the model.
 
 
-## What is feature engineering
+### What is feature engineering
 
 
 > "...best re-representation of the predictors to improve model performance." (ct. Preface)
@@ -39,16 +62,16 @@ knitr::include_graphics("images/01_02.png")
 
 - transform the predictors with special functions (log/exp) 
 - add an interaction term (prod/ratio)
-- add a functional tranformation (splines/poly)
+- add a functional transformation (splines/poly)
 - add a re-representation of the predictors (mean/med/standardz)
 - imputing missing values (knn/bagging)
 
 Disclaimer: Risk of Overfitting!
 
 
-## Nature of modeling
+### Nature of modeling
 
-```{r echo=FALSE}
+```{r 01-02, echo=FALSE}
 DiagrammeR::mermaid("
   graph TB
   H[Model Scoping]
@@ -70,7 +93,7 @@ The trade-off between accuracy and interpretability is important, a neural netwo
 
 **Feature engineering** is a matter of choice in finding the most suitable variable transformation for the best performance.
 
-```{r echo=FALSE}
+```{r 01-03, echo=FALSE}
 DiagrammeR::mermaid("
   graph TB
   H[Model data]
@@ -97,13 +120,13 @@ More considerations about bad model reactions to:
 
 - multicollinarity or correlation between predictors
 - missing values
-- irrilevant predictors
+- irrelevant predictors
 
 
 ## A model with two predictors
 
 
-```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+```{r 01-04, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(tidyverse)
 library(caret)
 library(ggthemes)
@@ -112,7 +135,7 @@ tidymodels_prefer()
 ```
 
 
-```{r}
+```{r 01-05,}
 data(segmentationData)
 ```
 
@@ -127,50 +150,48 @@ The data set includes a **Case** vector containing **Train** and **Test** variab
 Selected for this first example are two predictors: **EqSphereAreaCh1** and **PerimCh1**.
 The objective is to predict shape parameters of **poorly-segmented (PS)** and **well-segmented (WS)** cells from the **Class** variable.
 
-```{r echo=FALSE}
+```{r 01-06,echo=FALSE}
 DiagrammeR::mermaid("
   graph TB
   H[Model data]
-  
+  A[outcome]
+  B[predictors]
+
   H-->A
   H-->B
-  A[outcome]
   A-->C(binary class variable)
-  C-->D[PS]
-  C-->G[WS]
-  
-  B[predictors]
+  C-->D[poorly-segmented PS]
+  C-->G[well-segmented WS]
   B-->L[numeric]
-  L-->E[A]
-  L-->F[B]
+  L-->E[Area]
+  L-->F[Perimeter]
 ")
 ```
 
 This is the full list of variables in the set.
 
-```{r echo=FALSE}
+```{r 01-07, echo=FALSE}
 segmentationData %>% names
 segmentationData %>% dim
 ```
 
 **Parsimony:**
 
-```{r echo=FALSE}
+```{r 01-08, echo=FALSE}
 train <- segmentationData %>%
   filter(Case == "Train") %>%
-  rename(Predictor_A = EqSphereAreaCh1, Predictor_B = PerimCh1) %>%
-  select(Class, Predictor_A, Predictor_B) 
+  rename(Area = EqSphereAreaCh1, Perimeter = PerimCh1) %>%
+  select(Class, Area, Perimeter) 
 
 train %>% head
 
 test <- segmentationData %>%
   filter(Case == "Test") %>%
-  rename(Predictor_A = EqSphereAreaCh1, Predictor_B = PerimCh1) %>%
-  select(Class, Predictor_A, Predictor_B) 
+  rename(Area = EqSphereAreaCh1, Perimeter = PerimCh1) %>%
+  select(Class, Area, Perimeter) 
 ```
 
-
-Cross validation on the training set. 
+The dataset is already split between training and test sets, all that is to be added is cross-validation on the training set. 
 
 ```{r folds}
 set.seed(2222)
@@ -179,8 +200,8 @@ folds <- vfold_cv(train, v = 10)
 
 A first visualization of the relationship between the two predictors.
 
-```{r relationship, echo=FALSE}
-ggplot(train, aes(x = Predictor_A, Predictor_B)) +
+```{r relationship, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+ggplot(train, aes(x = Area, Perimeter)) +
   geom_point(aes(color = factor(Class)), alpha = .3, cex = 1.5) +
   geom_smooth(size = 0.5, se = F) +
   theme(legend.position = c(.1, .8)) +
@@ -190,15 +211,17 @@ ggplot(train, aes(x = Predictor_A, Predictor_B)) +
   labs(title = "Relationship between predictors", color = "Class")
 ```
 
-Check for Class balance of the response variable. This would be the first level tranformation of the response, this type of transformation is considered **a structural transformation**, we will see more about it later in the book.
+**Check for Class imbalance of the response variable**
 
-```{r tables}
+This would be the first level transformation of the response, this type of transformation is considered **a structural transformation**, we will see more about it later in the book.
+
+```{r tables, comment="",echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 tb_class <- table(train$Class)
 pr_class <- round(prop.table(tb_class), 2)
 rbind(tb_class, pr_class)
 ```
 ```{r upsamp}
-up_samp_ws <- tb_class[2]/sum(tb_class)
+up_samp_ws <- pr_class[2]
 ```
 
 **Recipes**
@@ -206,17 +229,17 @@ up_samp_ws <- tb_class[2]/sum(tb_class)
 ```{r recipes}
 library(themis)
 
-log_rec_natural_units <- recipe(Class ~ Predictor_A + Predictor_B, data = train) %>%
+log_rec_natural_units <- recipe(Class ~ Area + Perimeter, data = train) %>%
   step_upsample(Class, over_ratio = up_samp_ws)
 
-log_rec_inverse_units <- recipe(Class ~ Predictor_A + Predictor_B, data = train) %>%
+log_rec_inverse_units <- recipe(Class ~ Area + Perimeter, data = train) %>%
   step_upsample(Class, over_ratio = up_samp_ws) %>%
   step_BoxCox(all_numeric())
 ```
 
 
 **Workflow**
-```{r workflow}
+```{r workflow, comment=""}
 logistic_reg_glm_spec <-
   logistic_reg() %>%
   set_engine('glm')
@@ -237,7 +260,7 @@ log_fit_natural_units %>%
 
 
 **Prediction**
-```{r withpred}
+```{r withpred,comment=""}
 with_pred_natural_units <- log_fit_natural_units %>%
   augment(test)
 
@@ -279,15 +302,14 @@ with_pred_natural_units  %>%
 
 Let's compare the two transformations with a `workflow_set()`:
 
-```{r model, message=FALSE, warning=FALSE, cache=TRUE, paged.print=FALSE}
+```{r model, message=FALSE, warning=FALSE, cache=TRUE,comment="", paged.print=FALSE}
 full_workflow <- workflow_set(
   models = list(logitstic = logistic_reg_glm_spec),
   preproc = list(natural_units = log_rec_natural_units,
                  inverse_units = log_rec_inverse_units))
 
 system.time(
-  grid_results <- 
-    full_workflow %>%
+  grid_results <- full_workflow %>%
     workflow_map(
       seed = 1503,
       resamples = folds,
@@ -297,12 +319,15 @@ system.time(
         parallel_over = "everything",
         save_workflow = TRUE),
       verbose = TRUE)
-)
- # user  system elapsed 
- #  9.051   0.088   9.184 
+  )
+
 grid_results
 ```
 
+```{r time, eval=FALSE, include=FALSE}
+ # user  system elapsed 
+ #  9.051   0.088   9.184 
+```
 
 **Roc curves for two different recipes**
 
@@ -327,12 +352,86 @@ roc_curves
 ```
 
 
-## Compute a sliding mean example
+## Important concepts
 
-Here is a nice example on how to [Compute a sliding mean](https://juliasilge.com/blog/sf-rent/) by [Julia Silge](https://juliasilge.com/)
+- Overfitting
+- Supervised and unsupervised
+- Model bias and variance
+- Experience and empirically driven modeling
+
+Generalizing the main boundaries, the risk of overfitting the model is always challenged by anomalous patterns new data can hide.
 
 
-## Extra Resources
+### Acknowledge vulnerabilities
+
+
+**To consider:**
+
+- **small number of observations** compared to the number of predictors
+- **low bias models** can have a higher likelihood of overfitting
+- **supervised analysis** can be used to detect predictors significance
+- **No free lunch therem** (Wolpert, 1996) - knowledge is an important part of modeling
+- **variance-bias** trade-off 
+
+    * Low variance: linear/logistic regression and PLS
+    * High variance: trees, nearest neighbor, neural networks
+    * Bias: level of ability to closer estimation
+
+- **irrilevant predictors** can causing excess model variation
+- be **data-driven** rather than **experience-driven**
+- **big data** does not mean better data
+- **unlabeled data** can improve *autoencoders* modeling
+- **compensatory effect** there may not be a unique set of predictors. 
+
+
+Finally, one more important consideration is to consider **Strategies for Supervised and Unsupervised feature selections**. 
+
+
+**Supervised selection method** can be divided into:
+
+- wrapper methods, such as **backwards** and **stepwise selection**
+- embedded methods, such as decision tree variable selection 
+
+**Unsupervised selection method**
+
+- variable encoding, such as dummy or indicator variables
+
+
+
+### The **Modeling process** 
+
+
+**Few steps summary:**
+
+a) EDA
+b) summary and correlation
+c) model methods evaluation
+d) model tuning
+e) summary measures and EDA
+f) residual analysis/ check for systematic issues
+g) more feature engineering
+h) model selection
+i) final *bake off*
+j) prediction
+
+
+## Predicting ridership on Chicago
+
+This set will be widely used in the book to predict the number of people entering a train station daily.
+
+```{r}
+library(modeldata)
+modeldata::Chicago %>% head
+```
+
+
+
+
+### Extra Resources
+
+
+- [Cooking Your Data with Recipes](https://topepo.github.io/2021_11_HDSI_RUG/#1)
+- Here is a nice example on how to [Compute a sliding mean](https://juliasilge.com/blog/sf-rent/) by [Julia Silge](https://juliasilge.com/)
 
 - [caret-vs-tidymodels](https://towardsdatascience.com/caret-vs-tidymodels-how-to-use-both-packages-together-ee3f85b381c)
 
@@ -352,3 +451,4 @@ Here is a nice example on how to [Compute a sliding mean](https://juliasilge.com
 LOG
 ```
 </details>
+
