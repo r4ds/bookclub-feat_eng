@@ -2,12 +2,9 @@
 
 **Learning objectives:**
 
-- Overview of the book
-- Base lines to Good Practice
-- What is feature engineering
-
-
----
+- Recognize the structure of the book.
+- Establish base lines for good practice
+- Define feature engineering.
 
 
 ## Good Practice guidelines
@@ -25,8 +22,6 @@ There are some vital steps to take to modeling:
 All of these are not enough when model lacks on performance.
 
 The answer might be the in the way the predictors are presented to the model.
-
----
 
 
 ## What is feature engineering
@@ -51,27 +46,24 @@ knitr::include_graphics("images/01_02.png")
 Disclaimer: Risk of Overfitting!
 
 
----
-
-
 ## Nature of modeling
 
 ```{r echo=FALSE}
 DiagrammeR::mermaid("
   graph TB
-H[Model Scoping]
-A[Inference]
-A-->C[simple models are better]
-B[Estimation]
-B-->D[a bit more complexity is allowed]
-H-->A
-H-->B")
+  H[Model Scoping]
+  A[Inference]
+  A-->C[simple models are better]
+  B[Estimation]
+  B-->D[a bit more complexity is allowed]
+  H-->A
+  H-->B
+")
 ```
-
 
 The estimation of uncertainty/noise is another very important step to take.
 
-> "If a model is only 50% accurate should be used to make inferences or predictions?"
+> "If a model is only 50% accurate should it be used to make inferences or predictions?"
 
 The trade-off between accuracy and interpretability is important, a neural network model might be less explicable but can provide a higher level of accuracy.
 
@@ -81,22 +73,21 @@ The trade-off between accuracy and interpretability is important, a neural netwo
 ```{r echo=FALSE}
 DiagrammeR::mermaid("
   graph TB
-H[Model data]
-
-H-->A
-H-->B
-A[Dependent] 
-A-->C(Response)
-A-->D(Outcome)
-
-
-B[Independent]
-
-B-->E[Predictor]
-B-->F[Feature]
-
-E-->G[as provided]
-F-->I[tranformation]
+  H[Model data]
+  
+  H-->A
+  H-->B
+  A[Dependent]
+  A-->C(Response)
+  A-->D(Outcome)
+  
+  B[Independent]
+  
+  B-->E[Predictor]
+  B-->F[Feature]
+  
+  E-->G[as provided]
+  F-->I[tranformation]
 ")
 ```
 
@@ -108,8 +99,6 @@ More considerations about bad model reactions to:
 - missing values
 - irrilevant predictors
 
-
----
 
 ## A model with two predictors
 
@@ -128,81 +117,85 @@ data(segmentationData)
 ```
 
 This example uses **segmentationData**. Data originates from an experiment from Hill et al. (2007), a study on [“Impact of Image Segmentation on High-Content Screening Data Quality for SK-BR-3 Cells.”](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340) BMC Bioinformatics.
+
 ```{r image_shapes, echo=FALSE}
 knitr::include_graphics("images/01_01.png")
 ```
+
 The data set includes a **Case** vector containing **Train** and **Test** variables, with a total of 61 different vectors, about cellular structures and morphology. 
 
 Selected for this first example are two predictors: **EqSphereAreaCh1** and **PerimCh1**.
 The objective is to predict shape parameters of **poorly-segmented (PS)** and **well-segmented (WS)** cells from the **Class** variable.
+
 ```{r echo=FALSE}
 DiagrammeR::mermaid("
   graph TB
-H[Model data]
-
-H-->A
-H-->B
-A[outcome] 
-A-->C(binary class variable)
-C-->D[PS]
-C-->G[WS]
-
-
-B[predictors]
-
-B-->L[numeric]
-L-->E[A]
-L-->F[B]
-
+  H[Model data]
+  
+  H-->A
+  H-->B
+  A[outcome]
+  A-->C(binary class variable)
+  C-->D[PS]
+  C-->G[WS]
+  
+  B[predictors]
+  B-->L[numeric]
+  L-->E[A]
+  L-->F[B]
 ")
 ```
 
 This is the full list of variables in the set.
 
 ```{r echo=FALSE}
-segmentationData%>%names;segmentationData%>%dim
+segmentationData %>% names
+segmentationData %>% dim
 ```
 
 **Parsimony:**
 
 ```{r echo=FALSE}
 train <- segmentationData %>%
-  filter(Case=="Train") %>%
-  rename(Predictor_A=EqSphereAreaCh1,Predictor_B=PerimCh1) %>%
-  select(Class,Predictor_A,Predictor_B) 
+  filter(Case == "Train") %>%
+  rename(Predictor_A = EqSphereAreaCh1, Predictor_B = PerimCh1) %>%
+  select(Class, Predictor_A, Predictor_B) 
 
 train %>% head
 
 test <- segmentationData %>%
-  filter(Case=="Test") %>%
-  rename(Predictor_A=EqSphereAreaCh1,Predictor_B=PerimCh1) %>%
-  select(Class,Predictor_A,Predictor_B) 
+  filter(Case == "Test") %>%
+  rename(Predictor_A = EqSphereAreaCh1, Predictor_B = PerimCh1) %>%
+  select(Class, Predictor_A, Predictor_B) 
 ```
 
 
-Cros validation on the training set. 
+Cross validation on the training set. 
+
 ```{r folds}
 set.seed(2222)
-folds <- vfold_cv(train,v=10)
+folds <- vfold_cv(train, v = 10)
 ```
 
 A first visualization of the relationship between the two predictors.
+
 ```{r relationship, echo=FALSE}
-ggplot(train, aes(x=Predictor_A,Predictor_B)) +
-  geom_point(aes(color=factor(Class)),alpha = .3, cex = 1.5) +
-  geom_smooth(size=0.5,se=F) +
+ggplot(train, aes(x = Predictor_A, Predictor_B)) +
+  geom_point(aes(color = factor(Class)), alpha = .3, cex = 1.5) +
+  geom_smooth(size = 0.5, se = F) +
   theme(legend.position = c(.1, .8)) +
   scale_colour_tableau() + 
   theme_fivethirtyeight() +
   theme(axis.title = element_text()) +
-  labs(title="Relationship between predictors",color="Class")
+  labs(title = "Relationship between predictors", color = "Class")
 ```
 
 Check for Class balance of the response variable. This would be the first level tranformation of the response, this type of transformation is considered **a structural transformation**, we will see more about it later in the book.
+
 ```{r tables}
 tb_class <- table(train$Class)
-pr_class <- round(prop.table(tb_class),2)
-rbind(tb_class,pr_class)
+pr_class <- round(prop.table(tb_class), 2)
+rbind(tb_class, pr_class)
 ```
 ```{r upsamp}
 up_samp_ws <- tb_class[2]/sum(tb_class)
@@ -214,10 +207,10 @@ up_samp_ws <- tb_class[2]/sum(tb_class)
 library(themis)
 
 log_rec_natural_units <- recipe(Class ~ Predictor_A + Predictor_B, data = train) %>%
-  step_upsample(Class,over_ratio = up_samp_ws)
+  step_upsample(Class, over_ratio = up_samp_ws)
 
 log_rec_inverse_units <- recipe(Class ~ Predictor_A + Predictor_B, data = train) %>%
-  step_upsample(Class,over_ratio = up_samp_ws) %>%
+  step_upsample(Class, over_ratio = up_samp_ws) %>%
   step_BoxCox(all_numeric())
 ```
 
@@ -245,7 +238,7 @@ log_fit_natural_units %>%
 
 **Prediction**
 ```{r withpred}
-with_pred_natural_units <- log_fit_natural_units%>%
+with_pred_natural_units <- log_fit_natural_units %>%
   augment(test)
 
 with_pred_natural_units %>% head
@@ -253,28 +246,29 @@ with_pred_natural_units %>% head
 
 **Confusion Matrics**
 ```{r mosaics, echo=FALSE}
-a<-log_wfl_natural_units %>%
+a <- log_wfl_natural_units %>%
   fit(train) %>%
   augment(train) %>%
   conf_mat(truth = Class, estimate = .pred_class) %>%
-  autoplot()+labs(title="training")
-b<-log_wfl_natural_units %>%
+  autoplot() + labs(title = "training")
+b <- log_wfl_natural_units %>%
   fit(test) %>%
   augment(test) %>%
   conf_mat(truth = Class, estimate = .pred_class) %>%
-  autoplot()+labs(title="test")
+  autoplot() + labs(title = "test")
 library(patchwork)
-a+b
+a + b
 ```
 
 **Roc Curve**
+
 ```{r roc}
 with_pred_natural_units  %>%
   roc_curve(Class,.pred_PS) %>% 
   mutate(Format = "Natural Units") %>%
-  ggplot(aes(1-specificity,sensitivity))+
-  geom_line(aes(color=.threshold),size=1)+
-  geom_abline(linetype="dashed",size=1,color="gray") +
+  ggplot(aes(1 - specificity, sensitivity))+
+  geom_line(aes(color = .threshold), size = 1)+
+  geom_abline(linetype = "dashed", size = 1, color = "gray") +
   scale_colour_continuous()+
   theme_fivethirtyeight() +
   theme(axis.title = element_text())
@@ -291,17 +285,19 @@ full_workflow <- workflow_set(
   preproc = list(natural_units = log_rec_natural_units,
                  inverse_units = log_rec_inverse_units))
 
-full_results <- 
-   system.time(
-     grid_results <- 
-       full_workflow %>%
-       workflow_map(seed = 1503,
-                resamples = folds,
-                grid = 25,
-                control = control_grid(save_pred = TRUE,
-                          parallel_over = "everything",
-                          save_workflow = TRUE),
-               verbose = TRUE))
+system.time(
+  grid_results <- 
+    full_workflow %>%
+    workflow_map(
+      seed = 1503,
+      resamples = folds,
+      grid = 25,
+      control = control_grid(
+        save_pred = TRUE,
+        parallel_over = "everything",
+        save_workflow = TRUE),
+      verbose = TRUE)
+)
  # user  system elapsed 
  #  9.051   0.088   9.184 
 grid_results
@@ -309,25 +305,26 @@ grid_results
 
 
 **Roc curves for two different recipes**
+
 ```{r rocs}
-roc <- grid_results%>%
-  unnest(result)%>%
+roc <- grid_results %>%
+  unnest(result) %>%
   unnest(.predictions) %>%
-  select(wflow_id,.pred_PS,.pred_WS,.pred_class,Class)%>%
+  select(wflow_id, .pred_PS, .pred_WS, .pred_class, Class) %>%
   group_by(wflow_id) %>%
   roc_curve(Class, .pred_PS) 
 
 roc_curves <- roc %>%
-  ggplot(aes(x = 1 - specificity, y = sensitivity,group=wflow_id,color=wflow_id )) +
+  ggplot(
+    aes(x = 1 - specificity, y = sensitivity, group = wflow_id, color = wflow_id)
+  ) +
   geom_line(size = 0.5) +
-  geom_abline(lty = 2, alpha = 0.5,color = "gray50",size = 0.8)+
+  geom_abline(lty = 2, alpha = 0.5, color = "gray50", size = 0.8)+
   scale_color_tableau()+
   theme_fivethirtyeight()+
   theme(axis.title = element_text())
 roc_curves
 ```
-
----
 
 
 ## Compute a sliding mean example
@@ -335,19 +332,11 @@ roc_curves
 Here is a nice example on how to [Compute a sliding mean](https://juliasilge.com/blog/sf-rent/) by [Julia Silge](https://juliasilge.com/)
 
 
-
-
----
-
 ## Extra Resources
 
 - [caret-vs-tidymodels](https://towardsdatascience.com/caret-vs-tidymodels-how-to-use-both-packages-together-ee3f85b381c)
 
 - [tidymodels-or-caret-how-they-compare](https://www.r-bloggers.com/2021/10/tidymodels-or-caret-how-they-compare/)
-
-
-
----
 
 
 ## Meeting Videos
