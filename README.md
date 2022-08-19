@@ -1,9 +1,5 @@
 # R4DS Feature Engineering and Selection Book Club
 
-ALSO CONFIRM THE MEETING TIME INFO BELOW AND DELETE THIS SENTENCE.
-
-ALSO ADD PLACEHOLDERS FOR ALL CHAPTERS BY COPYING 01.Rmd (IDEALLY ALSO UPDATE TITLES WITHIN THE FILES), THEN DELETE THIS SENTENCE.
-
 Welcome to the R4DS Feature Engineering and Selection Book Club!
 
 We are working together to read [_Feature Engineering and Selection: A Practical Approach for Predictive Models_](http://www.feat.engineering/) by Max Kuhn and Kjell Johnson (Chapman and Hall/CRC, copyright August 2, 2019, [9781138079229](https://www.routledge.com/Feature-Engineering-and-Selection-A-Practical-Approach-for-Predictive-Models/Kuhn-Johnson/p/book/9781138079229)).
