@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1.4 A model with two predictors | Feature Engineering and Selection Book Club</title>
+  <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1.4 A model with two predictors | Feature Engineering and Selection Book Club" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1.4 A model with two predictors | Feature Engineering and Selection Book Club" />
+  
+  <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  
+
+<meta name="author" content="The R4DS Online Learning Community" />
+
+
+<meta name="date" content="2022-08-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="nature-of-modeling.html"/>
+<link rel="next" href="compute-a-sliding-mean-example.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/d3-3.3.8/d3.min.js"></script>
+<script src="libs/dagre-0.4.0/dagre-d3.min.js"></script>
+<link href="libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
+<script src="libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/chromatography-0.1/chromatography.js"></script>
+<script src="libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Feature Engineering and Selection Book Club</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="book-club-meetings.html"><a href="book-club-meetings.html"><i class="fa fa-check"></i>Book club meetings</a></li>
+<li class="chapter" data-level="" data-path="pace.html"><a href="pace.html"><i class="fa fa-check"></i>Pace</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html"><i class="fa fa-check"></i><b>1.1</b> Good Practice guidelines</a></li>
+<li class="chapter" data-level="1.2" data-path="what-is-feature-engineering.html"><a href="what-is-feature-engineering.html"><i class="fa fa-check"></i><b>1.2</b> What is feature engineering</a></li>
+<li class="chapter" data-level="1.3" data-path="nature-of-modeling.html"><a href="nature-of-modeling.html"><i class="fa fa-check"></i><b>1.3</b> Nature of modeling</a></li>
+<li class="chapter" data-level="1.4" data-path="a-model-with-two-predictors.html"><a href="a-model-with-two-predictors.html"><i class="fa fa-check"></i><b>1.4</b> A model with two predictors</a></li>
+<li class="chapter" data-level="1.5" data-path="compute-a-sliding-mean-example.html"><a href="compute-a-sliding-mean-example.html"><i class="fa fa-check"></i><b>1.5</b> Compute a sliding mean example</a></li>
+<li class="chapter" data-level="1.6" data-path="extra-resources.html"><a href="extra-resources.html"><i class="fa fa-check"></i><b>1.6</b> Extra Resources</a></li>
+<li class="chapter" data-level="1.7" data-path="meeting-videos.html"><a href="meeting-videos.html"><i class="fa fa-check"></i><b>1.7</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="1.7.1" data-path="meeting-videos.html"><a href="meeting-videos.html#cohort-1"><i class="fa fa-check"></i><b>1.7.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="illustrative-example-predicting-risk-of-ischemic-stroke.html"><a href="illustrative-example-predicting-risk-of-ischemic-stroke.html"><i class="fa fa-check"></i><b>2</b> Illustrative Example: Predicting Risk of Ischemic Stroke</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="slide-1.html"><a href="slide-1.html"><i class="fa fa-check"></i><b>2.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="2.2" data-path="meeting-videos-1.html"><a href="meeting-videos-1.html"><i class="fa fa-check"></i><b>2.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="meeting-videos-1.html"><a href="meeting-videos-1.html#cohort-1-1"><i class="fa fa-check"></i><b>2.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="a-review-of-the-predictive-modeling-process.html"><a href="a-review-of-the-predictive-modeling-process.html"><i class="fa fa-check"></i><b>3</b> A Review of the Predictive Modeling Process</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>3.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="3.2" data-path="meeting-videos-2.html"><a href="meeting-videos-2.html"><i class="fa fa-check"></i><b>3.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="meeting-videos-2.html"><a href="meeting-videos-2.html#cohort-1-2"><i class="fa fa-check"></i><b>3.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-visualizations.html"><a href="exploratory-visualizations.html"><i class="fa fa-check"></i><b>4</b> Exploratory Visualizations</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>4.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="4.2" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html"><i class="fa fa-check"></i><b>4.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html#cohort-1-3"><i class="fa fa-check"></i><b>4.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="encoding-categorical-predictors.html"><a href="encoding-categorical-predictors.html"><i class="fa fa-check"></i><b>5</b> Encoding Categorical Predictors</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="slide-1-3.html"><a href="slide-1-3.html"><i class="fa fa-check"></i><b>5.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="5.2" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html"><i class="fa fa-check"></i><b>5.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html#cohort-1-4"><i class="fa fa-check"></i><b>5.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="engineering-numeric-predictors.html"><a href="engineering-numeric-predictors.html"><i class="fa fa-check"></i><b>6</b> Engineering Numeric Predictors</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="slide-1-4.html"><a href="slide-1-4.html"><i class="fa fa-check"></i><b>6.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="6.2" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html"><i class="fa fa-check"></i><b>6.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html#cohort-1-5"><i class="fa fa-check"></i><b>6.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="detecting-interaction-effects.html"><a href="detecting-interaction-effects.html"><i class="fa fa-check"></i><b>7</b> Detecting Interaction Effects</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="slide-1-5.html"><a href="slide-1-5.html"><i class="fa fa-check"></i><b>7.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="7.2" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html"><i class="fa fa-check"></i><b>7.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html#cohort-1-6"><i class="fa fa-check"></i><b>7.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handling-missing-data.html"><a href="handling-missing-data.html"><i class="fa fa-check"></i><b>8</b> Handling Missing Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="slide-1-6.html"><a href="slide-1-6.html"><i class="fa fa-check"></i><b>8.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="8.2" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html"><i class="fa fa-check"></i><b>8.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html#cohort-1-7"><i class="fa fa-check"></i><b>8.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="working-with-profile-data.html"><a href="working-with-profile-data.html"><i class="fa fa-check"></i><b>9</b> Working with Profile Data</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="slide-1-7.html"><a href="slide-1-7.html"><i class="fa fa-check"></i><b>9.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="9.2" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html"><i class="fa fa-check"></i><b>9.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html#cohort-1-8"><i class="fa fa-check"></i><b>9.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>10</b> Feature Selection Overview</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="slide-1-8.html"><a href="slide-1-8.html"><i class="fa fa-check"></i><b>10.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="10.2" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i><b>10.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-9"><i class="fa fa-check"></i><b>10.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="greedy-search-methods.html"><a href="greedy-search-methods.html"><i class="fa fa-check"></i><b>11</b> Greedy Search Methods</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="slide-1-9.html"><a href="slide-1-9.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="11.2" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html"><i class="fa fa-check"></i><b>11.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html#cohort-1-10"><i class="fa fa-check"></i><b>11.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="slide-1-10.html"><a href="slide-1-10.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="12.2" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Feature Engineering and Selection Book Club</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="a-model-with-two-predictors" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> A model with two predictors<a href="a-model-with-two-predictors.html#a-model-with-two-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="a-model-with-two-predictors.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(segmentationData)</span></code></pre></div>
+<p>This example uses <strong>segmentationData</strong>. Data originates from an experiment from Hill et al. (2007), a study on <a href="https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-8-340">“Impact of Image Segmentation on High-Content Screening Data Quality for SK-BR-3 Cells.”</a> BMC Bioinformatics.</p>
+<p><img src="images/01_01.png" /><!-- --></p>
+<p>The data set includes a <strong>Case</strong> vector containing <strong>Train</strong> and <strong>Test</strong> variables, with a total of 61 different vectors, about cellular structures and morphology.</p>
+<p>Selected for this first example are two predictors: <strong>EqSphereAreaCh1</strong> and <strong>PerimCh1</strong>.
+The objective is to predict shape parameters of <strong>poorly-segmented (PS)</strong> and <strong>well-segmented (WS)</strong> cells from the <strong>Class</strong> variable.</p>
+<div id="htmlwidget-02cc0fb25068f936cb63" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-02cc0fb25068f936cb63">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  \n  H-->A\n  H-->B\n  A[outcome]\n  A-->C(binary class variable)\n  C-->D[PS]\n  C-->G[WS]\n  \n  B[predictors]\n  B-->L[numeric]\n  L-->E[A]\n  L-->F[B]\n"},"evals":[],"jsHooks":[]}</script>
+<p>This is the full list of variables in the set.</p>
+<pre><code>##  [1] &quot;Cell&quot;                    &quot;Case&quot;                   
+##  [3] &quot;Class&quot;                   &quot;AngleCh1&quot;               
+##  [5] &quot;AreaCh1&quot;                 &quot;AvgIntenCh1&quot;            
+##  [7] &quot;AvgIntenCh2&quot;             &quot;AvgIntenCh3&quot;            
+##  [9] &quot;AvgIntenCh4&quot;             &quot;ConvexHullAreaRatioCh1&quot; 
+## [11] &quot;ConvexHullPerimRatioCh1&quot; &quot;DiffIntenDensityCh1&quot;    
+## [13] &quot;DiffIntenDensityCh3&quot;     &quot;DiffIntenDensityCh4&quot;    
+## [15] &quot;EntropyIntenCh1&quot;         &quot;EntropyIntenCh3&quot;        
+## [17] &quot;EntropyIntenCh4&quot;         &quot;EqCircDiamCh1&quot;          
+## [19] &quot;EqEllipseLWRCh1&quot;         &quot;EqEllipseOblateVolCh1&quot;  
+## [21] &quot;EqEllipseProlateVolCh1&quot;  &quot;EqSphereAreaCh1&quot;        
+## [23] &quot;EqSphereVolCh1&quot;          &quot;FiberAlign2Ch3&quot;         
+## [25] &quot;FiberAlign2Ch4&quot;          &quot;FiberLengthCh1&quot;         
+## [27] &quot;FiberWidthCh1&quot;           &quot;IntenCoocASMCh3&quot;        
+## [29] &quot;IntenCoocASMCh4&quot;         &quot;IntenCoocContrastCh3&quot;   
+## [31] &quot;IntenCoocContrastCh4&quot;    &quot;IntenCoocEntropyCh3&quot;    
+## [33] &quot;IntenCoocEntropyCh4&quot;     &quot;IntenCoocMaxCh3&quot;        
+## [35] &quot;IntenCoocMaxCh4&quot;         &quot;KurtIntenCh1&quot;           
+## [37] &quot;KurtIntenCh3&quot;            &quot;KurtIntenCh4&quot;           
+## [39] &quot;LengthCh1&quot;               &quot;NeighborAvgDistCh1&quot;     
+## [41] &quot;NeighborMinDistCh1&quot;      &quot;NeighborVarDistCh1&quot;     
+## [43] &quot;PerimCh1&quot;                &quot;ShapeBFRCh1&quot;            
+## [45] &quot;ShapeLWRCh1&quot;             &quot;ShapeP2ACh1&quot;            
+## [47] &quot;SkewIntenCh1&quot;            &quot;SkewIntenCh3&quot;           
+## [49] &quot;SkewIntenCh4&quot;            &quot;SpotFiberCountCh3&quot;      
+## [51] &quot;SpotFiberCountCh4&quot;       &quot;TotalIntenCh1&quot;          
+## [53] &quot;TotalIntenCh2&quot;           &quot;TotalIntenCh3&quot;          
+## [55] &quot;TotalIntenCh4&quot;           &quot;VarIntenCh1&quot;            
+## [57] &quot;VarIntenCh3&quot;             &quot;VarIntenCh4&quot;            
+## [59] &quot;WidthCh1&quot;                &quot;XCentroid&quot;              
+## [61] &quot;YCentroid&quot;</code></pre>
+<pre><code>## [1] 2019   61</code></pre>
+<p><strong>Parsimony:</strong></p>
+<pre><code>##   Class Predictor_A Predictor_B
+## 1    PS    3278.726   154.89876
+## 2    WS    1727.410    84.56460
+## 3    PS    1194.932   101.09107
+## 4    WS    1027.222    68.71062
+## 5    PS    1035.608    73.40559
+## 6    PS    1433.918    79.47569</code></pre>
+<p>Cross validation on the training set.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="a-model-with-two-predictors.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2222</span>)</span>
+<span id="cb5-2"><a href="a-model-with-two-predictors.html#cb5-2" aria-hidden="true" tabindex="-1"></a>folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(train, <span class="at">v =</span> <span class="dv">10</span>)</span></code></pre></div>
+<p>A first visualization of the relationship between the two predictors.</p>
+<pre><code>## `geom_smooth()` using method = &#39;gam&#39; and formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="bookclub-feat_eng_files/figure-html/relationship-1.png" width="672" /></p>
+<p>Check for Class balance of the response variable. This would be the first level tranformation of the response, this type of transformation is considered <strong>a structural transformation</strong>, we will see more about it later in the book.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="a-model-with-two-predictors.html#cb7-1" aria-hidden="true" tabindex="-1"></a>tb_class <span class="ot">&lt;-</span> <span class="fu">table</span>(train<span class="sc">$</span>Class)</span>
+<span id="cb7-2"><a href="a-model-with-two-predictors.html#cb7-2" aria-hidden="true" tabindex="-1"></a>pr_class <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">prop.table</span>(tb_class), <span class="dv">2</span>)</span>
+<span id="cb7-3"><a href="a-model-with-two-predictors.html#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rbind</span>(tb_class, pr_class)</span></code></pre></div>
+<pre><code>##              PS     WS
+## tb_class 636.00 373.00
+## pr_class   0.63   0.37</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="a-model-with-two-predictors.html#cb9-1" aria-hidden="true" tabindex="-1"></a>up_samp_ws <span class="ot">&lt;-</span> tb_class[<span class="dv">2</span>]<span class="sc">/</span><span class="fu">sum</span>(tb_class)</span></code></pre></div>
+<p><strong>Recipes</strong></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="a-model-with-two-predictors.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb10-2"><a href="a-model-with-two-predictors.html#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="a-model-with-two-predictors.html#cb10-3" aria-hidden="true" tabindex="-1"></a>log_rec_natural_units <span class="ot">&lt;-</span> <span class="fu">recipe</span>(Class <span class="sc">~</span> Predictor_A <span class="sc">+</span> Predictor_B, <span class="at">data =</span> train) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="a-model-with-two-predictors.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_upsample</span>(Class, <span class="at">over_ratio =</span> up_samp_ws)</span>
+<span id="cb10-5"><a href="a-model-with-two-predictors.html#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="a-model-with-two-predictors.html#cb10-6" aria-hidden="true" tabindex="-1"></a>log_rec_inverse_units <span class="ot">&lt;-</span> <span class="fu">recipe</span>(Class <span class="sc">~</span> Predictor_A <span class="sc">+</span> Predictor_B, <span class="at">data =</span> train) <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="a-model-with-two-predictors.html#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_upsample</span>(Class, <span class="at">over_ratio =</span> up_samp_ws) <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="a-model-with-two-predictors.html#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_BoxCox</span>(<span class="fu">all_numeric</span>())</span></code></pre></div>
+<p><strong>Workflow</strong></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="a-model-with-two-predictors.html#cb11-1" aria-hidden="true" tabindex="-1"></a>logistic_reg_glm_spec <span class="ot">&lt;-</span></span>
+<span id="cb11-2"><a href="a-model-with-two-predictors.html#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">logistic_reg</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="a-model-with-two-predictors.html#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&#39;glm&#39;</span>)</span>
+<span id="cb11-4"><a href="a-model-with-two-predictors.html#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="a-model-with-two-predictors.html#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="a-model-with-two-predictors.html#cb11-6" aria-hidden="true" tabindex="-1"></a>log_wfl_natural_units <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-7"><a href="a-model-with-two-predictors.html#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(logistic_reg_glm_spec) <span class="sc">%&gt;%</span></span>
+<span id="cb11-8"><a href="a-model-with-two-predictors.html#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(log_rec_natural_units)</span>
+<span id="cb11-9"><a href="a-model-with-two-predictors.html#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="a-model-with-two-predictors.html#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="a-model-with-two-predictors.html#cb11-11" aria-hidden="true" tabindex="-1"></a>log_fit_natural_units <span class="ot">&lt;-</span> log_wfl_natural_units <span class="sc">%&gt;%</span></span>
+<span id="cb11-12"><a href="a-model-with-two-predictors.html#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(train)</span>
+<span id="cb11-13"><a href="a-model-with-two-predictors.html#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="a-model-with-two-predictors.html#cb11-14" aria-hidden="true" tabindex="-1"></a>log_fit_natural_units <span class="sc">%&gt;%</span></span>
+<span id="cb11-15"><a href="a-model-with-two-predictors.html#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_fit_parsnip</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-16"><a href="a-model-with-two-predictors.html#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 5
+##   term        estimate std.error statistic  p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)  1.58     0.248         6.36 1.99e-10
+## 2 Predictor_A  0.00301  0.000281     10.7  8.95e-27
+## 3 Predictor_B -0.0682   0.00604     -11.3  1.47e-29</code></pre>
+<p><strong>Prediction</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="a-model-with-two-predictors.html#cb13-1" aria-hidden="true" tabindex="-1"></a>with_pred_natural_units <span class="ot">&lt;-</span> log_fit_natural_units <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="a-model-with-two-predictors.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">augment</span>(test)</span>
+<span id="cb13-3"><a href="a-model-with-two-predictors.html#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="a-model-with-two-predictors.html#cb13-4" aria-hidden="true" tabindex="-1"></a>with_pred_natural_units <span class="sc">%&gt;%</span> head</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 6
+##   Class Predictor_A Predictor_B .pred_class .pred_PS .pred_WS
+##   &lt;fct&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;          &lt;dbl&gt;    &lt;dbl&gt;
+## 1 PS           742.        68.8 PS             0.705    0.295
+## 2 PS          1140.        86.5 PS             0.707    0.293
+## 3 WS           692.        49.5 WS             0.429    0.571
+## 4 WS           709.        50.4 WS             0.431    0.569
+## 5 PS          1006.        89.9 PS             0.820    0.180
+## 6 WS          1983.       112.  PS             0.516    0.484</code></pre>
+<p><strong>Confusion Matrics</strong>
+<img src="bookclub-feat_eng_files/figure-html/mosaics-1.png" width="672" /></p>
+<p><strong>Roc Curve</strong></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="a-model-with-two-predictors.html#cb15-1" aria-hidden="true" tabindex="-1"></a>with_pred_natural_units  <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="a-model-with-two-predictors.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(Class,.pred_PS) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="a-model-with-two-predictors.html#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Format =</span> <span class="st">&quot;Natural Units&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="a-model-with-two-predictors.html#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="dv">1</span> <span class="sc">-</span> specificity, sensitivity))<span class="sc">+</span></span>
+<span id="cb15-5"><a href="a-model-with-two-predictors.html#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color =</span> .threshold), <span class="at">size =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb15-6"><a href="a-model-with-two-predictors.html#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">&quot;gray&quot;</span>) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="a-model-with-two-predictors.html#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_continuous</span>()<span class="sc">+</span></span>
+<span id="cb15-8"><a href="a-model-with-two-predictors.html#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_fivethirtyeight</span>() <span class="sc">+</span></span>
+<span id="cb15-9"><a href="a-model-with-two-predictors.html#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>())</span></code></pre></div>
+<p><img src="bookclub-feat_eng_files/figure-html/roc-1.png" width="672" /></p>
+<p><strong>Workflow set</strong></p>
+<p>Let’s compare the two transformations with a <code>workflow_set()</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="a-model-with-two-predictors.html#cb16-1" aria-hidden="true" tabindex="-1"></a>full_workflow <span class="ot">&lt;-</span> <span class="fu">workflow_set</span>(</span>
+<span id="cb16-2"><a href="a-model-with-two-predictors.html#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="at">logitstic =</span> logistic_reg_glm_spec),</span>
+<span id="cb16-3"><a href="a-model-with-two-predictors.html#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">preproc =</span> <span class="fu">list</span>(<span class="at">natural_units =</span> log_rec_natural_units,</span>
+<span id="cb16-4"><a href="a-model-with-two-predictors.html#cb16-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">inverse_units =</span> log_rec_inverse_units))</span>
+<span id="cb16-5"><a href="a-model-with-two-predictors.html#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="a-model-with-two-predictors.html#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(</span>
+<span id="cb16-7"><a href="a-model-with-two-predictors.html#cb16-7" aria-hidden="true" tabindex="-1"></a>  grid_results <span class="ot">&lt;-</span> </span>
+<span id="cb16-8"><a href="a-model-with-two-predictors.html#cb16-8" aria-hidden="true" tabindex="-1"></a>    full_workflow <span class="sc">%&gt;%</span></span>
+<span id="cb16-9"><a href="a-model-with-two-predictors.html#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">workflow_map</span>(</span>
+<span id="cb16-10"><a href="a-model-with-two-predictors.html#cb16-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">seed =</span> <span class="dv">1503</span>,</span>
+<span id="cb16-11"><a href="a-model-with-two-predictors.html#cb16-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">resamples =</span> folds,</span>
+<span id="cb16-12"><a href="a-model-with-two-predictors.html#cb16-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">grid =</span> <span class="dv">25</span>,</span>
+<span id="cb16-13"><a href="a-model-with-two-predictors.html#cb16-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">control =</span> <span class="fu">control_grid</span>(</span>
+<span id="cb16-14"><a href="a-model-with-two-predictors.html#cb16-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">save_pred =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb16-15"><a href="a-model-with-two-predictors.html#cb16-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">parallel_over =</span> <span class="st">&quot;everything&quot;</span>,</span>
+<span id="cb16-16"><a href="a-model-with-two-predictors.html#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">save_workflow =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-17"><a href="a-model-with-two-predictors.html#cb16-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-18"><a href="a-model-with-two-predictors.html#cb16-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>##    user  system elapsed 
+##   7.044   0.008   7.053</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="a-model-with-two-predictors.html#cb18-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># user  system elapsed </span></span>
+<span id="cb18-2"><a href="a-model-with-two-predictors.html#cb18-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#  9.051   0.088   9.184 </span></span>
+<span id="cb18-3"><a href="a-model-with-two-predictors.html#cb18-3" aria-hidden="true" tabindex="-1"></a>grid_results</span></code></pre></div>
+<pre><code>## # A workflow set/tibble: 2 × 4
+##   wflow_id                info             option    result   
+##   &lt;chr&gt;                   &lt;list&gt;           &lt;list&gt;    &lt;list&gt;   
+## 1 natural_units_logitstic &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;rsmp[+]&gt;
+## 2 inverse_units_logitstic &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;rsmp[+]&gt;</code></pre>
+<p><strong>Roc curves for two different recipes</strong></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="a-model-with-two-predictors.html#cb20-1" aria-hidden="true" tabindex="-1"></a>roc <span class="ot">&lt;-</span> grid_results <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="a-model-with-two-predictors.html#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(result) <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="a-model-with-two-predictors.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(.predictions) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="a-model-with-two-predictors.html#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(wflow_id, .pred_PS, .pred_WS, .pred_class, Class) <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="a-model-with-two-predictors.html#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(wflow_id) <span class="sc">%&gt;%</span></span>
+<span id="cb20-6"><a href="a-model-with-two-predictors.html#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(Class, .pred_PS) </span>
+<span id="cb20-7"><a href="a-model-with-two-predictors.html#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="a-model-with-two-predictors.html#cb20-8" aria-hidden="true" tabindex="-1"></a>roc_curves <span class="ot">&lt;-</span> roc <span class="sc">%&gt;%</span></span>
+<span id="cb20-9"><a href="a-model-with-two-predictors.html#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb20-10"><a href="a-model-with-two-predictors.html#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">1</span> <span class="sc">-</span> specificity, <span class="at">y =</span> sensitivity, <span class="at">group =</span> wflow_id, <span class="at">color =</span> wflow_id)</span>
+<span id="cb20-11"><a href="a-model-with-two-predictors.html#cb20-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="a-model-with-two-predictors.html#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb20-13"><a href="a-model-with-two-predictors.html#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">lty =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray50&quot;</span>, <span class="at">size =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb20-14"><a href="a-model-with-two-predictors.html#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_tableau</span>()<span class="sc">+</span></span>
+<span id="cb20-15"><a href="a-model-with-two-predictors.html#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_fivethirtyeight</span>()<span class="sc">+</span></span>
+<span id="cb20-16"><a href="a-model-with-two-predictors.html#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title =</span> <span class="fu">element_text</span>())</span>
+<span id="cb20-17"><a href="a-model-with-two-predictors.html#cb20-17" aria-hidden="true" tabindex="-1"></a>roc_curves</span></code></pre></div>
+<p><img src="bookclub-feat_eng_files/figure-html/rocs-1.png" width="672" /></p>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="nature-of-modeling.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="compute-a-sliding-mean-example.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/01-introduction.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
