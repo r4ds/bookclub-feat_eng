@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1.2 What is feature engineering | Feature Engineering and Selection Book Club</title>
+  <title>1.4 Important concepts | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.28 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1.2 What is feature engineering | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="1.4 Important concepts | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1.2 What is feature engineering | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="1.4 Important concepts | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="good-practice-guidelines.html"/>
-<link rel="next" href="nature-of-modeling.html"/>
+<link rel="prev" href="a-model-with-two-predictors.html"/>
+<link rel="next" href="predicting-ridership-on-chicago.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -151,15 +151,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html"><i class="fa fa-check"></i><b>1.1</b> Good Practice guidelines</a></li>
-<li class="chapter" data-level="1.2" data-path="what-is-feature-engineering.html"><a href="what-is-feature-engineering.html"><i class="fa fa-check"></i><b>1.2</b> What is feature engineering</a></li>
-<li class="chapter" data-level="1.3" data-path="nature-of-modeling.html"><a href="nature-of-modeling.html"><i class="fa fa-check"></i><b>1.3</b> Nature of modeling</a></li>
-<li class="chapter" data-level="1.4" data-path="a-model-with-two-predictors.html"><a href="a-model-with-two-predictors.html"><i class="fa fa-check"></i><b>1.4</b> A model with two predictors</a></li>
-<li class="chapter" data-level="1.5" data-path="compute-a-sliding-mean-example.html"><a href="compute-a-sliding-mean-example.html"><i class="fa fa-check"></i><b>1.5</b> Compute a sliding mean example</a></li>
-<li class="chapter" data-level="1.6" data-path="extra-resources.html"><a href="extra-resources.html"><i class="fa fa-check"></i><b>1.6</b> Extra Resources</a></li>
-<li class="chapter" data-level="1.7" data-path="meeting-videos.html"><a href="meeting-videos.html"><i class="fa fa-check"></i><b>1.7</b> Meeting Videos</a>
+<li class="chapter" data-level="1.1" data-path="structure-of-the-book.html"><a href="structure-of-the-book.html"><i class="fa fa-check"></i><b>1.1</b> Structure of the book</a></li>
+<li class="chapter" data-level="1.2" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html"><i class="fa fa-check"></i><b>1.2</b> Good Practice guidelines</a>
 <ul>
-<li class="chapter" data-level="1.7.1" data-path="meeting-videos.html"><a href="meeting-videos.html#cohort-1"><i class="fa fa-check"></i><b>1.7.1</b> Cohort 1</a></li>
+<li class="chapter" data-level="1.2.1" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html#what-is-feature-engineering"><i class="fa fa-check"></i><b>1.2.1</b> What is feature engineering</a></li>
+<li class="chapter" data-level="1.2.2" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html#nature-of-modeling"><i class="fa fa-check"></i><b>1.2.2</b> Nature of modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="a-model-with-two-predictors.html"><a href="a-model-with-two-predictors.html"><i class="fa fa-check"></i><b>1.3</b> A model with two predictors</a></li>
+<li class="chapter" data-level="1.4" data-path="important-concepts.html"><a href="important-concepts.html"><i class="fa fa-check"></i><b>1.4</b> Important concepts</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="important-concepts.html"><a href="important-concepts.html#acknowledge-vulnerabilities"><i class="fa fa-check"></i><b>1.4.1</b> Acknowledge vulnerabilities</a></li>
+<li class="chapter" data-level="1.4.2" data-path="important-concepts.html"><a href="important-concepts.html#the-modeling-process"><i class="fa fa-check"></i><b>1.4.2</b> The <strong>Modeling process</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="predicting-ridership-on-chicago.html"><a href="predicting-ridership-on-chicago.html"><i class="fa fa-check"></i><b>1.5</b> Predicting ridership on Chicago</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="predicting-ridership-on-chicago.html"><a href="predicting-ridership-on-chicago.html#extra-resources"><i class="fa fa-check"></i><b>1.5.1</b> Extra Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="meeting-videos.html"><a href="meeting-videos.html"><i class="fa fa-check"></i><b>1.6</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="meeting-videos.html"><a href="meeting-videos.html#cohort-1"><i class="fa fa-check"></i><b>1.6.1</b> Cohort 1</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="illustrative-example-predicting-risk-of-ischemic-stroke.html"><a href="illustrative-example-predicting-risk-of-ischemic-stroke.html"><i class="fa fa-check"></i><b>2</b> Illustrative Example: Predicting Risk of Ischemic Stroke</a>
@@ -270,29 +280,70 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="what-is-feature-engineering" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> What is feature engineering<a href="what-is-feature-engineering.html#what-is-feature-engineering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<blockquote>
-<p>“…best re-representation of the predictors to improve model performance.” (ct. Preface)</p>
-</blockquote>
-<p><img src="images/01_02.png" /><!-- --></p>
-<p><strong>What are the possible ways to acheive a better performance?</strong></p>
+<div id="important-concepts" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Important concepts<a href="important-concepts.html#important-concepts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <ul>
-<li>transform the predictors with special functions (log/exp)</li>
-<li>add an interaction term (prod/ratio)</li>
-<li>add a functional tranformation (splines/poly)</li>
-<li>add a re-representation of the predictors (mean/med/standardz)</li>
-<li>imputing missing values (knn/bagging)</li>
+<li>Overfitting</li>
+<li>Supervised and unsupervised</li>
+<li>Model bias and variance</li>
+<li>Experience and empirically driven modeling</li>
 </ul>
-<p>Disclaimer: Risk of Overfitting!</p>
+<p>Generalizing the main boundaries, the risk of overfitting the model is always challenged by anomalous patterns new data can hide.</p>
+<div id="acknowledge-vulnerabilities" class="section level3 hasAnchor" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> Acknowledge vulnerabilities<a href="important-concepts.html#acknowledge-vulnerabilities" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>To consider:</strong></p>
+<ul>
+<li><p><strong>small number of observations</strong> compared to the number of predictors</p></li>
+<li><p><strong>low bias models</strong> can have a higher likelihood of overfitting</p></li>
+<li><p><strong>supervised analysis</strong> can be used to detect predictors significance</p></li>
+<li><p><strong>No free lunch therem</strong> (Wolpert, 1996) - knowledge is an important part of modeling</p></li>
+<li><p><strong>variance-bias</strong> trade-off</p>
+<ul>
+<li>Low variance: linear/logistic regression and PLS</li>
+<li>High variance: trees, nearest neighbor, neural networks</li>
+<li>Bias: level of ability to closer estimation</li>
+</ul></li>
+<li><p><strong>irrilevant predictors</strong> can causing excess model variation</p></li>
+<li><p>be <strong>data-driven</strong> rather than <strong>experience-driven</strong></p></li>
+<li><p><strong>big data</strong> does not mean better data</p></li>
+<li><p><strong>unlabeled data</strong> can improve <em>autoencoders</em> modeling</p></li>
+<li><p><strong>compensatory effect</strong> there may not be a unique set of predictors.</p></li>
+</ul>
+<p>Finally, one more important consideration is to consider <strong>Strategies for Supervised and Unsupervised feature selections</strong>.</p>
+<p><strong>Supervised selection method</strong> can be divided into:</p>
+<ul>
+<li>wrapper methods, such as <strong>backwards</strong> and <strong>stepwise selection</strong></li>
+<li>embedded methods, such as decision tree variable selection</li>
+</ul>
+<p><strong>Unsupervised selection method</strong></p>
+<ul>
+<li>variable encoding, such as dummy or indicator variables</li>
+</ul>
+</div>
+<div id="the-modeling-process" class="section level3 hasAnchor" number="1.4.2">
+<h3><span class="header-section-number">1.4.2</span> The <strong>Modeling process</strong><a href="important-concepts.html#the-modeling-process" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Few steps summary:</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li>EDA</li>
+<li>summary and correlation</li>
+<li>model methods evaluation</li>
+<li>model tuning</li>
+<li>summary measures and EDA</li>
+<li>residual analysis/ check for systematic issues</li>
+<li>more feature engineering</li>
+<li>model selection</li>
+<li>final <em>bake off</em></li>
+<li>prediction</li>
+</ol>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="good-practice-guidelines.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="nature-of-modeling.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="a-model-with-two-predictors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="predicting-ridership-on-chicago.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

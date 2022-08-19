@@ -1,9 +1,13 @@
 introduction
+structure-of-the-book
 good-practice-guidelines
 what-is-feature-engineering
 nature-of-modeling
 a-model-with-two-predictors
-compute-a-sliding-mean-example
+important-concepts
+acknowledge-vulnerabilities
+the-modeling-process
+predicting-ridership-on-chicago
 extra-resources
 meeting-videos
 cohort-1
