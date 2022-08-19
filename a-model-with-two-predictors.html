@@ -278,8 +278,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The data set includes a <strong>Case</strong> vector containing <strong>Train</strong> and <strong>Test</strong> variables, with a total of 61 different vectors, about cellular structures and morphology.</p>
 <p>Selected for this first example are two predictors: <strong>EqSphereAreaCh1</strong> and <strong>PerimCh1</strong>.
 The objective is to predict shape parameters of <strong>poorly-segmented (PS)</strong> and <strong>well-segmented (WS)</strong> cells from the <strong>Class</strong> variable.</p>
-<div id="htmlwidget-02cc0fb25068f936cb63" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-02cc0fb25068f936cb63">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  \n  H-->A\n  H-->B\n  A[outcome]\n  A-->C(binary class variable)\n  C-->D[PS]\n  C-->G[WS]\n  \n  B[predictors]\n  B-->L[numeric]\n  L-->E[A]\n  L-->F[B]\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-7c1e8fdbf54e0151eb1c" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7c1e8fdbf54e0151eb1c">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  \n  H-->A\n  H-->B\n  A[outcome]\n  A-->C(binary class variable)\n  C-->D[PS]\n  C-->G[WS]\n  \n  B[predictors]\n  B-->L[numeric]\n  L-->E[A]\n  L-->F[B]\n"},"evals":[],"jsHooks":[]}</script>
 <p>This is the full list of variables in the set.</p>
 <pre><code>##  [1] &quot;Cell&quot;                    &quot;Case&quot;                   
 ##  [3] &quot;Class&quot;                   &quot;AngleCh1&quot;               
@@ -415,7 +415,7 @@ The objective is to predict shape parameters of <strong>poorly-segmented (PS)</s
 <span id="cb16-17"><a href="a-model-with-two-predictors.html#cb16-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb16-18"><a href="a-model-with-two-predictors.html#cb16-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>##    user  system elapsed 
-##   7.044   0.008   7.053</code></pre>
+##   6.895   0.008   6.910</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="a-model-with-two-predictors.html#cb18-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># user  system elapsed </span></span>
 <span id="cb18-2"><a href="a-model-with-two-predictors.html#cb18-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#  9.051   0.088   9.184 </span></span>
 <span id="cb18-3"><a href="a-model-with-two-predictors.html#cb18-3" aria-hidden="true" tabindex="-1"></a>grid_results</span></code></pre></div>
