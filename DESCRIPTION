@@ -18,4 +18,13 @@ Imports:
     rmarkdown,
     themis,
     tidymodels,
-    tidyverse
+    tidyverse, 
+    lubridate, 
+    scales, 
+    RcolorBrewer, 
+    heatmaply, 
+    ggiraph, 
+    plotly, 
+    vcd, 
+    colorspace, 
+    FactoMineR 
