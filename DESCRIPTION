@@ -19,7 +19,6 @@ Imports:
     kableExtra,
     patchwork,
     rmarkdown,
-    rstanarm,
     themis,
     tidymodels,
     tidyverse

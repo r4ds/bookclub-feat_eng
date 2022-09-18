@@ -16,7 +16,7 @@ A large majority of models require that all predictors be numeric.
 A summary of `parsnip` model preprocessors from: [Tidy Modeling with R by Max Kuhn and Julia Silge](https://www.tmwr.org/pre-proc-table.html)
 
 ```{r }
-#| label: pre-proc-table-setup
+#| label: chapter 5 pre-proc-table-setup
 knitr::opts_chunk$set(fig.path = "images/")
 
 suppressPackageStartupMessages({
@@ -30,7 +30,7 @@ library(kableExtra)
 ```
 
 ```{r }
-#| label: pre-proc-table
+#| label: chapter 5 pre-proc-table
 #| echo: false
 #| results: asis
 
@@ -114,7 +114,8 @@ Consider a linear model for the Chicago transit data that only uses the day of t
 Using the training set to fit the model, the intercept value estimates the mean of the reference cell, which is the average number of Sunday riders in the training set, estimated to be 3.84K people. The second model parameter, for Monday, is estimated to be 12.61K. In the reference cell model, the dummy variables represent the mean value above and beyond the reference cell mean. In this case, estimate indicates that there were 12.61K more riders on Monday than Sunday.
 
 ```{r}
-
+#| label: chapter 5 one hot dummies
+#| 
 train_df <- tibble(m = month.abb, number = seq(1,12, by = 1))
 
 recipe(number ~ m, data = train_df) |> 
@@ -197,6 +198,7 @@ If the outcome event occurs with rate $$ p $$, the *odds* of that event is defin
 This is an example of a single generalized linear model applied to the hair color feature, which woudl otherwise have 12 dummy levels.
 
 ```{r}
+#| label: chapter 5 glm numeric embeddings
 as_tibble(dplyr::starwars) |> 
   count(hair_color)
 
@@ -218,7 +220,7 @@ One way around this issue is to use some type of shrinkage method. For example, 
 
 A common method for shrinking parameter estimates is Bayesian analysis.  (one doubt -- `step_lencode_bayes` appears to only work with two class outcomes ???)
 
-```{r}
+```
 as_tibble(datasets::Titanic) |> 
   count(Class)
 
@@ -226,13 +228,27 @@ recipe(Survived ~ Class +  Sex + Age,
        data = as_tibble(datasets::Titanic)) |> 
   embed::step_lencode_bayes(Class, outcome = "Survived") |> 
   prep() |> bake(new_data = NULL)    |>
-  slice_sample(n = 10) |> 
-  kable(
-    caption = "Titanic Class Bayes embedding w/ shrinkage"
-  ) |>  
-  kable_styling("striped", full_width = FALSE) 
+  slice_sample(n = 10) 
 
 ```
+
+```
+# A tibble: 10 × 4
+      Class Sex    Age   Survived
+      <dbl> <fct>  <fct> <fct>   
+ 1 -0.0108  Female Adult Yes     
+ 2 -0.0108  Male   Adult No      
+ 3 -0.00526 Male   Child Yes     
+ 4 -0.00526 Female Child No      
+ 5 -0.00993 Male   Adult No      
+ 6 -0.0104  Male   Child Yes     
+ 7 -0.00526 Male   Child No      
+ 8 -0.0108  Female Adult No      
+ 9 -0.00993 Male   Child Yes     
+10 -0.0104  Female Child No      
+
+```
+
 
 Empirical Bayes methods can also be used, in the form of linear (and generalized linear) mixed models. 
 
@@ -247,7 +263,7 @@ Another supervised approach comes from the deep learning literature on the analy
 An example using `The Office` dialogue and one of the pre-trained `GloVe` embeddings.
 
 ```{r}
-#| label: text embeddings
+#| label: chapter 5 text embeddings
 #| eval: false
 
 library(textrecipes)
@@ -309,7 +325,7 @@ Suppose that the factors have a relative ordering, like `low`, `medium`, and `hi
 R uses a technique called `polynomial contrasts` to numerically characterize the relationships.
 
 ```{r}
-#| label: ordinal factors
+#| label: chapter 5 ordinal factors
  
 values <- c("low", "medium", "high")
 dat <- data.frame(x = ordered(values, levels = values))
