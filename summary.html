@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club</title>
+  <title>5.8 Summary | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="5.8 Summary | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="5.8 Summary | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="meeting-videos.html"/>
-<link rel="next" href="slide-1.html"/>
+<link rel="prev" href="factors-versus-dummy-variables-in-tree-based-models.html"/>
+<link rel="next" href="meeting-videos-4.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -292,20 +292,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="illustrative-example-predicting-risk-of-ischemic-stroke" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Illustrative Example: Predicting Risk of Ischemic Stroke<a href="illustrative-example-predicting-risk-of-ischemic-stroke.html#illustrative-example-predicting-risk-of-ischemic-stroke" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><strong>Learning objectives:</strong></p>
-<ul>
-<li>THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY</li>
-</ul>
+<div id="summary" class="section level2 hasAnchor" number="5.8">
+<h2><span class="header-section-number">5.8</span> Summary<a href="summary.html#summary" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>With the exception of tree-based models, categorical predictors must first be converted to numeric representations to enable other models to use the information.</p>
+<p>The simplest feature engineering technique is to convert each category to a separate binary dummy predictor.</p>
+<p>Some models require one fewer dummy predictors than the number of categories.</p>
+<p>Creating dummy predictors may not be the most effective way. If, for instance, the predictor has ordered categories, then polynomial contrasts may be better.</p>
+<p>Text fields, too, can be viewed as an agglomeration of categorical predictors and must be converted to numerics.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="meeting-videos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="slide-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="factors-versus-dummy-variables-in-tree-based-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="meeting-videos-4.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -336,7 +337,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/02-illustrative_example_predicting_risk_of_ischemic_stroke.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/05-encoding_categorical_predictors.Rmd",
 "text": "Edit"
 },
 "history": {

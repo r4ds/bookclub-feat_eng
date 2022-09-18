@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club</title>
+  <title>5.3 Approaches for Novel Categories | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="5.3 Approaches for Novel Categories | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="5.3 Approaches for Novel Categories | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="meeting-videos.html"/>
-<link rel="next" href="slide-1.html"/>
+<link rel="prev" href="encoding-predictors-for-many-categories.html"/>
+<link rel="next" href="supervised-encoding-methods.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -292,20 +292,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="illustrative-example-predicting-risk-of-ischemic-stroke" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Illustrative Example: Predicting Risk of Ischemic Stroke<a href="illustrative-example-predicting-risk-of-ischemic-stroke.html#illustrative-example-predicting-risk-of-ischemic-stroke" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><strong>Learning objectives:</strong></p>
-<ul>
-<li>THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY</li>
-</ul>
+<div id="approaches-for-novel-categories" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Approaches for Novel Categories<a href="approaches-for-novel-categories.html#approaches-for-novel-categories" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Suppose that a model is built to predict the probability that an individual works in a STEM profession and that this model depends on city names. The model will be able to predict the probability of STEM profession if a new individual lives in one of the cities in the training set.</p>
+<p><em>But what happens to the model prediction when a new individual lives in a city that is not represented</em>?</p>
+<p>One strategy would be to use the previously mentioned “other” category to capture new values. This approach can also be used with feature hashing.</p>
+<p><img src="https://media.giphy.com/media/9Sxp3YOKKFEBi/giphy.gif" /></p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="meeting-videos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="slide-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="encoding-predictors-for-many-categories.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="supervised-encoding-methods.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -336,7 +336,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/02-illustrative_example_predicting_risk_of_ischemic_stroke.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/05-encoding_categorical_predictors.Rmd",
 "text": "Edit"
 },
 "history": {

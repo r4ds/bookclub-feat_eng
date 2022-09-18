@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Encoding Categorical Predictors | Feature Engineering and Selection Book Club</title>
+  <title>5.1 Creating Dummy Variables for Unordered Categories | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Encoding Categorical Predictors | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="5.1 Creating Dummy Variables for Unordered Categories | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Encoding Categorical Predictors | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="5.1 Creating Dummy Variables for Unordered Categories | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="meeting-videos-3.html"/>
-<link rel="next" href="creating-dummy-variables-for-unordered-categories.html"/>
+<link rel="prev" href="encoding-categorical-predictors.html"/>
+<link rel="next" href="encoding-predictors-for-many-categories.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -292,605 +292,1021 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="encoding-categorical-predictors" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Encoding Categorical Predictors<a href="encoding-categorical-predictors.html#encoding-categorical-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<blockquote>
-<p><strong>Categorical</strong> (also called <strong>nominal</strong>) predictors are those that contain qualitative data.</p>
-</blockquote>
-<p>Examples include:</p>
+<div id="creating-dummy-variables-for-unordered-categories" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Creating Dummy Variables for Unordered Categories<a href="creating-dummy-variables-for-unordered-categories.html#creating-dummy-variables-for-unordered-categories" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There are many methods for doing this and, to illustrate, consider a simple example for the day of the week. If we take the seven possible values and convert them into binary dummy variables, the mathematical function required to make the translation is often referred to as a <em>contrast</em>.</p>
+<p>These six numeric predictors would take the place of the original categorical variable.</p>
+<p>Why only six?</p>
 <ul>
-<li>Education level</li>
-<li>ZIP code</li>
-<li>Text</li>
-<li>Day of the week</li>
-<li>Color</li>
-<li></li>
+<li>if the values of the six dummy variables are known, then the seventh can be directly inferred.</li>
+<li>When the model has an intercept, an additional initial column of ones for all rows is included. Estimating the parameters for a linear model (as well as other similar models) involve inverting the matrix. If the model includes an intercept and contains dummy variables for all seven days, then the seven day columns would add up (row-wise) to the intercept and this linear combination would prevent the matrix inverse from being computed (as it is singular).</li>
 </ul>
-<p>A large majority of models require that all predictors be numeric.</p>
-<p>A summary of <code>parsnip</code> model preprocessors from: <a href="https://www.tmwr.org/pre-proc-table.html">Tidy Modeling with R by Max Kuhn and Julia Silge</a></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="encoding-categorical-predictors.html#cb25-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">fig.path =</span> <span class="st">&quot;images/&quot;</span>)</span>
-<span id="cb25-2"><a href="encoding-categorical-predictors.html#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="encoding-categorical-predictors.html#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
-<span id="cb25-4"><a href="encoding-categorical-predictors.html#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb25-5"><a href="encoding-categorical-predictors.html#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb25-6"><a href="encoding-categorical-predictors.html#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(embed)</span>
-<span id="cb25-7"><a href="encoding-categorical-predictors.html#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cli)</span>
-<span id="cb25-8"><a href="encoding-categorical-predictors.html#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb25-9"><a href="encoding-categorical-predictors.html#cb25-9" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div>
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<p>Less than full rank encodings are sometimes called “<strong>one-hot</strong>” encodings.</p>
+<p>Generating the full set of indicator variables may be advantageous for some models that are insensitive to linear dependencies (an example: <code>glmnet</code>)</p>
+<p>What is the interpretation of the dummy variables?</p>
+<p>Consider a linear model for the Chicago transit data that only uses the day of the week.</p>
+<p>Using the training set to fit the model, the intercept value estimates the mean of the reference cell, which is the average number of Sunday riders in the training set, estimated to be 3.84K people. The second model parameter, for Monday, is estimated to be 12.61K. In the reference cell model, the dummy variables represent the mean value above and beyond the reference cell mean. In this case, estimate indicates that there were 12.61K more riders on Monday than Sunday.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-1" aria-hidden="true" tabindex="-1"></a>train_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">m =</span> month.abb, <span class="at">number =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>, <span class="at">by =</span> <span class="dv">1</span>))</span>
+<span id="cb26-2"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(number <span class="sc">~</span> m, <span class="at">data =</span> train_df) <span class="sc">|&gt;</span> </span>
+<span id="cb26-4"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(),</span>
+<span id="cb26-5"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">one_hot =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb26-6"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>, <span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span>  </span>
+<span id="cb26-7"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable</span>(</span>
+<span id="cb26-8"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Preprocessing without One HOT (the default) contrasts with April&quot;</span></span>
+<span id="cb26-9"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
+<span id="cb26-10"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="at">row =</span> <span class="dv">4</span>, <span class="at">background =</span> <span class="st">&quot;orange&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb26-11"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb26-12"><a href="creating-dummy-variables-for-unordered-categories.html#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">&quot;800px&quot;</span>)</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:800px; ">
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-<span id="tab:preprocessing">Table 5.1: </span>Preprocessing methods for different models.
+(#tab:chapter 5 one hot dummies)Preprocessing without One HOT (the default) contrasts with April
 </caption>
 <thead>
 <tr>
-<th style="text-align:left;">
-model
+<th style="text-align:right;">
+m_Aug
 </th>
-<th style="text-align:center;">
-dummy
+<th style="text-align:right;">
+m_Dec
 </th>
-<th style="text-align:center;">
-zv
+<th style="text-align:right;">
+m_Feb
 </th>
-<th style="text-align:center;">
-impute
+<th style="text-align:right;">
+m_Jan
 </th>
-<th style="text-align:center;">
-decorrelate
+<th style="text-align:right;">
+m_Jul
 </th>
-<th style="text-align:center;">
-normalize
+<th style="text-align:right;">
+m_Jun
 </th>
-<th style="text-align:center;">
-transform
+<th style="text-align:right;">
+m_Mar
+</th>
+<th style="text-align:right;">
+m_May
+</th>
+<th style="text-align:right;">
+m_Nov
+</th>
+<th style="text-align:right;">
+m_Oct
+</th>
+<th style="text-align:right;">
+m_Sep
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
-<tt>bag_mars()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>bag_tree()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-◌¹
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>bart()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-◌¹
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>boost_tree()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-×²
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔²
-</td>
-<td style="text-align:center;">
-◌¹
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>C5_rules()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+1
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>cubist_rules()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>decision_tree()</tt>
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-×
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;">
-◌¹
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>discrim_flexible()</tt>
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;background-color: orange !important;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>discrim_linear()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>discrim_regularized()</tt>
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>gen_additive_mod()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>linear_reg()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>logistic_reg()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>mars()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-◌
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>mlp()</tt>
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>multinom_reg()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-×²
-</td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>naive_Bayes()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-◌¹
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>nearest_neighbor()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-◌
-</td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+1
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>pls()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>poisson_reg()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-×
-</td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>rand_forest()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-◌
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔²
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-◌¹
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-</tr>
-<tr>
-<td style="text-align:left;">
-<tt>rule_fit()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-◌¹
-</td>
-<td style="text-align:center;">
-✔
-</td>
-<td style="text-align:center;">
-×
+<td style="text-align:right;">
+0
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-<tt>svm_*()</tt>
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;background-color: orange !important;">
-✔
+<td style="text-align:right;">
+1
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
 </td>
-<td style="text-align:center;">
-✔
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
 </td>
 </tr>
 </tbody>
 </table>
-<p>In the table, ✔ indicates that the method is required for the model and × indicates that it is not. The <code>◌</code> symbol means that the model may be helped by the technique but it is not required.</p>
-<p>Algorithms for tree-based models naturally handle splitting both numeric and categorical predictors. These algorithms employ a series if/then statements that sequentially split the data into groups.</p>
-<p>A naive Bayes model will create a cross-tabulation between a categorical predictor and the outcome class. We will return to this point in the final section of this chapter.</p>
-<p>Simple categorical variables can also be classified as <em>ordered</em> or <em>unordered</em>.</p>
-<p><img src="https://media.giphy.com/media/dXL4B7aSwK80g/200.gif" /></p>
+</div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(number <span class="sc">~</span> m, <span class="at">data =</span> train_df) <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(),</span>
+<span id="cb27-3"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">one_hot =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb27-4"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>, <span class="fu">all_predictors</span>())  <span class="sc">|&gt;</span> </span>
+<span id="cb27-5"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable</span>(</span>
+<span id="cb27-6"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Preprocessing with One HOT.&quot;</span></span>
+<span id="cb27-7"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
+<span id="cb27-8"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb27-9"><a href="creating-dummy-variables-for-unordered-categories.html#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">&quot;800px&quot;</span>)</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:800px; ">
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+(#tab:chapter 5 one hot dummies)Preprocessing with One HOT.
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+m_Apr
+</th>
+<th style="text-align:right;">
+m_Aug
+</th>
+<th style="text-align:right;">
+m_Dec
+</th>
+<th style="text-align:right;">
+m_Feb
+</th>
+<th style="text-align:right;">
+m_Jan
+</th>
+<th style="text-align:right;">
+m_Jul
+</th>
+<th style="text-align:right;">
+m_Jun
+</th>
+<th style="text-align:right;">
+m_Mar
+</th>
+<th style="text-align:right;">
+m_May
+</th>
+<th style="text-align:right;">
+m_Nov
+</th>
+<th style="text-align:right;">
+m_Oct
+</th>
+<th style="text-align:right;">
+m_Sep
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="https://media.giphy.com/media/2aTn0KLsaL8yY/giphy.gif" /></p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="meeting-videos-3.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="creating-dummy-variables-for-unordered-categories.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="encoding-categorical-predictors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="encoding-predictors-for-many-categories.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

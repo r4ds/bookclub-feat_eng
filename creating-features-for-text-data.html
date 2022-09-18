@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club</title>
+  <title>5.6 Creating Features for Text Data | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="5.6 Creating Features for Text Data | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="5.6 Creating Features for Text Data | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="meeting-videos.html"/>
-<link rel="next" href="slide-1.html"/>
+<link rel="prev" href="encodings-for-ordered-data.html"/>
+<link rel="next" href="factors-versus-dummy-variables-in-tree-based-models.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -292,20 +292,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="illustrative-example-predicting-risk-of-ischemic-stroke" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Illustrative Example: Predicting Risk of Ischemic Stroke<a href="illustrative-example-predicting-risk-of-ischemic-stroke.html#illustrative-example-predicting-risk-of-ischemic-stroke" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><strong>Learning objectives:</strong></p>
+<div id="creating-features-for-text-data" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Creating Features for Text Data<a href="creating-features-for-text-data.html#creating-features-for-text-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Often, data contain textual fields that are gathered from questionnaires, articles, reviews, tweets, and other sources.</p>
+<p>Are there words or phrases that would make good predictors of the outcome? To determine this, the text data must first be processed and <em>cleaned</em>.</p>
+<p>One approach is to measure for “<em>importance</em>”, that is, keywords with odds-ratios of at least 2 (in either direction) to be considered for modeling.</p>
+<p>See also <a href="https://www.emilhvitfeldt.com/project/smltar/">Supervised Machine Learning for Text Analysis in R</a> for a much better explanation.</p>
+<p>Other methods for preprocessing text data include:</p>
 <ul>
-<li>THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY</li>
+<li>removing commonly used stop words, such as “is”, “the”, “and”, etc.</li>
+<li>stemming the words so that similar words, such as the singular and plural versions, are represented as a single entity.</li>
+<li>filter for the most common tokens, and then calculate the term frequency-inverse document frequency (tf-idf) statistic for each token</li>
 </ul>
+<p><img src="https://media.tenor.com/images/e9c380f52a28a404d4827bdff781a51e/tenor.gif" /></p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="meeting-videos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="slide-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="encodings-for-ordered-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="factors-versus-dummy-variables-in-tree-based-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -336,7 +343,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/02-illustrative_example_predicting_risk_of_ischemic_stroke.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/05-encoding_categorical_predictors.Rmd",
 "text": "Edit"
 },
 "history": {

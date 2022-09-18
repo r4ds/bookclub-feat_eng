@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club</title>
+  <title>5.4 Supervised Encoding Methods | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="5.4 Supervised Encoding Methods | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="5.4 Supervised Encoding Methods | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="meeting-videos.html"/>
-<link rel="next" href="slide-1.html"/>
+<link rel="prev" href="approaches-for-novel-categories.html"/>
+<link rel="next" href="encodings-for-ordered-data.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -292,20 +292,289 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="illustrative-example-predicting-risk-of-ischemic-stroke" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Illustrative Example: Predicting Risk of Ischemic Stroke<a href="illustrative-example-predicting-risk-of-ischemic-stroke.html#illustrative-example-predicting-risk-of-ischemic-stroke" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><strong>Learning objectives:</strong></p>
-<ul>
-<li>THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY</li>
-</ul>
+<div id="supervised-encoding-methods" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Supervised Encoding Methods<a href="supervised-encoding-methods.html#supervised-encoding-methods" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Beyond dummies, there are many other ways to craft one or more numerical features from a set of nominal predictors. They include</p>
+<div id="likelihood-encoding" class="section level3 hasAnchor" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Likelihood Encoding<a href="supervised-encoding-methods.html#likelihood-encoding" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In essence, the effect of the factor level on the outcome is measured and this effect is used as new numeric features. For example, for the Ames housing data, we might calculate the mean or median sale price of a house for each neighborhood from the training data and use this statistic to represent the factor level in the model.</p>
+<p>For classification problems, a simple logistic regression model can be used to measure the effect between the categorical outcome and the categorical predictor.</p>
+<p>If the outcome event occurs with rate <span class="math display">\[ p \]</span>, the <em>odds</em> of that event is defined as <span class="math display">\[ p / ( 1 − p) \]</span>.</p>
+<p>This is an example of a single generalized linear model applied to the hair color feature, which woudl otherwise have 12 dummy levels.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="supervised-encoding-methods.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(dplyr<span class="sc">::</span>starwars) <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="supervised-encoding-methods.html#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(hair_color)</span></code></pre></div>
+<pre><code>## # A tibble: 13 × 2
+##    hair_color        n
+##    &lt;chr&gt;         &lt;int&gt;
+##  1 auburn            1
+##  2 auburn, grey      1
+##  3 auburn, white     1
+##  4 black            13
+##  5 blond             3
+##  6 blonde            1
+##  7 brown            18
+##  8 brown, grey       1
+##  9 grey              1
+## 10 none             37
+## 11 unknown           1
+## 12 white             4
+## 13 &lt;NA&gt;              5</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="supervised-encoding-methods.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(skin_color <span class="sc">~</span> hair_color <span class="sc">+</span>  eye_color <span class="sc">+</span> mass, </span>
+<span id="cb30-2"><a href="supervised-encoding-methods.html#cb30-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="fu">as_tibble</span>(dplyr<span class="sc">::</span>starwars)) <span class="sc">|&gt;</span> </span>
+<span id="cb30-3"><a href="supervised-encoding-methods.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  embed<span class="sc">::</span><span class="fu">step_lencode_glm</span>(hair_color, <span class="at">outcome =</span> <span class="st">&quot;skin_color&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-4"><a href="supervised-encoding-methods.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)    <span class="sc">|&gt;</span> </span>
+<span id="cb30-5"><a href="supervised-encoding-methods.html#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-6"><a href="supervised-encoding-methods.html#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
+<span id="cb30-7"><a href="supervised-encoding-methods.html#cb30-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Starwars Characters hair_color GLM embedding&quot;</span></span>
+<span id="cb30-8"><a href="supervised-encoding-methods.html#cb30-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
+<span id="cb30-9"><a href="supervised-encoding-methods.html#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) </span></code></pre></div>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+(#tab:chapter 5 glm numeric embeddings)Starwars Characters hair_color GLM embedding
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+hair_color
+</th>
+<th style="text-align:left;">
+eye_color
+</th>
+<th style="text-align:right;">
+mass
+</th>
+<th style="text-align:left;">
+skin_color
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+-2.862201
+</td>
+<td style="text-align:left;">
+gold
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+grey
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-21.566069
+</td>
+<td style="text-align:left;">
+brown
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+light
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-2.862201
+</td>
+<td style="text-align:left;">
+red
+</td>
+<td style="text-align:right;">
+90
+</td>
+<td style="text-align:left;">
+mottled green
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-21.566069
+</td>
+<td style="text-align:left;">
+blue
+</td>
+<td style="text-align:right;">
+112
+</td>
+<td style="text-align:left;">
+unknown
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-2.862201
+</td>
+<td style="text-align:left;">
+orange
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:left;">
+grey
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-21.566069
+</td>
+<td style="text-align:left;">
+orange
+</td>
+<td style="text-align:right;">
+1358
+</td>
+<td style="text-align:left;">
+green-tan, brown
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-21.566069
+</td>
+<td style="text-align:left;">
+blue
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+fair
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-21.566069
+</td>
+<td style="text-align:left;">
+brown
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+light
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-2.862201
+</td>
+<td style="text-align:left;">
+white
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:left;">
+pale
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+-2.862201
+</td>
+<td style="text-align:left;">
+unknown
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+grey, blue
+</td>
+</tr>
+</tbody>
+</table>
+<p>While very fast, this method has drawbacks. For example, what happens when a factor level has a single value? Theoretically, the log-odds should be infinite in the appropriate direction but, numerically, it is usually capped at a large (and inaccurate) value.</p>
+<p>One way around this issue is to use some type of shrinkage method. For example, the overall log-odds can be determined and, if the quality of the data within a factor level is poor, then this level’s effect estimate can be biased towards an overall estimate that disregards the levels of the predictor.</p>
+<p>A common method for shrinking parameter estimates is Bayesian analysis. (one doubt – <code>step_lencode_bayes</code> appears to only work with two class outcomes ???)</p>
+<pre><code>as_tibble(datasets::Titanic) |&gt; 
+  count(Class)
+
+recipe(Survived ~ Class +  Sex + Age, 
+       data = as_tibble(datasets::Titanic)) |&gt; 
+  embed::step_lencode_bayes(Class, outcome = &quot;Survived&quot;) |&gt; 
+  prep() |&gt; bake(new_data = NULL)    |&gt;
+  slice_sample(n = 10) 
+</code></pre>
+<pre><code># A tibble: 10 × 4
+      Class Sex    Age   Survived
+      &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   
+ 1 -0.0108  Female Adult Yes     
+ 2 -0.0108  Male   Adult No      
+ 3 -0.00526 Male   Child Yes     
+ 4 -0.00526 Female Child No      
+ 5 -0.00993 Male   Adult No      
+ 6 -0.0104  Male   Child Yes     
+ 7 -0.00526 Male   Child No      
+ 8 -0.0108  Female Adult No      
+ 9 -0.00993 Male   Child Yes     
+10 -0.0104  Female Child No      
+</code></pre>
+<p>Empirical Bayes methods can also be used, in the form of linear (and generalized linear) mixed models.</p>
+<p><img src="https://public-files.gumroad.com/variants/070hlmq86og1qo2kgb3tl2fgwkbi/35a9dc65b899b4bc9688c9aa5d9d6d5f21c77fd36a53b6adc66ca71a81bc9933" /></p>
+<p>One issue with effect encoding, independent of the estimation method, is that it increases the possibility of overfitting the training data.</p>
+<p>Use resampling.</p>
+<p>Another supervised approach comes from the deep learning literature on the analysis of textual data. In addition to the dimension reduction, there is the possibility that these methods can estimate semantic relationships between words so that words with similar themes (e.g., “dog”, “pet”, etc.) have similar values in the new encodings. This technique is not limited to text data and can be used to encode any type of qualitative variable.</p>
+<p>An example using <code>The Office</code> dialogue and one of the pre-trained <code>GloVe</code> embeddings.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="supervised-encoding-methods.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textrecipes)</span>
+<span id="cb33-2"><a href="supervised-encoding-methods.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(schrute)</span>
+<span id="cb33-3"><a href="supervised-encoding-methods.html#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="supervised-encoding-methods.html#cb33-4" aria-hidden="true" tabindex="-1"></a>glove6b <span class="ot">&lt;-</span> textdata<span class="sc">::</span><span class="fu">embedding_glove6b</span>(<span class="at">dimensions =</span> <span class="dv">100</span>) <span class="co"># the download is 822.2 Mb</span></span>
+<span id="cb33-5"><a href="supervised-encoding-methods.html#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="supervised-encoding-methods.html#cb33-6" aria-hidden="true" tabindex="-1"></a>schrute<span class="sc">::</span>theoffice <span class="sc">|&gt;</span> </span>
+<span id="cb33-7"><a href="supervised-encoding-methods.html#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb33-8"><a href="supervised-encoding-methods.html#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(character, text)</span>
+<span id="cb33-9"><a href="supervised-encoding-methods.html#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="supervised-encoding-methods.html#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(character <span class="sc">~</span> text,</span>
+<span id="cb33-11"><a href="supervised-encoding-methods.html#cb33-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> schrute<span class="sc">::</span>theoffice) <span class="sc">|&gt;</span></span>
+<span id="cb33-12"><a href="supervised-encoding-methods.html#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text, <span class="at">options =</span> <span class="fu">list</span>(<span class="at">strip_punct =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb33-13"><a href="supervised-encoding-methods.html#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stem</span>(text) <span class="sc">|&gt;</span></span>
+<span id="cb33-14"><a href="supervised-encoding-methods.html#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_word_embeddings</span>(text, <span class="at">embeddings =</span> glove6b) <span class="sc">|&gt;</span></span>
+<span id="cb33-15"><a href="supervised-encoding-methods.html#cb33-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> schrute<span class="sc">::</span>theoffice <span class="sc">|&gt;</span></span>
+<span id="cb33-16"><a href="supervised-encoding-methods.html#cb33-16" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>))    </span></code></pre></div>
+<pre><code>The Office dialogue word embeddings with glove6b
+
+# A tibble: 10 × 101
+   character wordembe…¹ worde…² worde…³ worde…⁴ worde…⁵ worde…⁶
+   &lt;fct&gt;          &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+ 1 Angela       -1.02    -0.377  0.797   -1.21   -0.802   0.656
+ 2 Roy           0        0      0        0       0       0    
+ 3 Phyllis      -1.20    -0.373  3.20    -1.60   -1.62   -0.160
+ 4 Kevin        -1.54     1.77   5.02    -4.68   -5.23    2.91 
+ 5 Roy          -2.15     0.735  4.07    -2.20   -1.30    0.297
+ 6 Jim          -0.595    0.419  0.699   -0.328  -1.20    1.70 
+ 7 Kelly        -2.17     4.38   5.97    -4.91   -4.21    4.13 
+ 8 Katy         -0.891   -0.889  0.0937  -0.859   1.42    1.49 
+ 9 Kevin        -0.0308   0.120  0.539   -0.437  -0.739  -0.153
+10 Jim          -0.395    0.240  1.14    -1.27   -1.47    1.39 
+# … with 94 more variables: wordembed_text_d7 &lt;dbl&gt;,
+#   wordembed_text_d8 &lt;dbl&gt;, wordembed_text_d9 &lt;dbl&gt;,
+#   wordembed_text_d10 &lt;dbl&gt;, wordembed_text_d11 &lt;dbl&gt;,
+#   wordembed_text_d12 &lt;dbl&gt;, wordembed_text_d13 &lt;dbl&gt;,
+#   wordembed_text_d14 &lt;dbl&gt;, wordembed_text_d15 &lt;dbl&gt;,
+#   wordembed_text_d16 &lt;dbl&gt;, wordembed_text_d17 &lt;dbl&gt;,
+#   wordembed_text_d18 &lt;dbl&gt;, wordembed_text_d19 &lt;dbl&gt;, …
+
+</code></pre>
+<p>Note that in place of thousands of sparse dummy colums for each tokenized word, the training set consists of 100 numeric feature dimensions.</p>
+<p>See also <a href="https://www.emilhvitfeldt.com/post/textrecipes-series-pretrained-word-embeddings/">Textrecipes series: Pretrained Word Embedding</a> by Emil Hvitfeldt</p>
+<p><img src="https://th.bing.com/th/id/R.ffa4a0e0e5857068459c5e19131e1694?rik=55oPPQuCOSTdLQ&amp;riu=http%3a%2f%2f25.media.tumblr.com%2ff01459ce3cee401765bf5f9bbe49cec3%2ftumblr_n2evpacq6U1rynk4uo1_r1_500.gif&amp;ehk=lgpH5cNPWT5or7guCXJFdBPReKSbZfo%2fv4N0BEbZb7k%3d&amp;risl=&amp;pid=ImgRaw&amp;r=0" /></p>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="meeting-videos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="slide-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="approaches-for-novel-categories.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="encodings-for-ordered-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -336,7 +605,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/02-illustrative_example_predicting_risk_of_ischemic_stroke.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/05-encoding_categorical_predictors.Rmd",
 "text": "Edit"
 },
 "history": {

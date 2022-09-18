@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club</title>
+  <title>5.5 Encodings for Ordered Data | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="5.5 Encodings for Ordered Data | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="5.5 Encodings for Ordered Data | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="meeting-videos.html"/>
-<link rel="next" href="slide-1.html"/>
+<link rel="prev" href="supervised-encoding-methods.html"/>
+<link rel="next" href="creating-features-for-text-data.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -292,20 +292,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="illustrative-example-predicting-risk-of-ischemic-stroke" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Illustrative Example: Predicting Risk of Ischemic Stroke<a href="illustrative-example-predicting-risk-of-ischemic-stroke.html#illustrative-example-predicting-risk-of-ischemic-stroke" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><strong>Learning objectives:</strong></p>
+<div id="encodings-for-ordered-data" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Encodings for Ordered Data<a href="encodings-for-ordered-data.html#encodings-for-ordered-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Suppose that the factors have a relative ordering, like <code>low</code>, <code>medium</code>, and <code>high</code>.</p>
+<p>R uses a technique called <code>polynomial contrasts</code> to numerically characterize the relationships.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="encodings-for-ordered-data.html#cb35-1" aria-hidden="true" tabindex="-1"></a>values <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;high&quot;</span>)</span>
+<span id="cb35-2"><a href="encodings-for-ordered-data.html#cb35-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">ordered</span>(values, <span class="at">levels =</span> values))</span>
+<span id="cb35-3"><a href="encodings-for-ordered-data.html#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="encodings-for-ordered-data.html#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># https://bookdown.org/max/FES/encodings-for-ordered-data.html#tab:categorical-ordered-table</span></span>
+<span id="cb35-5"><a href="encodings-for-ordered-data.html#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(<span class="sc">~</span> x, dat)</span></code></pre></div>
+<pre><code>##   (Intercept)           x.L        x.Q
+## 1           1 -7.071068e-01  0.4082483
+## 2           1 -7.850462e-17 -0.8164966
+## 3           1  7.071068e-01  0.4082483
+## attr(,&quot;assign&quot;)
+## [1] 0 1 1
+## attr(,&quot;contrasts&quot;)
+## attr(,&quot;contrasts&quot;)$x
+## [1] &quot;contr.poly&quot;</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="encodings-for-ordered-data.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using recipes ----------------------------------------------------------------</span></span>
+<span id="cb37-2"><a href="encodings-for-ordered-data.html#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="encodings-for-ordered-data.html#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># https://bookdown.org/max/FES/encodings-for-ordered-data.html#tab:categorical-ordered-table</span></span>
+<span id="cb37-4"><a href="encodings-for-ordered-data.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(<span class="sc">~</span> x, <span class="at">data =</span> dat) <span class="sc">|&gt;</span> </span>
+<span id="cb37-5"><a href="encodings-for-ordered-data.html#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(x) <span class="sc">|&gt;</span> </span>
+<span id="cb37-6"><a href="encodings-for-ordered-data.html#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>) </span></code></pre></div>
+<pre><code>## # A tibble: 3 × 2
+##         x_1    x_2
+##       &lt;dbl&gt;  &lt;dbl&gt;
+## 1 -7.07e- 1  0.408
+## 2 -7.85e-17 -0.816
+## 3  7.07e- 1  0.408</code></pre>
+<p>It is important to recognize that patterns described by polynomial contrasts may not effectively relate a predictor to the response. For example, in some cases, one might expect a trend where “low” and “middle” samples have a roughly equivalent response but “high” samples have a much different response. In this case, polynomial contrasts are unlikely to be effective at modeling this trend.</p>
+<p>Other alternatives to polynomial contrasts:</p>
 <ul>
-<li>THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY</li>
+<li>Leave the predictors as unordered factors.</li>
+<li>Translate the ordered categories into a single set of numeric scores based on context-specific information.</li>
 </ul>
+<p>Simple visualizations and context-specific expertise can be used to understand whether either of these approaches are good ideas.</p>
+<p><img src="https://gifimage.net/wp-content/uploads/2017/09/beaker-muppets-gif-12.gif" /></p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="meeting-videos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="slide-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="supervised-encoding-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="creating-features-for-text-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -336,7 +368,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/02-illustrative_example_predicting_risk_of_ischemic_stroke.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/05-encoding_categorical_predictors.Rmd",
 "text": "Edit"
 },
 "history": {

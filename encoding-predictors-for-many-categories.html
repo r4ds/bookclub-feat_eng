@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club</title>
+  <title>5.2 Encoding Predictors for Many Categories | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="5.2 Encoding Predictors for Many Categories | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Illustrative Example: Predicting Risk of Ischemic Stroke | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="5.2 Encoding Predictors for Many Categories | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="meeting-videos.html"/>
-<link rel="next" href="slide-1.html"/>
+<link rel="prev" href="creating-dummy-variables-for-unordered-categories.html"/>
+<link rel="next" href="approaches-for-novel-categories.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -292,20 +292,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="illustrative-example-predicting-risk-of-ischemic-stroke" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">Chapter 2</span> Illustrative Example: Predicting Risk of Ischemic Stroke<a href="illustrative-example-predicting-risk-of-ischemic-stroke.html#illustrative-example-predicting-risk-of-ischemic-stroke" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><strong>Learning objectives:</strong></p>
+<div id="encoding-predictors-for-many-categories" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Encoding Predictors for Many Categories<a href="encoding-predictors-for-many-categories.html#encoding-predictors-for-many-categories" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>What happens when the number of factor levels gets very large?</p>
+<p>For example, there are more than 40K possible ZIP codes and, depending on how the data are collected, this might produce an overabundance of dummy variables for the size of the data available. Also, ZIP codes in highly populated areas may have a higher rate of occurrence in the data, leading to a “long tail” of locations that are infrequently observed.</p>
+<p>Also, resampling will exclude some of the rarer categories from the analysis set.</p>
+<p>The first way to handle this issue is to create the full set of dummy variables and simply remove the zero and low-variance predictors.</p>
+<p>Still, we may not desire to filter these out.</p>
+<p>Another approach is to feature engineer an “<strong>other</strong>” category that pools the rarely occurring categories, assuming that such a pooling is sensible.</p>
+<p><img src="https://forum-zoomcharts-com-images.s3-eu-west-1.amazonaws.com/optimized/2X/9/9e00c35be3d840cb14821a8f6005d38512c6f2d2_1_662x468.png" /></p>
+<p>Another way to combine categories is to use a <em>hashing function</em> that maps each factor level <em>key</em> to a <em>hash value</em>. The number of possible hashes is set by the user and, for numerical purposes, is a power of 2. Some computationally interesting aspects to hash functions are</p>
 <ul>
-<li>THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY</li>
+<li>The only data required is the value being hashed and the resulting number of hashes. The translation process is completely deterministic.</li>
+<li>Hash functions are unidirectional; once the hash values are created, there is no way of knowing the original values. If there are a known and finite set of original values, a table can be created to do the translation but, otherwise, the keys are indeterminable when only the hash value is known.</li>
+<li>There is no free lunch when using this procedure; some of the original categories will be mapped to the same hash value (called a “collision”). The number of collisions will be largely determined by the number of features that are produced.</li>
 </ul>
+<p><img src="https://www.ionos.co.uk/digitalguide/fileadmin/DigitalGuide/Schaubilder/overview-of-hash-functions.png" /></p>
+<p>Categories involved in collisions are not related in any meaningful way. Because of the arbitrary nature of the collisions, it is possible to have different categories whose true underlying effect are counter to one another. This might have the effect of negating the impact of the hashed feature.</p>
+<p>Hashing functions have no notion of the probability that each key will occur. As such, it is conceivable that a category that occurs with great frequency is aliased with one that is rare. In this case, the more abundant value will have a much larger influence on the effect of that hashing feature.</p>
+<p><img src="https://media1.tenor.com/images/7b1dfd6dbdc59f908890fdf680869577/tenor.gif?itemid=16651450" /></p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="meeting-videos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="slide-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="creating-dummy-variables-for-unordered-categories.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="approaches-for-novel-categories.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -336,7 +349,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/02-illustrative_example_predicting_risk_of_ischemic_stroke.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/05-encoding_categorical_predictors.Rmd",
 "text": "Edit"
 },
 "history": {
