@@ -1,22 +1,424 @@
 # Encoding Categorical Predictors
 
-**Learning objectives:**
+> **Categorical** (also called **nominal**) predictors are those that contain qualitative data. 
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+Examples include:
 
-## SLIDE 1
+* Education level
+* ZIP code
+* Text
+* Day of the week
+* Color
+* 
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+A large majority of models require that all predictors be numeric.
+
+A summary of `parsnip` model preprocessors from: [Tidy Modeling with R by Max Kuhn and Julia Silge](https://www.tmwr.org/pre-proc-table.html)
+
+```{r }
+#| label: pre-proc-table-setup
+knitr::opts_chunk$set(fig.path = "images/")
+
+suppressPackageStartupMessages({
+library(tidyverse)
+library(tidymodels)
+library(embed)
+library(cli)
+library(kableExtra)
+})
+
+```
+
+```{r }
+#| label: pre-proc-table
+#| echo: false
+#| results: asis
+
+tk <- symbol$tick
+x  <- symbol$times
+cl <- symbol$circle_dotted
+
+tkp <- paste0(symbol$tick, symbol$sup_2)
+cl1 <- paste0(symbol$circle_dotted, symbol$sup_1)
+xp  <- paste0(symbol$times, symbol$sup_2)
+
+tab <- 
+  tribble(
+    ~ model,            ~ dummy,   ~ zv, ~ impute, ~ decorrelate, ~ normalize, ~ transform, 
+    "discrim_flexible()",    tk,      x,       tk,            tk,           x,          cl,
+    "discrim_linear()",      tk,     tk,       tk,            tk,           x,          cl,
+    "discrim_regularized()", tk,     tk,       tk,            tk,           x,          cl,
+    "naive_Bayes()",          x,     tk,       tk,           cl1,           x,           x,
+    "C5_rules()",             x,      x,        x,             x,           x,           x,
+    "cubist_rules()",         x,      x,        x,             x,           x,           x,
+    "rule_fit()",            tk,      x,       tk,           cl1,          tk,           x,
+    "bag_mars()",            tk,      x,       tk,            cl,           x,          cl,
+    "bag_tree()",             x,      x,        x,           cl1,           x,           x,
+    "pls()",                 tk,     tk,       tk,             x,          tk,          tk,
+    "poisson_reg()",         tk,     tk,       tk,            tk,           x,          cl,
+    "linear_reg()",          tk,     tk,       tk,            tk,           x,          cl,
+    "mars()",                tk,      x,       tk,            cl,           x,          cl,
+    "logistic_reg()",        tk,     tk,       tk,            tk,           x,          cl,
+    "multinom_reg()",        tk,     tk,       tk,            tk,          xp,          cl,
+    "decision_tree()",        x,      x,        x,           cl1,           x,           x,
+    "rand_forest()",          x,     cl,      tkp,           cl1,           x,           x,
+    "boost_tree()",          xp,     cl,      tkp,           cl1,           x,           x,
+    "mlp()",                 tk,     tk,       tk,            tk,          tk,          tk,
+    "svm_*()",               tk,     tk,       tk,            tk,          tk,          tk,
+    "nearest_neighbor()",    tk,     tk,       tk,            cl,          tk,          tk,
+    "gen_additive_mod()",    tk,     tk,       tk,            tk,           x,          cl,
+    "bart()",                 x,      x,        x,           cl1,           x,           x
+  ) 
+tab |>  
+  arrange(model) |>  
+  mutate(model = paste0("<tt>", model, "</tt>")) |>  
+  kable(
+    caption = "Preprocessing methods for different models.",
+    label = "preprocessing",
+    escape = FALSE,
+    align = c("l", rep("c", ncol(tab) - 1))
+  ) |>  
+  column_spec(column = 2, background = "orange") |> 
+  kable_styling(full_width = FALSE) 
+```
+
+In the table, ✔ indicates that the method is required for the model and × indicates that it is not. The ```r symbol$circle_dotted``` symbol means that the model may be helped by the technique but it is not required.
+
+Algorithms for tree-based models naturally handle splitting both numeric and categorical predictors. These algorithms employ a series if/then statements that sequentially split the data into groups. 
+
+A naive Bayes model will create a cross-tabulation between a categorical predictor and the outcome class. We will return to this point in the final section of this chapter.
+
+Simple categorical variables can also be classified as *ordered* or *unordered*.
+
+![](https://media.giphy.com/media/dXL4B7aSwK80g/200.gif)
+
+## Creating Dummy Variables for Unordered Categories
+
+There are many methods for doing this and, to illustrate, consider a simple example for the day of the week. If we take the seven possible values and convert them into binary dummy variables, the mathematical function required to make the translation is often referred to as a *contrast*.
+
+These six numeric predictors would take the place of the original categorical variable.
+
+Why only six?
+
+* if the values of the six dummy variables are known, then the seventh can be directly inferred. 
+* When the model has an intercept, an additional initial column of ones for all rows is included. Estimating the parameters for a linear model (as well as other similar models) involve inverting the matrix. If the model includes an intercept and contains dummy variables for all seven days, then the seven day columns would add up (row-wise) to the intercept and this linear combination would prevent the matrix inverse from being computed (as it is singular). 
+
+Less than full rank encodings are sometimes called “**one-hot**” encodings.
+
+Generating the full set of indicator variables may be advantageous for some models that are insensitive to linear dependencies (an example: `glmnet`)
+
+What is the interpretation of the dummy variables? 
+
+Consider a linear model for the Chicago transit data that only uses the day of the week.
+
+Using the training set to fit the model, the intercept value estimates the mean of the reference cell, which is the average number of Sunday riders in the training set, estimated to be 3.84K people. The second model parameter, for Monday, is estimated to be 12.61K. In the reference cell model, the dummy variables represent the mean value above and beyond the reference cell mean. In this case, estimate indicates that there were 12.61K more riders on Monday than Sunday.
+
+```{r}
+
+train_df <- tibble(m = month.abb, number = seq(1,12, by = 1))
+
+recipe(number ~ m, data = train_df) |> 
+  step_dummy(all_nominal_predictors(),
+             one_hot = FALSE) |> 
+  prep() |> bake(new_data = NULL, all_predictors()) |>  
+    kable(
+    caption = "Preprocessing without One HOT (the default) contrasts with April"
+  ) |>  
+  row_spec(row = 4, background = "orange") |> 
+  kable_styling("striped", full_width = FALSE) |> 
+  scroll_box(width = "800px")
+
+recipe(number ~ m, data = train_df) |> 
+  step_dummy(all_nominal_predictors(),
+             one_hot = TRUE) |> 
+  prep() |> bake(new_data = NULL, all_predictors())  |> 
+    kable(
+    caption = "Preprocessing with One HOT."
+  ) |>  
+  kable_styling("striped", full_width = FALSE) |> 
+  scroll_box(width = "800px")
+
+```
+
+![](https://media.giphy.com/media/2aTn0KLsaL8yY/giphy.gif)
+
+## Encoding Predictors for Many Categories
+
+What happens when the number of factor levels gets very large?
+
+For example, there are more than 40K possible ZIP codes and, depending on how the data are collected, this might produce an overabundance of dummy variables for the size of the data available. Also, ZIP codes in highly populated areas may have a higher rate of occurrence in the data, leading to a “long tail” of locations that are infrequently observed.
+
+Also, resampling will exclude some of the rarer categories from the analysis set.
+
+The first way to handle this issue is to create the full set of dummy variables and simply remove the zero and low-variance predictors. 
+
+Still, we may not desire to filter these out. 
+
+Another approach is to feature engineer an “**other**” category that pools the rarely occurring categories, assuming that such a pooling is sensible. 
+
+![](https://forum-zoomcharts-com-images.s3-eu-west-1.amazonaws.com/optimized/2X/9/9e00c35be3d840cb14821a8f6005d38512c6f2d2_1_662x468.png)
+
+Another way to combine categories is to use a *hashing function* that maps each factor level *key* to a *hash value*. The number of possible hashes is set by the user and, for numerical purposes, is a power of 2. Some computationally interesting aspects to hash functions are
+
+* The only data required is the value being hashed and the resulting number of hashes. The translation process is completely deterministic.
+* Hash functions are unidirectional; once the hash values are created, there is no way of knowing the original values. If there are a known and finite set of original values, a table can be created to do the translation but, otherwise, the keys are indeterminable when only the hash value is known.
+* There is no free lunch when using this procedure; some of the original categories will be mapped to the same hash value (called a “collision”). The number of collisions will be largely determined by the number of features that are produced.
+
+![](https://www.ionos.co.uk/digitalguide/fileadmin/DigitalGuide/Schaubilder/overview-of-hash-functions.png)
+
+Categories involved in collisions are not related in any meaningful way. Because of the arbitrary nature of the collisions, it is possible to have different categories whose true underlying effect are counter to one another. This might have the effect of negating the impact of the hashed feature.
+
+Hashing functions have no notion of the probability that each key will occur. As such, it is conceivable that a category that occurs with great frequency is aliased with one that is rare. In this case, the more abundant value will have a much larger influence on the effect of that hashing feature.
+
+![](https://media1.tenor.com/images/7b1dfd6dbdc59f908890fdf680869577/tenor.gif?itemid=16651450)
+
+## Approaches for Novel Categories
+
+Suppose that a model is built to predict the probability that an individual works in a STEM profession and that this model depends on city names. The model will be able to predict the probability of STEM profession if a new individual lives in one of the cities in the training set.
+
+*But what happens to the model prediction when a new individual lives in a city that is not represented*?
+
+One strategy would be to use the previously mentioned “other” category to capture new values. This approach can also be used with feature hashing.
+
+![](https://media.giphy.com/media/9Sxp3YOKKFEBi/giphy.gif)
+
+## Supervised Encoding Methods
+
+Beyond dummies, there are many other ways to craft one or more numerical features from a set of nominal predictors. They include
+
+### Likelihood Encoding
+
+In essence, the effect of the factor level on the outcome is measured and this effect is used as new numeric features. For example, for the Ames housing data, we might calculate the mean or median sale price of a house for each neighborhood from the training data and use this statistic to represent the factor level in the model.
+
+For classification problems, a simple logistic regression model can be used to measure the effect between the categorical outcome and the categorical predictor.
+
+If the outcome event occurs with rate $$ p $$, the *odds* of that event is defined as $$ p / ( 1 − p) $$.
+
+This is an example of a single generalized linear model applied to the hair color feature, which woudl otherwise have 12 dummy levels.
+
+```{r}
+as_tibble(dplyr::starwars) |> 
+  count(hair_color)
+
+recipe(skin_color ~ hair_color +  eye_color + mass, 
+       data = as_tibble(dplyr::starwars)) |> 
+  embed::step_lencode_glm(hair_color, outcome = "skin_color") |> 
+  prep() |> bake(new_data = NULL)    |> 
+  slice_sample(n = 10) |> 
+  kable(
+    caption = "Starwars Characters hair_color GLM embedding"
+  ) |>  
+  kable_styling("striped", full_width = FALSE) 
+
+```
+
+While very fast, this method has drawbacks. For example, what happens when a factor level has a single value? Theoretically, the log-odds should be infinite in the appropriate direction but, numerically, it is usually capped at a large (and inaccurate) value.
+
+One way around this issue is to use some type of shrinkage method. For example, the overall log-odds can be determined and, if the quality of the data within a factor level is poor, then this level’s effect estimate can be biased towards an overall estimate that disregards the levels of the predictor.
+
+A common method for shrinking parameter estimates is Bayesian analysis.  (one doubt -- `step_lencode_bayes` appears to only work with two class outcomes ???)
+
+```{r}
+as_tibble(datasets::Titanic) |> 
+  count(Class)
+
+recipe(Survived ~ Class +  Sex + Age, 
+       data = as_tibble(datasets::Titanic)) |> 
+  embed::step_lencode_bayes(Class, outcome = "Survived") |> 
+  prep() |> bake(new_data = NULL)    |>
+  slice_sample(n = 10) |> 
+  kable(
+    caption = "Titanic Class Bayes embedding w/ shrinkage"
+  ) |>  
+  kable_styling("striped", full_width = FALSE) 
+
+```
+
+Empirical Bayes methods can also be used, in the form of linear (and generalized linear) mixed models. 
+
+![](https://public-files.gumroad.com/variants/070hlmq86og1qo2kgb3tl2fgwkbi/35a9dc65b899b4bc9688c9aa5d9d6d5f21c77fd36a53b6adc66ca71a81bc9933)
+
+One issue with effect encoding, independent of the estimation method, is that it increases the possibility of overfitting the training data.
+
+Use resampling.
+
+Another supervised approach comes from the deep learning literature on the analysis of textual data. In addition to the dimension reduction, there is the possibility that these methods can estimate semantic relationships between words so that words with similar themes (e.g., “dog”, “pet”, etc.) have similar values in the new encodings. This technique is not limited to text data and can be used to encode any type of qualitative variable.
+
+An example using `The Office` dialogue and one of the pre-trained `GloVe` embeddings.
+
+```{r}
+#| label: text embeddings
+#| eval: false
+
+library(textrecipes)
+library(schrute)
+
+glove6b <- textdata::embedding_glove6b(dimensions = 100) # the download is 822.2 Mb
+
+schrute::theoffice |> 
+  slice_sample(n = 10) |> 
+  select(character, text)
+
+recipe(character ~ text,
+       data = schrute::theoffice) |>
+  step_tokenize(text, options = list(strip_punct = TRUE)) |>
+  step_stem(text) |>
+  step_word_embeddings(text, embeddings = glove6b) |>
+  prep() |> bake(new_data = schrute::theoffice |>
+                   slice_sample(n = 10))    
+
+```
+
+```
+The Office dialogue word embeddings with glove6b
+
+# A tibble: 10 × 101
+   character wordembe…¹ worde…² worde…³ worde…⁴ worde…⁵ worde…⁶
+   <fct>          <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+ 1 Angela       -1.02    -0.377  0.797   -1.21   -0.802   0.656
+ 2 Roy           0        0      0        0       0       0    
+ 3 Phyllis      -1.20    -0.373  3.20    -1.60   -1.62   -0.160
+ 4 Kevin        -1.54     1.77   5.02    -4.68   -5.23    2.91 
+ 5 Roy          -2.15     0.735  4.07    -2.20   -1.30    0.297
+ 6 Jim          -0.595    0.419  0.699   -0.328  -1.20    1.70 
+ 7 Kelly        -2.17     4.38   5.97    -4.91   -4.21    4.13 
+ 8 Katy         -0.891   -0.889  0.0937  -0.859   1.42    1.49 
+ 9 Kevin        -0.0308   0.120  0.539   -0.437  -0.739  -0.153
+10 Jim          -0.395    0.240  1.14    -1.27   -1.47    1.39 
+# … with 94 more variables: wordembed_text_d7 <dbl>,
+#   wordembed_text_d8 <dbl>, wordembed_text_d9 <dbl>,
+#   wordembed_text_d10 <dbl>, wordembed_text_d11 <dbl>,
+#   wordembed_text_d12 <dbl>, wordembed_text_d13 <dbl>,
+#   wordembed_text_d14 <dbl>, wordembed_text_d15 <dbl>,
+#   wordembed_text_d16 <dbl>, wordembed_text_d17 <dbl>,
+#   wordembed_text_d18 <dbl>, wordembed_text_d19 <dbl>, …
+
+
+```
+
+Note that in place of thousands of sparse dummy colums for each tokenized word, the training set consists of 100 numeric feature dimensions.
+
+See also [Textrecipes series: Pretrained Word Embedding](https://www.emilhvitfeldt.com/post/textrecipes-series-pretrained-word-embeddings/) by Emil Hvitfeldt
+
+![](https://th.bing.com/th/id/R.ffa4a0e0e5857068459c5e19131e1694?rik=55oPPQuCOSTdLQ&riu=http%3a%2f%2f25.media.tumblr.com%2ff01459ce3cee401765bf5f9bbe49cec3%2ftumblr_n2evpacq6U1rynk4uo1_r1_500.gif&ehk=lgpH5cNPWT5or7guCXJFdBPReKSbZfo%2fv4N0BEbZb7k%3d&risl=&pid=ImgRaw&r=0)
+
+## Encodings for Ordered Data
+
+Suppose that the factors have a relative ordering, like `low`, `medium`, and `high`.
+
+R uses a technique called `polynomial contrasts` to numerically characterize the relationships.
+
+```{r}
+#| label: ordinal factors
+ 
+values <- c("low", "medium", "high")
+dat <- data.frame(x = ordered(values, levels = values))
+
+# https://bookdown.org/max/FES/encodings-for-ordered-data.html#tab:categorical-ordered-table
+model.matrix(~ x, dat)
+
+# using recipes ----------------------------------------------------------------
+
+# https://bookdown.org/max/FES/encodings-for-ordered-data.html#tab:categorical-ordered-table
+recipe(~ x, data = dat) |> 
+  step_dummy(x) |> 
+  prep() |> bake(new_data = NULL) 
+
+```
+
+It is important to recognize that patterns described by polynomial contrasts may not effectively relate a predictor to the response. For example, in some cases, one might expect a trend where “low” and “middle” samples have a roughly equivalent response but “high” samples have a much different response. In this case, polynomial contrasts are unlikely to be effective at modeling this trend.
+
+Other alternatives to polynomial contrasts:
+
+* Leave the predictors as unordered factors. 
+* Translate the ordered categories into a single set of numeric scores based on context-specific information. 
+
+Simple visualizations and context-specific expertise can be used to understand whether either of these approaches are good ideas.
+
+![](https://gifimage.net/wp-content/uploads/2017/09/beaker-muppets-gif-12.gif)
+
+## Creating Features for Text Data
+
+Often, data contain textual fields that are gathered from questionnaires, articles, reviews, tweets, and other sources. 
+
+Are there words or phrases that would make good predictors of the outcome? To determine this, the text data must first be processed and *cleaned*.
+
+One approach is to measure for “*importance*”, that is, keywords with odds-ratios of at least 2 (in either direction) to be considered for modeling.
+
+See also [Supervised Machine Learning for Text Analysis in R](https://www.emilhvitfeldt.com/project/smltar/) for a much better explanation.
+
+Other methods for preprocessing text data include:
+
+* removing commonly used stop words, such as “is”, “the”, “and”, etc.
+* stemming the words so that similar words, such as the singular and plural versions, are represented as a single entity.
+* filter for the most common tokens, and then calculate the term frequency-inverse document frequency (tf-idf) statistic for each token
+
+![](https://media.tenor.com/images/e9c380f52a28a404d4827bdff781a51e/tenor.gif)
+
+## Factors versus Dummy Variables in Tree-Based Models
+
+Certain types of models have the ability to use categorical data in its natural form.
+
+For example, a Chicago ridership decision tree could split on
+
+```
+if day in {Sun, Sat} then ridership = 4.4K
+ else ridership = 17.3K
+
+```
+
+Suppose the day of the week had been converted to dummy variables. What would have occurred? In this case, the model is slightly more complex since it can only create rules as a function of a single dummy variable at a time:
+
+```
+if day = Sun then ridership = 3.84K
+  else if day = Sat then ridership = 4.96K
+    else ridership = 17.30K
+
+```
+
+So, for decision trees and naiive bayes
+
+> *does it matter how the categorical features are encoded?*
+
+To answer this question, a series of experiments was conducted.
+
+The results:
+
+![](http://www.feat.engineering/figures/categorical-factors-vs-dummies-roc-1.svg)
+
+For these data sets, there is no real difference in the area under the ROC curve between the encoding methods. In terms of performance, it appears that differences between the two encodings are rare (but can occur).
+
+One other statistic was computed for each of the simulations: __the time to train the models__. 
+
+![](http://www.feat.engineering/figures/categorical-factors-vs-dummies-time-1.svg)
+
+Here, there is very strong trend that factor-based models are more efficiently trained than their dummy variable counterparts.
+
+One other effect of how qualitative predictors are encoded is related to summary measures. Many of these techniques, especially tree-based models, calculate **variable importance** scores that are relative measures for how much a predictor affected the outcome. For example, trees measure the effect of a specific split on the improvement in model performance (e.g., impurity, residual error, etc.). As predictors are used in splits, these improvements are aggregated; these can be used as the importance scores. 
+
+![](https://media.giphy.com/media/kCZdfEj5oyaGs/giphy.gif)
+
+## Summary
+
+With the exception of tree-based models, categorical predictors must first be converted to numeric representations to enable other models to use the information.
+
+The simplest feature engineering technique is to convert each category to a separate binary dummy predictor. 
+
+Some models require one fewer dummy predictors than the number of categories. 
+
+Creating dummy predictors may not be the most effective way. If, for instance, the predictor has ordered categories, then polynomial contrasts may be better.
+
+Text fields, too, can be viewed as an agglomeration of categorical predictors and must be converted to numerics. 
+
 
 ## Meeting Videos
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/3FQaLXi-DZM")`
 
 <details>
-<summary> Meeting chat log </summary>
+<summary> No chat for this session </summary>
 
 ```
 LOG
