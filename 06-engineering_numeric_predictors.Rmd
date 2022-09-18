@@ -2,12 +2,18 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+-   Learn about common issues and techniques when handling continuous predictors
+-   Feature Engineering techniques to:
+    -   Address problematic characteristics of individual predictors
+
+    -   Expand individual predictors to better represent complex relationships
+
+    -   Consolidate redundant information
 
 ## SLIDE 1
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+-   ADD SLIDES AS SECTIONS (`##`).
+-   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
 
 ## Meeting Videos
 
@@ -16,9 +22,9 @@
 `r knitr::include_url("https://www.youtube.com/embed/URL")`
 
 <details>
-<summary> Meeting chat log </summary>
 
-```
-LOG
-```
+<summary>Meeting chat log</summary>
+
+    LOG
+
 </details>
