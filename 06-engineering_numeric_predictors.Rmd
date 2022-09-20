@@ -3,6 +3,14 @@
 **Learning objectives:**
 
 -   Learn about common issues and techniques when handling continuous predictors
+-   Often dealing with continuous predictors can be corrected by the model you select
+    -   Skewed data? Use tree-based methods
+
+        -   K-nearest neighbor and support vector machines should be avoided
+
+    -   Highly correlated variables? Use Partial Least Squares
+
+        -   Multiple linear regression and neural networks should be avoided
 -   Feature Engineering techniques to:
     -   Address problematic characteristics of individual predictors
 
@@ -10,10 +18,74 @@
 
     -   Consolidate redundant information
 
-## SLIDE 1
+## Transformations
 
--   ADD SLIDES AS SECTIONS (`##`).
--   TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+-   Skewed Data!
+-   Use box-cox when you're data
+    -   **Insert Box cox plot here**
+
+    -   Orginally developed to transform the outcome variable, box-cox uses maximum likelihood estimation to estimate a transformation parameter λ
+
+    -   Because the estimated parameter is in the exponent, it is called a POWER transformation. Different values of the parameter mimick no transformation (1), log transformation (0), square root (0.5), or inverse (-1). Because it is so flexible it can handle many different types of distributions
+
+    -   Can only handle positive numbers
+-   Yeo and Johnson can be used when there are negative values
+-   Any model that uses polynomial transformations like linear regression, neural networks, or support vector machines **could benefit**\
+-   For data between 0 and 1 we can use a different transformation LOGIT!
+-   Standardizing
+    -   Centering
+
+        -   Forcing all values to mean zero \
+
+    -   Scaling
+
+        -   Standard Deviation
+
+        -   Range
+
+    -   Time/sequential data
+
+        -   Smoothing
+
+            -   Use a running-mean or running median if there are outliers
+
+            -   More advanced = splines
+
+            -   \*\* insert graph\*\*
+
+## Many Transformations
+
+Expanding to one predictor to multiple!
+
+-   Basis Expansion
+
+    -   What is a basis?
+
+        -   A basis is a set of vectors V such that every vector V can be written uniquely as a finite combination of vectors of the basis.
+
+            -   **include image of basis**
+
+        -   Coefficients of the basis expansion can be estimated using basic linear regression
+
+-   Polynomial Splines
+
+    -   This basis expansion breaks the space up into regions whose boundaries are called knots
+
+    -   Knots are chosen using percentiles, let's say 33% and 66% for three regions.
+
+    -   **Include splines graph**
+
+    -   Can use grid search to find the right number of knots, but some spline functions include Generalized cross-validation to estimate the complexity.
+
+    -   Additionally, you can use the outcome variable to model spline complexity
+
+        -   Generalized Additive Models (GAMS) model separate basis functions for each variable
+
+        -   Loess Model (Locally estimated scatter plot smoothing
+
+    -   Hinge Function transformation!
+
+        -   **insert graphic**
 
 ## Meeting Videos
 
