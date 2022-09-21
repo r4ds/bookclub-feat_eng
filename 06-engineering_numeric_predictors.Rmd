@@ -87,6 +87,90 @@ Expanding to one predictor to multiple!
 
         -   **insert graphic**
 
+## Many MANY Transformation Methods
+
+-   correcting for outliers and reducing dimensionality
+
+-   Linear Projection Methods = how do we direct dimension reduction process to find the optimal predictor space?
+
+    -   PCA, kernel PCA, independent component analysis (ICA), non-negative matrix factorization (NNMF), and partial least squares (PLS)
+
+    -   Unsupervised methods are good at decreasing computation time but not generally model performance
+
+-   PCA
+
+    -   finds a linear combination of the original predictors that summarizes the maximum amount of variation. Since they are orthogonal, the predictor space is partitioned in a way that does not overlap. (uncorrelated)
+
+    -   **insert component plot**
+
+    -   **insert component heatmap**
+
+    -   plot the first few score against each other to see classes, outliers, or interesting patterns.
+
+-   Kernel PCA
+
+    -   PCA works best when predictors are linearly correlated, but what if the relationship is not actually linear but quadratic? That's were kernel PCA comes in.
+
+    -   There are MANY different kernels based on the shape of the predictor space. (Polynomial, Gaussian etc)
+
+    -   Can lead to much better fit \
+
+-   Independent Component Analysis
+
+    -   PCA components are uncorrelated with each other, but they are often not independent.
+
+    -   ICA is similar to PCA except that it components are also as statistically independent as possible
+
+    -   Unlike PCA, there is no ordering in ICA.
+
+    -   pre-processing is essential \
+
+-   Non-negative factorization
+
+    -   when features are greater than or equal to zero. Most popular for text data!\
+
+-   Partial Least Squares
+
+    -   supervised version of pca that guides dimension reduction optimally related to the response.
+
+    -   finds latent variables that have optimal covariance with the response
+
+    -   It takes fewer components than PCA
+
+    -   Must be more cognizant of overfitting
+
+    -   PLS and kPCA have potential to outperform PCA
+
+-   Autoencoders
+
+    -   Computationally complex multivariate method for finding representations of the predictor space, primarily used in deep learning.
+
+    -   Generally they don't have any actual interpretation but they have some strengths
+
+    -   Example: used in the pharmaceutical industry to estimate how good a drug might be based on its chemical structure
+
+        -   useful when there is a large amount of unlabled data
+
+        -   To simulate a drug discovery project just starting up, a random set of 50 data points were used as a training set and another random set of 25 were allocated to a test set. The remaining 4327 data points were treated as unlabeled data that do not have melting point data.
+
+        -   **show autoencoder graphi**c
+
+    -   Spatial Sign
+
+        -   Primarily used in image analysis, transforms the predictors based on their center to the distribution and projects them onto a nD sphere
+
+        -   Example of taking animal 'scat' data to predict the species.
+
+        -   **Insert graphic**
+
+        -   Good for decreasing impact of outliers
+
+    -   Distance and depth features
+
+        -   Useful for classification
+
+        -   Recompute the predictors based distance to class centroid, sort of like knearest neighbor
+
 ## Meeting Videos
 
 ### Cohort 1
