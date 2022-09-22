@@ -1,8 +1,65 @@
 # Engineering Numeric Predictors
 
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# ------------------------------------------------------------------------------
+# Feature Engineering and Selection: A Practical Approach for Predictive Models
+# by Max Kuhn and Kjell Johnson
+#
+# ------------------------------------------------------------------------------
+# 
+# Code for Section 6.1 at
+# https://bookdown.org/max/FES/numeric-one-to-one.html
+#
+# ------------------------------------------------------------------------------
+# 
+# Code requires these packages: 
+
+library(caret)
+library(tidymodels)
+
+theme_set(theme_bw() + theme(legend.position = "top"))
+
+# ------------------------------------------------------------------------------
+
+data("segmentationData")
+
+# ------------------------------------------------------------------------------
+
+segmentationData$Cell <- NULL
+segmentationData <- segmentationData[, c("EqSphereAreaCh1", "PerimCh1", "Class", "Case")]
+names(segmentationData)[1:2] <- paste0("Predictor", LETTERS[1:2])
+
+example_train <- subset(segmentationData, Case == "Train")
+example_test  <- subset(segmentationData, Case == "Test")
+
+example_train$Case <- NULL
+example_test$Case  <- NULL
+
+simple_trans_rec <- recipe(Class ~ ., data = example_train) %>%
+  step_BoxCox(PredictorA, PredictorB) %>%
+  prep(training = example_train)
+
+simple_trans_test <- bake(simple_trans_rec, example_test)
+pred_b_lambda <-
+  tidy(simple_trans_rec, number = 1) %>% 
+  filter(terms == "PredictorB") %>% 
+  select(value)
+
+bc_before <- ggplot(example_test, aes(x = PredictorB)) + 
+  geom_histogram(bins = 35, col = "blue", fill = "blue", alpha = .6) + 
+  xlab("Predictor B") + 
+  ggtitle("(a)")
+bc_after <- ggplot(simple_trans_test, aes(x = PredictorB)) + 
+  geom_histogram(bins = 35, col = "red", fill = "red", alpha = .6) + 
+  xlab("Predictor B (inverse)") + 
+  ggtitle("(b)")
+
+
+```
+
 **Learning objectives:**
 
--   Learn about common issues and techniques when handling continuous predictors
+-   Learn about common issues and techniques when handling continuous predictors<br><br>
 -   Often dealing with continuous predictors can be corrected by the model you select
     -   Skewed data? Use tree-based methods
 
@@ -10,7 +67,8 @@
 
     -   Highly correlated variables? Use Partial Least Squares
 
-        -   Multiple linear regression and neural networks should be avoided
+        -   Multiple linear regression and neural networks should be avoided\
+            <br><br>
 -   Feature Engineering techniques to:
     -   Address problematic characteristics of individual predictors
 
@@ -18,24 +76,77 @@
 
     -   Consolidate redundant information
 
-## Transformations
+## Problematic Characteristics of predictors 
 
--   Skewed Data!
--   Use box-cox when you're data
-    -   **Insert Box cox plot here**
+One of the first things we can do when transforming our data is to rescale it to improve model performance. There are several different methods that can be used in different situations. Box-Cox and Yeo Johnson transformations can be used to correct for highly skewed predictors. Standardizing strategies such as scaling, centering, and smoothing can also be used to ensure your predictors have similar qualities.
 
-    -   Orginally developed to transform the outcome variable, box-cox uses maximum likelihood estimation to estimate a transformation parameter λ
+### Dealing with Skewed Data  
 
-    -   Because the estimated parameter is in the exponent, it is called a POWER transformation. Different values of the parameter mimick no transformation (1), log transformation (0), square root (0.5), or inverse (-1). Because it is so flexible it can handle many different types of distributions
+**Do a Box-Cox Transformation!**
 
-    -   Can only handle positive numbers
--   Yeo and Johnson can be used when there are negative values
--   Any model that uses polynomial transformations like linear regression, neural networks, or support vector machines **could benefit**\
--   For data between 0 and 1 we can use a different transformation LOGIT!
+Originally developed to transform the outcome variable, box-cox uses maximum likelihood estimation to estimate a transformation parameter λ. The transformation allows the data to follow a normal distribution. The plot below shows the before and after effects. \
+
+```{r box_cox, echo=FALSE, fig.dim = c(8, 8)}
+
+library(patchwork)
+
+pw = bc_before / bc_after
+pw + plot_annotation(
+  caption = 'The distribution of a skewed predictor before (a) and after (b) applying the Box-Cox transformation.'
+)
+```
+
+#### What does a Box-Cox transformation do? 
+
+Because the estimated parameter is in the exponent, it is called a POWER transformation. Different values of the parameter mimick no transformation (1), log transformation (0), square root (0.5), or inverse (-1). Because it is so flexible it can handle many different types of distributions
+
+-   Several caveats:
+
+    -   Can only be used when predictors are greater or equal to 0
+
+    -   Yeo-Johnson transformation can be used when there are negative values.
+
+    -   Best used for models that use polynomial transformations like linear regression, neural networks, or support vector machines. \
+
+#### Logit Transformation 
+
+Proportions, or data that falls between 0 and 1, are a special case that warrants their own transformation! Sometimes when a proportion is the outcome variable, model predictions can include results that are outside these bounds. Using a **logit transformation**, we can correct for that by changing the values between negative and positive infinity. If π is the variable, the logit transformations is:
+
+$$
+logit(π) = log(\frac{π}{1-π})
+$$ After the predictions are calculated, you can use the inverse logit to return the data to its original form.
+
+### Standardizing 
+
+**Why standardize?** When your predictors are all in different units, with varying ranges, some may have an out-sized influence on the outcome when that should not be the case. This is especially true for models that use a distance computation like kNN, PCA, SVM, lasso and ridge regression, and variable importance calculation. Logistic regression and tree based methods not so much....
+
+The main techniques illustrated in the book are centering, scaling, and smoothing sequential (time) data.
+
+#### Centering and Scaling
+
+**Centering** is pretty straight forward. For each variable, every value is subtracted by its average. After which, all variables will have a mean of zero.
+
+<br><br>
+
+**Scaling** is the process of dividing a variable by the corresponding training set\'s standard deviation. This ensures that that variables have a standard deviation of one.
+
+In addition to improving model performance, centering and scaling can also help better interpret our models for a couple reasons
+
+1.  It is easier to interpret the y-intercept when the predictors have been centered and scaled
+
+2.  Centering allows for an easier interpretation of coefficients with different magnitudes\
+
+#### Time data: Smoothing
+
+When your model uses sequential, or time related, there can be a lot of noise in your model. By computing a running average,or a running median, we can *smooth* out our predictor and reduce noise. These are computed by taking the average of a point and one point before and after. The size of the moving window is extremely important. Small windows might not involve much smoothing at all, and large windows may miss out on important trends.
+
+Computing the running median is especially important when there are major outliers in your sequential data.
+
 -   Standardizing
+
     -   Centering
 
-        -   Forcing all values to mean zero \
+        -   Forcing all values to mean zero\
 
     -   Scaling
 
@@ -113,7 +224,7 @@ Expanding to one predictor to multiple!
 
     -   There are MANY different kernels based on the shape of the predictor space. (Polynomial, Gaussian etc)
 
-    -   Can lead to much better fit \
+    -   Can lead to much better fit\
 
 -   Independent Component Analysis
 
@@ -123,7 +234,7 @@ Expanding to one predictor to multiple!
 
     -   Unlike PCA, there is no ordering in ICA.
 
-    -   pre-processing is essential \
+    -   pre-processing is essential\
 
 -   Non-negative factorization
 
