@@ -26,8 +26,8 @@ Our interest is predicting the ridership at the Clark/Lake in the Chicago Loop.
 ## Chicago Train Ridership dataset
 
 ```{r load_datasets}
-load(file.path(".", "Data_Sets", "Chicago_trains", "chicago.RData"))
-load(file.path(".", "Data_Sets", "Chicago_trains", "stations.RData"))
+load(url("https://github.com/rserran/FES/blob/master/Data_Sets/Chicago_trains/chicago.RData?raw=true"))
+load(url("https://github.com/rserran/FES/blob/master/Data_Sets/Chicago_trains/stations.RData?raw=true"))
 ```
 
 Create `train_plot_data`
@@ -516,7 +516,7 @@ score2_vs_year <-
 
 OkCupid is an online dating site that serves international users. Kim and Escobedo-Land (2015) describe a data set where over 50,000 profiles from the San Francisco area.
 ```{r load_okc}
-load(file.path(".", "Data_Sets", "OKCupid", "okc.RData"))
+load(url("https://github.com/rserran/FES/blob/master/Data_Sets/OkCupid/okc.RData?raw=true"))
 ```
 
 First look at the dataset
