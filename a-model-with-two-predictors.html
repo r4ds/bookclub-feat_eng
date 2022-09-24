@@ -327,8 +327,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The data set includes a <strong>Case</strong> vector containing <strong>Train</strong> and <strong>Test</strong> variables, with a total of 61 different vectors, about cellular structures and morphology.</p>
 <p>Selected for this first example are two predictors: <strong>EqSphereAreaCh1</strong> and <strong>PerimCh1</strong>.
 The objective is to predict shape parameters of <strong>poorly-segmented (PS)</strong> and <strong>well-segmented (WS)</strong> cells from the <strong>Class</strong> variable.</p>
-<div id="htmlwidget-57149f62f88d347bf2ab" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-57149f62f88d347bf2ab">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  A[outcome]\n  B[predictors]\n\n  H-->A\n  H-->B\n  A-->C(binary class variable)\n  C-->D[poorly-segmented PS]\n  C-->G[well-segmented WS]\n  B-->L[numeric]\n  L-->E[Area]\n  L-->F[Perimeter]\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bd351fe841dcfa646510" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bd351fe841dcfa646510">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  A[outcome]\n  B[predictors]\n\n  H-->A\n  H-->B\n  A-->C(binary class variable)\n  C-->D[poorly-segmented PS]\n  C-->G[well-segmented WS]\n  B-->L[numeric]\n  L-->E[Area]\n  L-->F[Perimeter]\n"},"evals":[],"jsHooks":[]}</script>
 <p>This is the full list of variables in the set.</p>
 <pre><code>##  [1] &quot;Cell&quot;                    &quot;Case&quot;                   
 ##  [3] &quot;Class&quot;                   &quot;AngleCh1&quot;               
@@ -460,7 +460,7 @@ pr_class   0.63   0.37</code></pre>
 <span id="cb14-16"><a href="a-model-with-two-predictors.html#cb14-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb14-17"><a href="a-model-with-two-predictors.html#cb14-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>   user  system elapsed 
-  6.222   0.012   6.235 </code></pre>
+  9.928   0.044   9.974 </code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="a-model-with-two-predictors.html#cb16-1" aria-hidden="true" tabindex="-1"></a>grid_results</span></code></pre></div>
 <pre><code># A workflow set/tibble: 2 × 4
   wflow_id                info             option    result   

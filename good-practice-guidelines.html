@@ -349,16 +349,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="nature-of-modeling" class="section level3 hasAnchor" number="1.2.2">
 <h3><span class="header-section-number">1.2.2</span> Nature of modeling<a href="good-practice-guidelines.html#nature-of-modeling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="htmlwidget-92737a898753a065a82a" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-92737a898753a065a82a">{"x":{"diagram":"\n  graph TB\n  H[Model Scoping]\n  A[Inference]\n  A-->C[simple models are better]\n  B[Estimation]\n  B-->D[a bit more complexity is allowed]\n  H-->A\n  H-->B\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-55b8221353047aeec93a" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-55b8221353047aeec93a">{"x":{"diagram":"\n  graph TB\n  H[Model Scoping]\n  A[Inference]\n  A-->C[simple models are better]\n  B[Estimation]\n  B-->D[a bit more complexity is allowed]\n  H-->A\n  H-->B\n"},"evals":[],"jsHooks":[]}</script>
 <p>The estimation of uncertainty/noise is another very important step to take.</p>
 <blockquote>
 <p>“If a model is only 50% accurate should it be used to make inferences or predictions?”</p>
 </blockquote>
 <p>The trade-off between accuracy and interpretability is important, a neural network model might be less explicable but can provide a higher level of accuracy.</p>
 <p><strong>Feature engineering</strong> is a matter of choice in finding the most suitable variable transformation for the best performance.</p>
-<div id="htmlwidget-d59bbc28617e7709fd97" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d59bbc28617e7709fd97">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  \n  H-->A\n  H-->B\n  A[Dependent]\n  A-->C(Response)\n  A-->D(Outcome)\n  \n  B[Independent]\n  \n  B-->E[Predictor]\n  B-->F[Feature]\n  \n  E-->G[as provided]\n  F-->I[tranformation]\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bbb1b4bc597d45cc0c5e" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bbb1b4bc597d45cc0c5e">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  \n  H-->A\n  H-->B\n  A[Dependent]\n  A-->C(Response)\n  A-->D(Outcome)\n  \n  B[Independent]\n  \n  B-->E[Predictor]\n  B-->F[Feature]\n  \n  E-->G[as provided]\n  F-->I[tranformation]\n"},"evals":[],"jsHooks":[]}</script>
 <p>More considerations about bad model reactions to:</p>
 <ul>
 <li>multicollinarity or correlation between predictors</li>
