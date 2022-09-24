@@ -25,9 +25,24 @@ Our interest is predicting the ridership at the Clark/Lake in the Chicago Loop.
 
 ## Chicago Train Ridership dataset
 
+```{r load-packages}
+library(tidyverse)
+library(lubridate)
+library(plotly)
+library(patchwork)
+library(here)
+library(heatmaply)
+library(RColorBrewer)
+library(skimr)
+library(vcd)
+library(colorspace)
+library(FactoMineR)
+library(caret)
+```
+
 ```{r load_datasets}
-load(url("https://github.com/rserran/FES/blob/master/Data_Sets/Chicago_trains/chicago.RData?raw=true"))
-load(url("https://github.com/rserran/FES/blob/master/Data_Sets/Chicago_trains/stations.RData?raw=true"))
+load(url("https://github.com/topepo/FES/blob/master/Data_Sets/Chicago_trains/chicago.RData?raw=true"))
+load(url("https://github.com/topepo/FES/blob/master/Data_Sets/Chicago_trains/stations.RData?raw=true"))
 ```
 
 Create `train_plot_data`
@@ -37,7 +52,6 @@ train_plot_data <-
      training %>% 
      mutate(date = train_days) %>% 
      relocate(date, .before = everything())
-
 train_plot_data
 ```
 
@@ -516,31 +530,28 @@ score2_vs_year <-
 
 OkCupid is an online dating site that serves international users. Kim and Escobedo-Land (2015) describe a data set where over 50,000 profiles from the San Francisco area.
 ```{r load_okc}
-load(url("https://github.com/rserran/FES/blob/master/Data_Sets/OkCupid/okc.RData?raw=true"))
+load(url("https://github.com/topepo/FES/blob/master/Data_Sets/OkCupid/okc.RData?raw=true"))
 ```
 
 First look at the dataset
 ```{r okc_look}
 # bind 'okc_test'
-okc <- okc_train %>% 
-     bind_rows(okc_test)
-
-okc %>% 
-     glimpse()
+okc <- okc_train %>%
+  bind_rows(okc_test)
 ```
 
 Skim `okc`
 ```{r okc_skim}
 skimr::skim(okc) %>% 
-     knitr::kable()
+  knitr::kable()
 ```
 
 Plot `Class`
 ```{r okc_class}
 okc %>% 
-     ggplot(aes(Class, fill = Class)) + 
-     geom_bar() + 
-     theme(legend.position = 'none')
+  ggplot(aes(Class, fill = Class)) + 
+  geom_bar() + 
+  theme(legend.position = 'none')
 ```
 
 ### Visualizing Relationships between Outcomes and Predictors
