@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4.8 Residual Diagnostic Plots | Feature Engineering and Selection Book Club</title>
+  <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4.8 Residual Diagnostic Plots | Feature Engineering and Selection Book Club" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4.8 Residual Diagnostic Plots | Feature Engineering and Selection Book Club" />
+  
+  <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  
+
+<meta name="author" content="The R4DS Online Learning Community" />
+
+
+<meta name="date" content="2022-09-24" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="post-modeling-exploratory-visualizations.html"/>
+<link rel="next" href="meeting-videos-3.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/d3-3.3.8/d3.min.js"></script>
+<script src="libs/dagre-0.4.0/dagre-d3.min.js"></script>
+<link href="libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
+<script src="libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/chromatography-0.1/chromatography.js"></script>
+<script src="libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Feature Engineering and Selection Book Club</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="book-club-meetings.html"><a href="book-club-meetings.html"><i class="fa fa-check"></i>Book club meetings</a></li>
+<li class="chapter" data-level="" data-path="pace.html"><a href="pace.html"><i class="fa fa-check"></i>Pace</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="structure-of-the-book.html"><a href="structure-of-the-book.html"><i class="fa fa-check"></i><b>1.1</b> Structure of the book</a></li>
+<li class="chapter" data-level="1.2" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html"><i class="fa fa-check"></i><b>1.2</b> Good Practice guidelines</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html#what-is-feature-engineering"><i class="fa fa-check"></i><b>1.2.1</b> What is feature engineering</a></li>
+<li class="chapter" data-level="1.2.2" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html#nature-of-modeling"><i class="fa fa-check"></i><b>1.2.2</b> Nature of modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="a-model-with-two-predictors.html"><a href="a-model-with-two-predictors.html"><i class="fa fa-check"></i><b>1.3</b> A model with two predictors</a></li>
+<li class="chapter" data-level="1.4" data-path="important-concepts.html"><a href="important-concepts.html"><i class="fa fa-check"></i><b>1.4</b> Important concepts</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="important-concepts.html"><a href="important-concepts.html#acknowledge-vulnerabilities"><i class="fa fa-check"></i><b>1.4.1</b> Acknowledge vulnerabilities</a></li>
+<li class="chapter" data-level="1.4.2" data-path="important-concepts.html"><a href="important-concepts.html#the-modeling-process"><i class="fa fa-check"></i><b>1.4.2</b> The <strong>Modeling process</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="predicting-ridership-on-chicago.html"><a href="predicting-ridership-on-chicago.html"><i class="fa fa-check"></i><b>1.5</b> Predicting ridership on Chicago</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="predicting-ridership-on-chicago.html"><a href="predicting-ridership-on-chicago.html#extra-resources"><i class="fa fa-check"></i><b>1.5.1</b> Extra Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="meeting-videos.html"><a href="meeting-videos.html"><i class="fa fa-check"></i><b>1.6</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="meeting-videos.html"><a href="meeting-videos.html#cohort-1"><i class="fa fa-check"></i><b>1.6.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="illustrative-example-predicting-risk-of-ischemic-stroke.html"><a href="illustrative-example-predicting-risk-of-ischemic-stroke.html"><i class="fa fa-check"></i><b>2</b> Illustrative Example: Predicting Risk of Ischemic Stroke</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="slide-1.html"><a href="slide-1.html"><i class="fa fa-check"></i><b>2.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="2.2" data-path="meeting-videos-1.html"><a href="meeting-videos-1.html"><i class="fa fa-check"></i><b>2.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="meeting-videos-1.html"><a href="meeting-videos-1.html#cohort-1-1"><i class="fa fa-check"></i><b>2.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="a-review-of-the-predictive-modeling-process.html"><a href="a-review-of-the-predictive-modeling-process.html"><i class="fa fa-check"></i><b>3</b> A Review of the Predictive Modeling Process</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>3.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="3.2" data-path="meeting-videos-2.html"><a href="meeting-videos-2.html"><i class="fa fa-check"></i><b>3.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="meeting-videos-2.html"><a href="meeting-videos-2.html#cohort-1-2"><i class="fa fa-check"></i><b>3.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-visualizations.html"><a href="exploratory-visualizations.html"><i class="fa fa-check"></i><b>4</b> Exploratory Visualizations</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-visualization-chart.html"><a href="data-visualization-chart.html"><i class="fa fa-check"></i><b>4.1</b> Data Visualization Chart</a></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-the-chicago-train-ridership-dataset.html"><a href="introduction-to-the-chicago-train-ridership-dataset.html"><i class="fa fa-check"></i><b>4.2</b> Introduction to the Chicago Train Ridership Dataset</a></li>
+<li class="chapter" data-level="4.3" data-path="chicago-train-ridership-dataset.html"><a href="chicago-train-ridership-dataset.html"><i class="fa fa-check"></i><b>4.3</b> Chicago Train Ridership dataset</a></li>
+<li class="chapter" data-level="4.4" data-path="preliminary-exploratory-visualizations.html"><a href="preliminary-exploratory-visualizations.html"><i class="fa fa-check"></i><b>4.4</b> Preliminary exploratory visualizations</a></li>
+<li class="chapter" data-level="4.5" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html"><i class="fa fa-check"></i><b>4.5</b> Visualizations for Numeric Data</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#box-plots-violin-plots-and-histograms"><i class="fa fa-check"></i><b>4.5.1</b> Box Plots, Violin Plots, and Histograms</a></li>
+<li class="chapter" data-level="4.5.2" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#augmenting-visualizations-through-faceting-colors-and-shapes"><i class="fa fa-check"></i><b>4.5.2</b> Augmenting Visualizations through Faceting, Colors, and Shapes</a></li>
+<li class="chapter" data-level="4.5.3" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#scatterplots"><i class="fa fa-check"></i><b>4.5.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="4.5.4" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#scatterplots---exclude-u.s.-holidays"><i class="fa fa-check"></i><b>4.5.4</b> Scatterplots - Exclude U.S. holidays</a></li>
+<li class="chapter" data-level="4.5.5" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#heatmaps"><i class="fa fa-check"></i><b>4.5.5</b> Heatmaps</a></li>
+<li class="chapter" data-level="4.5.6" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#correlation-matrix-plots"><i class="fa fa-check"></i><b>4.5.6</b> Correlation Matrix Plots</a></li>
+<li class="chapter" data-level="4.5.7" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#line-plots"><i class="fa fa-check"></i><b>4.5.7</b> Line plots</a></li>
+<li class="chapter" data-level="4.5.8" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.5.8</b> Principal Component Analysis (PCA)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><i class="fa fa-check"></i><b>4.6</b> Visualizations for Categorical Data: Exploring the OKCupid dataset</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html#visualizing-relationships-between-outcomes-and-predictors"><i class="fa fa-check"></i><b>4.6.1</b> Visualizing Relationships between Outcomes and Predictors</a></li>
+<li class="chapter" data-level="4.6.2" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html#exploring-relationships-between-categorical-predictors"><i class="fa fa-check"></i><b>4.6.2</b> Exploring Relationships Between Categorical Predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="post-modeling-exploratory-visualizations.html"><a href="post-modeling-exploratory-visualizations.html"><i class="fa fa-check"></i><b>4.7</b> Post Modeling Exploratory Visualizations</a></li>
+<li class="chapter" data-level="4.8" data-path="residual-diagnostic-plots.html"><a href="residual-diagnostic-plots.html"><i class="fa fa-check"></i><b>4.8</b> Residual Diagnostic Plots</a></li>
+<li class="chapter" data-level="4.9" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html"><i class="fa fa-check"></i><b>4.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html#cohort-1-3"><i class="fa fa-check"></i><b>4.9.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="encoding-categorical-predictors.html"><a href="encoding-categorical-predictors.html"><i class="fa fa-check"></i><b>5</b> Encoding Categorical Predictors</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="creating-dummy-variables-for-unordered-categories.html"><a href="creating-dummy-variables-for-unordered-categories.html"><i class="fa fa-check"></i><b>5.1</b> Creating Dummy Variables for Unordered Categories</a></li>
+<li class="chapter" data-level="5.2" data-path="encoding-predictors-for-many-categories.html"><a href="encoding-predictors-for-many-categories.html"><i class="fa fa-check"></i><b>5.2</b> Encoding Predictors for Many Categories</a></li>
+<li class="chapter" data-level="5.3" data-path="approaches-for-novel-categories.html"><a href="approaches-for-novel-categories.html"><i class="fa fa-check"></i><b>5.3</b> Approaches for Novel Categories</a></li>
+<li class="chapter" data-level="5.4" data-path="supervised-encoding-methods.html"><a href="supervised-encoding-methods.html"><i class="fa fa-check"></i><b>5.4</b> Supervised Encoding Methods</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="supervised-encoding-methods.html"><a href="supervised-encoding-methods.html#likelihood-encoding"><i class="fa fa-check"></i><b>5.4.1</b> Likelihood Encoding</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="encodings-for-ordered-data.html"><a href="encodings-for-ordered-data.html"><i class="fa fa-check"></i><b>5.5</b> Encodings for Ordered Data</a></li>
+<li class="chapter" data-level="5.6" data-path="creating-features-for-text-data.html"><a href="creating-features-for-text-data.html"><i class="fa fa-check"></i><b>5.6</b> Creating Features for Text Data</a></li>
+<li class="chapter" data-level="5.7" data-path="factors-versus-dummy-variables-in-tree-based-models.html"><a href="factors-versus-dummy-variables-in-tree-based-models.html"><i class="fa fa-check"></i><b>5.7</b> Factors versus Dummy Variables in Tree-Based Models</a></li>
+<li class="chapter" data-level="5.8" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>5.8</b> Summary</a></li>
+<li class="chapter" data-level="5.9" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html"><i class="fa fa-check"></i><b>5.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html#cohort-1-4"><i class="fa fa-check"></i><b>5.9.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="engineering-numeric-predictors.html"><a href="engineering-numeric-predictors.html"><i class="fa fa-check"></i><b>6</b> Engineering Numeric Predictors</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>6.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="6.2" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html"><i class="fa fa-check"></i><b>6.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html#cohort-1-5"><i class="fa fa-check"></i><b>6.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="detecting-interaction-effects.html"><a href="detecting-interaction-effects.html"><i class="fa fa-check"></i><b>7</b> Detecting Interaction Effects</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="slide-1-3.html"><a href="slide-1-3.html"><i class="fa fa-check"></i><b>7.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="7.2" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html"><i class="fa fa-check"></i><b>7.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html#cohort-1-6"><i class="fa fa-check"></i><b>7.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handling-missing-data.html"><a href="handling-missing-data.html"><i class="fa fa-check"></i><b>8</b> Handling Missing Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="slide-1-4.html"><a href="slide-1-4.html"><i class="fa fa-check"></i><b>8.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="8.2" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html"><i class="fa fa-check"></i><b>8.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html#cohort-1-7"><i class="fa fa-check"></i><b>8.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="working-with-profile-data.html"><a href="working-with-profile-data.html"><i class="fa fa-check"></i><b>9</b> Working with Profile Data</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="slide-1-5.html"><a href="slide-1-5.html"><i class="fa fa-check"></i><b>9.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="9.2" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html"><i class="fa fa-check"></i><b>9.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html#cohort-1-8"><i class="fa fa-check"></i><b>9.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>10</b> Feature Selection Overview</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="slide-1-6.html"><a href="slide-1-6.html"><i class="fa fa-check"></i><b>10.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="10.2" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i><b>10.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-9"><i class="fa fa-check"></i><b>10.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="greedy-search-methods.html"><a href="greedy-search-methods.html"><i class="fa fa-check"></i><b>11</b> Greedy Search Methods</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="slide-1-7.html"><a href="slide-1-7.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="11.2" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html"><i class="fa fa-check"></i><b>11.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html#cohort-1-10"><i class="fa fa-check"></i><b>11.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="slide-1-8.html"><a href="slide-1-8.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="12.2" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Feature Engineering and Selection Book Club</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="residual-diagnostic-plots" class="section level2 hasAnchor" number="4.8">
+<h2><span class="header-section-number">4.8</span> Residual Diagnostic Plots<a href="residual-diagnostic-plots.html#residual-diagnostic-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The response for the regression model is the ridership at the Clark/Lake station, and our initial model will contain the predictors of week, month and year.</p>
+<p>As we saw earlier in this chapter, the distribution has two peaks, which we found were due to the part of the week (weekday versus weekend). To investigate the importance of part of the week we then regress the base predictors on part of the week and compute the hold-out residuals from this model. We can see that including part of the week in the model further reduces the residual distribution as illustrated in the histogram labeled Base + Part of Week.</p>
+<p>Next, let’s explore the importance of the 14-day lag of ridership at the Clark/Lake station.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="residual-diagnostic-plots.html#cb70-1" aria-hidden="true" tabindex="-1"></a>holidays <span class="ot">&lt;-</span> </span>
+<span id="cb70-2"><a href="residual-diagnostic-plots.html#cb70-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;USNewYearsDay&quot;</span>, <span class="st">&quot;Jan02_Mon_Fri&quot;</span>, <span class="st">&quot;USMLKingsBirthday&quot;</span>, </span>
+<span id="cb70-3"><a href="residual-diagnostic-plots.html#cb70-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;USPresidentsDay&quot;</span>, <span class="st">&quot;USMemorialDay&quot;</span>, <span class="st">&quot;USIndependenceDay&quot;</span>, </span>
+<span id="cb70-4"><a href="residual-diagnostic-plots.html#cb70-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Jul03_Mon_Fri&quot;</span>, <span class="st">&quot;Jul05_Mon_Fri&quot;</span>, <span class="st">&quot;USLaborDay&quot;</span>, <span class="st">&quot;USThanksgivingDay&quot;</span>, </span>
+<span id="cb70-5"><a href="residual-diagnostic-plots.html#cb70-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Day_after_Thx&quot;</span>, <span class="st">&quot;ChristmasEve&quot;</span>, <span class="st">&quot;USChristmasDay&quot;</span>, <span class="st">&quot;Dec26_wkday&quot;</span>, </span>
+<span id="cb70-6"><a href="residual-diagnostic-plots.html#cb70-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Dec31_Mon_Fri&quot;</span>)</span>
+<span id="cb70-7"><a href="residual-diagnostic-plots.html#cb70-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-8"><a href="residual-diagnostic-plots.html#cb70-8" aria-hidden="true" tabindex="-1"></a>common_holiday <span class="ot">&lt;-</span> </span>
+<span id="cb70-9"><a href="residual-diagnostic-plots.html#cb70-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">apply</span>(training <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">one_of</span>(holidays)), <span class="dv">1</span>, </span>
+<span id="cb70-10"><a href="residual-diagnostic-plots.html#cb70-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">function</span>(x) <span class="fu">ifelse</span>(<span class="fu">any</span>(x <span class="sc">==</span> <span class="dv">1</span>), <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb70-11"><a href="residual-diagnostic-plots.html#cb70-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-12"><a href="residual-diagnostic-plots.html#cb70-12" aria-hidden="true" tabindex="-1"></a>training <span class="ot">&lt;-</span></span>
+<span id="cb70-13"><a href="residual-diagnostic-plots.html#cb70-13" aria-hidden="true" tabindex="-1"></a>  training <span class="sc">%&gt;%</span> </span>
+<span id="cb70-14"><a href="residual-diagnostic-plots.html#cb70-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb70-15"><a href="residual-diagnostic-plots.html#cb70-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">holiday  =</span> common_holiday, </span>
+<span id="cb70-16"><a href="residual-diagnostic-plots.html#cb70-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">weekday =</span> <span class="fu">ifelse</span>(dow <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Sat&quot;</span>, <span class="st">&quot;Sun&quot;</span>), <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb70-17"><a href="residual-diagnostic-plots.html#cb70-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="residual-diagnostic-plots.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get_resid()</span></span>
+<span id="cb71-2"><a href="residual-diagnostic-plots.html#cb71-2" aria-hidden="true" tabindex="-1"></a>get_resid <span class="ot">&lt;-</span> <span class="cf">function</span>(terms, next_term, <span class="at">return_mod =</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb71-3"><a href="residual-diagnostic-plots.html#cb71-3" aria-hidden="true" tabindex="-1"></a>  ctrl<span class="sc">$</span>verboseIter <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb71-4"><a href="residual-diagnostic-plots.html#cb71-4" aria-hidden="true" tabindex="-1"></a>  ctrl<span class="sc">$</span>predictionBounds <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>)</span>
+<span id="cb71-5"><a href="residual-diagnostic-plots.html#cb71-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb71-6"><a href="residual-diagnostic-plots.html#cb71-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">4194</span>)</span>
+<span id="cb71-7"><a href="residual-diagnostic-plots.html#cb71-7" aria-hidden="true" tabindex="-1"></a>  mod <span class="ot">&lt;-</span> <span class="fu">train</span>(s_40380 <span class="sc">~</span> .,</span>
+<span id="cb71-8"><a href="residual-diagnostic-plots.html#cb71-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> training[, <span class="fu">c</span>(<span class="st">&quot;s_40380&quot;</span>, terms)],</span>
+<span id="cb71-9"><a href="residual-diagnostic-plots.html#cb71-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb71-10"><a href="residual-diagnostic-plots.html#cb71-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span>,</span>
+<span id="cb71-11"><a href="residual-diagnostic-plots.html#cb71-11" aria-hidden="true" tabindex="-1"></a>               <span class="at">maximize =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb71-12"><a href="residual-diagnostic-plots.html#cb71-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">trControl =</span> ctrl)</span>
+<span id="cb71-13"><a href="residual-diagnostic-plots.html#cb71-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb71-14"><a href="residual-diagnostic-plots.html#cb71-14" aria-hidden="true" tabindex="-1"></a>  x_mod <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="fu">as.formula</span>(<span class="fu">paste</span>(next_term,<span class="st">&quot;~ .&quot;</span>)),</span>
+<span id="cb71-15"><a href="residual-diagnostic-plots.html#cb71-15" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> training[, <span class="fu">c</span>(terms, next_term)],</span>
+<span id="cb71-16"><a href="residual-diagnostic-plots.html#cb71-16" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>,</span>
+<span id="cb71-17"><a href="residual-diagnostic-plots.html#cb71-17" aria-hidden="true" tabindex="-1"></a>                 <span class="at">metric =</span> <span class="st">&quot;RMSE&quot;</span>,</span>
+<span id="cb71-18"><a href="residual-diagnostic-plots.html#cb71-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">maximize =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb71-19"><a href="residual-diagnostic-plots.html#cb71-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> ctrl)</span>
+<span id="cb71-20"><a href="residual-diagnostic-plots.html#cb71-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb71-21"><a href="residual-diagnostic-plots.html#cb71-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span>return_mod) {</span>
+<span id="cb71-22"><a href="residual-diagnostic-plots.html#cb71-22" aria-hidden="true" tabindex="-1"></a>    out <span class="ot">&lt;-</span> mod<span class="sc">$</span>pred</span>
+<span id="cb71-23"><a href="residual-diagnostic-plots.html#cb71-23" aria-hidden="true" tabindex="-1"></a>    out<span class="sc">$</span>Resample <span class="ot">&lt;-</span> <span class="fu">ymd</span>(out<span class="sc">$</span>Resample)</span>
+<span id="cb71-24"><a href="residual-diagnostic-plots.html#cb71-24" aria-hidden="true" tabindex="-1"></a>    out<span class="sc">$</span>Date <span class="ot">&lt;-</span> train_days[out<span class="sc">$</span>rowIndex]</span>
+<span id="cb71-25"><a href="residual-diagnostic-plots.html#cb71-25" aria-hidden="true" tabindex="-1"></a>    out<span class="sc">$</span>Month <span class="ot">&lt;-</span> training<span class="sc">$</span>month[out<span class="sc">$</span>rowIndex]</span>
+<span id="cb71-26"><a href="residual-diagnostic-plots.html#cb71-26" aria-hidden="true" tabindex="-1"></a>    out<span class="sc">$</span>holiday <span class="ot">&lt;-</span> training<span class="sc">$</span>holiday[out<span class="sc">$</span>rowIndex]</span>
+<span id="cb71-27"><a href="residual-diagnostic-plots.html#cb71-27" aria-hidden="true" tabindex="-1"></a>    out<span class="sc">$</span>weekday <span class="ot">&lt;-</span> training<span class="sc">$</span>weekday[out<span class="sc">$</span>rowIndex]</span>
+<span id="cb71-28"><a href="residual-diagnostic-plots.html#cb71-28" aria-hidden="true" tabindex="-1"></a>    out<span class="sc">$</span>Residual <span class="ot">&lt;-</span> out<span class="sc">$</span>obs <span class="sc">-</span> out<span class="sc">$</span>pred</span>
+<span id="cb71-29"><a href="residual-diagnostic-plots.html#cb71-29" aria-hidden="true" tabindex="-1"></a>    out<span class="sc">$</span>xResidual <span class="ot">&lt;-</span> x_mod<span class="sc">$</span>pred<span class="sc">$</span>obs <span class="sc">-</span> x_mod<span class="sc">$</span>pred<span class="sc">$</span>pred</span>
+<span id="cb71-30"><a href="residual-diagnostic-plots.html#cb71-30" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> out <span class="ot">&lt;-</span> mod</span>
+<span id="cb71-31"><a href="residual-diagnostic-plots.html#cb71-31" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb71-32"><a href="residual-diagnostic-plots.html#cb71-32" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="residual-diagnostic-plots.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># There will be a warning about the &quot;outcome only has two possible values&quot;. </span></span>
+<span id="cb72-2"><a href="residual-diagnostic-plots.html#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This can be ignored.</span></span>
+<span id="cb72-3"><a href="residual-diagnostic-plots.html#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb72-4"><a href="residual-diagnostic-plots.html#cb72-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-5"><a href="residual-diagnostic-plots.html#cb72-5" aria-hidden="true" tabindex="-1"></a>base_resid <span class="ot">&lt;-</span></span>
+<span id="cb72-6"><a href="residual-diagnostic-plots.html#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_resid</span>(<span class="at">terms =</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;week&quot;</span>),  <span class="at">next_term =</span> <span class="st">&quot;weekday&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb72-7"><a href="residual-diagnostic-plots.html#cb72-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;Base Model&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in train.default(x, y, weights = w, ...): You are trying to do
+## regression and your outcome only has two possible values Are you trying to do
+## classification? If so, use a 2 level factor as your outcome column.</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="residual-diagnostic-plots.html#cb74-1" aria-hidden="true" tabindex="-1"></a>pow_resid <span class="ot">&lt;-</span></span>
+<span id="cb74-2"><a href="residual-diagnostic-plots.html#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_resid</span>(<span class="at">terms =</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;week&quot;</span>, <span class="st">&quot;weekday&quot;</span>), <span class="at">next_term =</span> <span class="st">&quot;l14_40380&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb74-3"><a href="residual-diagnostic-plots.html#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;Base + Part of Week&quot;</span>)</span>
+<span id="cb74-4"><a href="residual-diagnostic-plots.html#cb74-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-5"><a href="residual-diagnostic-plots.html#cb74-5" aria-hidden="true" tabindex="-1"></a>l14_resid <span class="ot">&lt;-</span></span>
+<span id="cb74-6"><a href="residual-diagnostic-plots.html#cb74-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_resid</span>(</span>
+<span id="cb74-7"><a href="residual-diagnostic-plots.html#cb74-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;week&quot;</span>, <span class="st">&quot;weekday&quot;</span>, <span class="st">&quot;l14_40380&quot;</span>),</span>
+<span id="cb74-8"><a href="residual-diagnostic-plots.html#cb74-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">next_term =</span> <span class="st">&quot;holiday&quot;</span></span>
+<span id="cb74-9"><a href="residual-diagnostic-plots.html#cb74-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb74-10"><a href="residual-diagnostic-plots.html#cb74-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;Base + Part of Week + 14-Day Lag&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in train.default(x, y, weights = w, ...): You are trying to do
+## regression and your outcome only has two possible values Are you trying to do
+## classification? If so, use a 2 level factor as your outcome column.</code></pre>
+<pre><code>## Warning in nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo, :
+## There were missing values in resampled performance measures.</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="residual-diagnostic-plots.html#cb77-1" aria-hidden="true" tabindex="-1"></a>hol_resid <span class="ot">&lt;-</span> </span>
+<span id="cb77-2"><a href="residual-diagnostic-plots.html#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">get_resid</span>(<span class="at">terms =</span> <span class="fu">c</span>(<span class="st">&quot;year&quot;</span>, <span class="st">&quot;month&quot;</span>, <span class="st">&quot;week&quot;</span>, <span class="st">&quot;weekday&quot;</span>, <span class="st">&quot;l14_40380&quot;</span>, <span class="st">&quot;holiday&quot;</span>), </span>
+<span id="cb77-3"><a href="residual-diagnostic-plots.html#cb77-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">next_term =</span> <span class="st">&quot;l14_40370&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb77-4"><a href="residual-diagnostic-plots.html#cb77-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;Base + Part of Week + 14-Day Lag + Holiday&quot;</span>)</span>
+<span id="cb77-5"><a href="residual-diagnostic-plots.html#cb77-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-6"><a href="residual-diagnostic-plots.html#cb77-6" aria-hidden="true" tabindex="-1"></a>mod_lev <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Base Model&quot;</span>, <span class="st">&quot;Base + Part of Week&quot;</span>, </span>
+<span id="cb77-7"><a href="residual-diagnostic-plots.html#cb77-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Base + Part of Week + 14-Day Lag&quot;</span>,</span>
+<span id="cb77-8"><a href="residual-diagnostic-plots.html#cb77-8" aria-hidden="true" tabindex="-1"></a>             <span class="st">&quot;Base + Part of Week + 14-Day Lag + Holiday&quot;</span>)</span>
+<span id="cb77-9"><a href="residual-diagnostic-plots.html#cb77-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-10"><a href="residual-diagnostic-plots.html#cb77-10" aria-hidden="true" tabindex="-1"></a>model_resid <span class="ot">&lt;-</span> </span>
+<span id="cb77-11"><a href="residual-diagnostic-plots.html#cb77-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(base_resid, pow_resid, l14_resid, hol_resid) <span class="sc">%&gt;%</span></span>
+<span id="cb77-12"><a href="residual-diagnostic-plots.html#cb77-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb77-13"><a href="residual-diagnostic-plots.html#cb77-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Model =</span> <span class="fu">factor</span>(Model, <span class="at">levels =</span> mod_lev),</span>
+<span id="cb77-14"><a href="residual-diagnostic-plots.html#cb77-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">holiday =</span> <span class="fu">ifelse</span>(holiday <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>),</span>
+<span id="cb77-15"><a href="residual-diagnostic-plots.html#cb77-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">weekday =</span> <span class="fu">ifelse</span>(weekday <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;Weekend&quot;</span>, <span class="st">&quot;Weekday&quot;</span>)</span>
+<span id="cb77-16"><a href="residual-diagnostic-plots.html#cb77-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb77-17"><a href="residual-diagnostic-plots.html#cb77-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-18"><a href="residual-diagnostic-plots.html#cb77-18" aria-hidden="true" tabindex="-1"></a>resid_hists <span class="ot">&lt;-</span> </span>
+<span id="cb77-19"><a href="residual-diagnostic-plots.html#cb77-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(model_resid, <span class="fu">aes</span>(<span class="at">x =</span> Residual)) <span class="sc">+</span> </span>
+<span id="cb77-20"><a href="residual-diagnostic-plots.html#cb77-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">col =</span> <span class="st">&quot;darkgreen&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb77-21"><a href="residual-diagnostic-plots.html#cb77-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb77-22"><a href="residual-diagnostic-plots.html#cb77-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Model, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb77-23"><a href="residual-diagnostic-plots.html#cb77-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Resampling Residual&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb77-24"><a href="residual-diagnostic-plots.html#cb77-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Count&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-25"><a href="residual-diagnostic-plots.html#cb77-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;(a)&quot;</span>)</span>
+<span id="cb77-26"><a href="residual-diagnostic-plots.html#cb77-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-27"><a href="residual-diagnostic-plots.html#cb77-27" aria-hidden="true" tabindex="-1"></a>day_resid <span class="ot">&lt;-</span></span>
+<span id="cb77-28"><a href="residual-diagnostic-plots.html#cb77-28" aria-hidden="true" tabindex="-1"></a>  base_resid <span class="sc">%&gt;%</span> </span>
+<span id="cb77-29"><a href="residual-diagnostic-plots.html#cb77-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">weekday =</span> <span class="fu">ifelse</span>(weekday <span class="sc">==</span> <span class="dv">0</span>, <span class="st">&quot;Weekend&quot;</span>, <span class="st">&quot;Weekday&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb77-30"><a href="residual-diagnostic-plots.html#cb77-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> xResidual, <span class="at">y =</span> Residual)) <span class="sc">+</span> </span>
+<span id="cb77-31"><a href="residual-diagnostic-plots.html#cb77-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> lm, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-32"><a href="residual-diagnostic-plots.html#cb77-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col =</span> weekday, <span class="at">shape =</span> weekday), <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb77-33"><a href="residual-diagnostic-plots.html#cb77-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;POW Model Residuals&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-34"><a href="residual-diagnostic-plots.html#cb77-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Base Model </span><span class="sc">\n</span><span class="st"> Residuals </span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-35"><a href="residual-diagnostic-plots.html#cb77-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb77-36"><a href="residual-diagnostic-plots.html#cb77-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">8</span>), </span>
+<span id="cb77-37"><a href="residual-diagnostic-plots.html#cb77-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.background =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb77-38"><a href="residual-diagnostic-plots.html#cb77-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb77-39"><a href="residual-diagnostic-plots.html#cb77-39" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb77-40"><a href="residual-diagnostic-plots.html#cb77-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;(b)&quot;</span>)</span>
+<span id="cb77-41"><a href="residual-diagnostic-plots.html#cb77-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-42"><a href="residual-diagnostic-plots.html#cb77-42" aria-hidden="true" tabindex="-1"></a>l14_PR_resid <span class="ot">&lt;-</span> </span>
+<span id="cb77-43"><a href="residual-diagnostic-plots.html#cb77-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(pow_resid, <span class="fu">aes</span>(<span class="at">x =</span> xResidual, <span class="at">y =</span> Residual)) <span class="sc">+</span> </span>
+<span id="cb77-44"><a href="residual-diagnostic-plots.html#cb77-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb77-45"><a href="residual-diagnostic-plots.html#cb77-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;14-day Lag Model Residuals&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-46"><a href="residual-diagnostic-plots.html#cb77-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Base + POW Model </span><span class="sc">\n</span><span class="st"> Residuals </span><span class="sc">\n</span><span class="st">&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-47"><a href="residual-diagnostic-plots.html#cb77-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;(c)&quot;</span>)</span>
+<span id="cb77-48"><a href="residual-diagnostic-plots.html#cb77-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-49"><a href="residual-diagnostic-plots.html#cb77-49" aria-hidden="true" tabindex="-1"></a>hol_PR_resid <span class="ot">&lt;-</span> </span>
+<span id="cb77-50"><a href="residual-diagnostic-plots.html#cb77-50" aria-hidden="true" tabindex="-1"></a>  l14_resid <span class="sc">%&gt;%</span> </span>
+<span id="cb77-51"><a href="residual-diagnostic-plots.html#cb77-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">holiday =</span> <span class="fu">ifelse</span>(holiday <span class="sc">==</span> <span class="dv">1</span>, <span class="st">&quot;yes&quot;</span>, <span class="st">&quot;no&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb77-52"><a href="residual-diagnostic-plots.html#cb77-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> xResidual, <span class="at">y =</span> Residual)) <span class="sc">+</span> </span>
+<span id="cb77-53"><a href="residual-diagnostic-plots.html#cb77-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> lm, <span class="at">col =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-54"><a href="residual-diagnostic-plots.html#cb77-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">col =</span> holiday, <span class="at">shape =</span> holiday), <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span> </span>
+<span id="cb77-55"><a href="residual-diagnostic-plots.html#cb77-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Holiday Model Residuals&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-56"><a href="residual-diagnostic-plots.html#cb77-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Base + POW + </span><span class="sc">\n</span><span class="st"> 14-day Lag Model </span><span class="sc">\n</span><span class="st"> Residuals&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-57"><a href="residual-diagnostic-plots.html#cb77-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb77-58"><a href="residual-diagnostic-plots.html#cb77-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(.<span class="dv">2</span>, .<span class="dv">25</span>), </span>
+<span id="cb77-59"><a href="residual-diagnostic-plots.html#cb77-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.background =</span> <span class="fu">element_blank</span>(), </span>
+<span id="cb77-60"><a href="residual-diagnostic-plots.html#cb77-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb77-61"><a href="residual-diagnostic-plots.html#cb77-61" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb77-62"><a href="residual-diagnostic-plots.html#cb77-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;(d)&quot;</span>)</span>
+<span id="cb77-63"><a href="residual-diagnostic-plots.html#cb77-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-64"><a href="residual-diagnostic-plots.html#cb77-64" aria-hidden="true" tabindex="-1"></a>resid_hists <span class="sc">|</span> (day_resid <span class="sc">/</span> l14_PR_resid <span class="sc">/</span> hol_PR_resid)</span></code></pre></div>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="bookclub-feat_eng_files/figure-html/residual_diagnostic_plots-1.png" width="672" /></p>
+<ul>
+<li><p>The distribution of residuals from the model resampling process for the base model and the base model plus other potentially useful predictors for explaining ridership at the Clark/Lake station. (a)</p></li>
+<li><p>The partial regression plot for the effect of part of the week. (b)</p></li>
+<li><p>The partial regression plot for the 14-day lag predictor of the Clark/Lake station. (c)</p></li>
+<li><p>The partial regression plot for holiday classification. (d)</p></li>
+</ul>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="post-modeling-exploratory-visualizations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="meeting-videos-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/04-exploratory_visualizations.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

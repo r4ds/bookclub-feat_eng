@@ -23,7 +23,7 @@
 <meta name="author" content="The R4DS Online Learning Community" />
 
 
-<meta name="date" content="2022-09-18" />
+<meta name="date" content="2022-09-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="meeting-videos-2.html"/>
-<link rel="next" href="slide-1-2.html"/>
+<link rel="next" href="data-visualization-chart.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -60,6 +60,12 @@
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
 <script src="libs/chromatography-0.1/chromatography.js"></script>
 <script src="libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
@@ -192,10 +198,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="exploratory-visualizations.html"><a href="exploratory-visualizations.html"><i class="fa fa-check"></i><b>4</b> Exploratory Visualizations</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>4.1</b> SLIDE 1</a></li>
-<li class="chapter" data-level="4.2" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html"><i class="fa fa-check"></i><b>4.2</b> Meeting Videos</a>
+<li class="chapter" data-level="4.1" data-path="data-visualization-chart.html"><a href="data-visualization-chart.html"><i class="fa fa-check"></i><b>4.1</b> Data Visualization Chart</a></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-the-chicago-train-ridership-dataset.html"><a href="introduction-to-the-chicago-train-ridership-dataset.html"><i class="fa fa-check"></i><b>4.2</b> Introduction to the Chicago Train Ridership Dataset</a></li>
+<li class="chapter" data-level="4.3" data-path="chicago-train-ridership-dataset.html"><a href="chicago-train-ridership-dataset.html"><i class="fa fa-check"></i><b>4.3</b> Chicago Train Ridership dataset</a></li>
+<li class="chapter" data-level="4.4" data-path="preliminary-exploratory-visualizations.html"><a href="preliminary-exploratory-visualizations.html"><i class="fa fa-check"></i><b>4.4</b> Preliminary exploratory visualizations</a></li>
+<li class="chapter" data-level="4.5" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html"><i class="fa fa-check"></i><b>4.5</b> Visualizations for Numeric Data</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html#cohort-1-3"><i class="fa fa-check"></i><b>4.2.1</b> Cohort 1</a></li>
+<li class="chapter" data-level="4.5.1" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#box-plots-violin-plots-and-histograms"><i class="fa fa-check"></i><b>4.5.1</b> Box Plots, Violin Plots, and Histograms</a></li>
+<li class="chapter" data-level="4.5.2" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#augmenting-visualizations-through-faceting-colors-and-shapes"><i class="fa fa-check"></i><b>4.5.2</b> Augmenting Visualizations through Faceting, Colors, and Shapes</a></li>
+<li class="chapter" data-level="4.5.3" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#scatterplots"><i class="fa fa-check"></i><b>4.5.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="4.5.4" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#scatterplots---exclude-u.s.-holidays"><i class="fa fa-check"></i><b>4.5.4</b> Scatterplots - Exclude U.S. holidays</a></li>
+<li class="chapter" data-level="4.5.5" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#heatmaps"><i class="fa fa-check"></i><b>4.5.5</b> Heatmaps</a></li>
+<li class="chapter" data-level="4.5.6" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#correlation-matrix-plots"><i class="fa fa-check"></i><b>4.5.6</b> Correlation Matrix Plots</a></li>
+<li class="chapter" data-level="4.5.7" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#line-plots"><i class="fa fa-check"></i><b>4.5.7</b> Line plots</a></li>
+<li class="chapter" data-level="4.5.8" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.5.8</b> Principal Component Analysis (PCA)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><i class="fa fa-check"></i><b>4.6</b> Visualizations for Categorical Data: Exploring the OKCupid dataset</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html#visualizing-relationships-between-outcomes-and-predictors"><i class="fa fa-check"></i><b>4.6.1</b> Visualizing Relationships between Outcomes and Predictors</a></li>
+<li class="chapter" data-level="4.6.2" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html#exploring-relationships-between-categorical-predictors"><i class="fa fa-check"></i><b>4.6.2</b> Exploring Relationships Between Categorical Predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="post-modeling-exploratory-visualizations.html"><a href="post-modeling-exploratory-visualizations.html"><i class="fa fa-check"></i><b>4.7</b> Post Modeling Exploratory Visualizations</a></li>
+<li class="chapter" data-level="4.8" data-path="residual-diagnostic-plots.html"><a href="residual-diagnostic-plots.html"><i class="fa fa-check"></i><b>4.8</b> Residual Diagnostic Plots</a></li>
+<li class="chapter" data-level="4.9" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html"><i class="fa fa-check"></i><b>4.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html#cohort-1-3"><i class="fa fa-check"></i><b>4.9.1</b> Cohort 1</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="encoding-categorical-predictors.html"><a href="encoding-categorical-predictors.html"><i class="fa fa-check"></i><b>5</b> Encoding Categorical Predictors</a>
@@ -218,7 +245,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="engineering-numeric-predictors.html"><a href="engineering-numeric-predictors.html"><i class="fa fa-check"></i><b>6</b> Engineering Numeric Predictors</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="slide-1-3.html"><a href="slide-1-3.html"><i class="fa fa-check"></i><b>6.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="6.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>6.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="6.2" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html"><i class="fa fa-check"></i><b>6.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="6.2.1" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html#cohort-1-5"><i class="fa fa-check"></i><b>6.2.1</b> Cohort 1</a></li>
@@ -226,7 +253,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7" data-path="detecting-interaction-effects.html"><a href="detecting-interaction-effects.html"><i class="fa fa-check"></i><b>7</b> Detecting Interaction Effects</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="slide-1-4.html"><a href="slide-1-4.html"><i class="fa fa-check"></i><b>7.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="7.1" data-path="slide-1-3.html"><a href="slide-1-3.html"><i class="fa fa-check"></i><b>7.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="7.2" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html"><i class="fa fa-check"></i><b>7.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="7.2.1" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html#cohort-1-6"><i class="fa fa-check"></i><b>7.2.1</b> Cohort 1</a></li>
@@ -234,7 +261,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="8" data-path="handling-missing-data.html"><a href="handling-missing-data.html"><i class="fa fa-check"></i><b>8</b> Handling Missing Data</a>
 <ul>
-<li class="chapter" data-level="8.1" data-path="slide-1-5.html"><a href="slide-1-5.html"><i class="fa fa-check"></i><b>8.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="8.1" data-path="slide-1-4.html"><a href="slide-1-4.html"><i class="fa fa-check"></i><b>8.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="8.2" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html"><i class="fa fa-check"></i><b>8.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="8.2.1" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html#cohort-1-7"><i class="fa fa-check"></i><b>8.2.1</b> Cohort 1</a></li>
@@ -242,7 +269,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="9" data-path="working-with-profile-data.html"><a href="working-with-profile-data.html"><i class="fa fa-check"></i><b>9</b> Working with Profile Data</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="slide-1-6.html"><a href="slide-1-6.html"><i class="fa fa-check"></i><b>9.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="9.1" data-path="slide-1-5.html"><a href="slide-1-5.html"><i class="fa fa-check"></i><b>9.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="9.2" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html"><i class="fa fa-check"></i><b>9.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="9.2.1" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html#cohort-1-8"><i class="fa fa-check"></i><b>9.2.1</b> Cohort 1</a></li>
@@ -250,7 +277,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="10" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>10</b> Feature Selection Overview</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="slide-1-7.html"><a href="slide-1-7.html"><i class="fa fa-check"></i><b>10.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="10.1" data-path="slide-1-6.html"><a href="slide-1-6.html"><i class="fa fa-check"></i><b>10.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="10.2" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i><b>10.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="10.2.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-9"><i class="fa fa-check"></i><b>10.2.1</b> Cohort 1</a></li>
@@ -258,7 +285,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11" data-path="greedy-search-methods.html"><a href="greedy-search-methods.html"><i class="fa fa-check"></i><b>11</b> Greedy Search Methods</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="slide-1-8.html"><a href="slide-1-8.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="11.1" data-path="slide-1-7.html"><a href="slide-1-7.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="11.2" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html"><i class="fa fa-check"></i><b>11.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="11.2.1" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html#cohort-1-10"><i class="fa fa-check"></i><b>11.2.1</b> Cohort 1</a></li>
@@ -266,7 +293,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="slide-1-9.html"><a href="slide-1-9.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="12.1" data-path="slide-1-8.html"><a href="slide-1-8.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="12.2" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="12.2.1" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
@@ -296,7 +323,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 4</span> Exploratory Visualizations<a href="exploratory-visualizations.html#exploratory-visualizations" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><strong>Learning objectives:</strong></p>
 <ul>
-<li>THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY</li>
+<li>Perform exploratory data <em>visualization</em> for the Chicago train ridership and OKCupid datasets.</li>
+<li>Perform univariate and bivariate visualizations for numerical variables.</li>
+<li>Perform visualizations for categorical variables.</li>
+<li>Perform post-modeling visualizations.</li>
 </ul>
 </div>
             </section>
@@ -305,7 +335,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 <a href="meeting-videos-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="slide-1-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data-visualization-chart.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
