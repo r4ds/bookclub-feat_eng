@@ -1,15 +1,952 @@
 # Illustrative Example: Predicting Risk of Ischemic Stroke
 
+
+
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+Understanding the computing part with two examples
 
-## SLIDE 1
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+## Introduction
 
-## Meeting Videos
+Here we see how to make things in practice with two case studies.
+
+## Example 1
+
+Code for Ischemic Stroke case study.
+Code requires these packages, across all of Chapter 2:
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-1, message=FALSE, warning=FALSE, paged.print=FALSE}
+library(corrplot)
+library(utils)
+library(pROC)
+library(plotly)
+library(caret)
+library(patchwork)
+library(tidymodels)
+
+theme_set(theme_bw())
+```
+
+
+Load the stroke_data.R.data from the Ischemic_Stroke folder here: https://github.com/topepo/FES/tree/master/Data_Sets
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-2}
+load(url("https://github.com/topepo/FES/blob/master/Data_Sets/Ischemic_Stroke/stroke_data.RData?raw=true"))
+load(url("https://github.com/topepo/FES/blob/master/02_Predicting_Risk_of_Ischemic_Stroke/stroke_rfe.RData?raw=true"))
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-3}
+#pre_split data how many in each class by set
+stroke_train %>% 
+  count(Stroke) %>% 
+  mutate(Data = "Training") %>% 
+  bind_rows(
+    stroke_test %>% 
+      count(Stroke) %>% 
+      mutate(Data = "Testing")
+  ) %>% 
+  spread(Stroke, n)
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-4}
+#sampling using tidymodels/rsample package
+
+all_stroke <- bind_rows(stroke_train, stroke_test) #put all the data back together
+
+tidy_sample <- #sample, but fixing proportion of Stroke between test and train
+	initial_split(all_stroke, prop = 0.71, strata = Stroke) 
+
+tidy_testing <- testing(tidy_sample) #extract testing
+tidy_training <- training(tidy_sample) #extract training
+
+tidy_training %>% 
+  count(Stroke) %>% 
+  mutate(Data = "Training") %>% 
+  bind_rows(
+    tidy_testing %>% 
+      count(Stroke) %>% 
+      mutate(Data = "Testing")
+  ) %>% 
+  spread(Stroke, n)
+# distribution of training and testing is either exactly the same or one off depending on seed
+
+```
+
+### Predictor Quality
+
+The first thing is to just look at your data:
+
+- what's missing
+- what's normal(ish)
+- what's the range
+- what's the data type
+
+dplyr's glimpse is a good starting point.
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-5}
+dplyr::glimpse(tidy_training)
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-6}
+# skimr is better (by a lot)
+# https://github.com/ropensci/skimr
+skimr::skim(all_stroke)
+```
+
+
+
+The book says original dataset has 4 missing data points, but already been median imputed via `recipes::step_impute_median()`
+imputation methhods discussed more in Chapter 8, some models hate missing data
+
+if you have missing data...
+use naniar/visdat to visualize datasets and understand where you're missing data
+[getting-started-w-naniar](https://cran.r-project.org/web/packages/naniar/vignettes/getting-started-w-naniar.html)
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-7, message=FALSE, warning=FALSE, paged.print=FALSE}
+visdat::vis_dat(tidy_training)
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-8}
+# https://bookdown.org/max/FES/numeric-one-to-one.html#numeric-one-to-one
+# this is a plot of the distribution of MaxLRNCArea, very right skewed
+fig_2_2_a <- 
+  all_stroke %>% 
+  ggplot(aes(x = MaxLRNCArea)) +
+  geom_histogram(bins = 15, col = "#D53E4F", fill = "#D53E4F", alpha = .5) +
+  xlab("MaxLRNCArea") +
+  ylab("Frequency") +
+  ggtitle("(a)") +
+  theme_bw()
+
+fig_2_2_a
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-9}
+# same plot but after yeojohnson transformmation, become normal-like
+fig_2_2_b <- 
+  recipe(Stroke ~ ., data = all_stroke) %>% 
+  step_YeoJohnson(all_predictors()) %>% 
+  prep(.) %>% 
+  bake(., new_data = NULL) %>% 
+  ggplot(aes(x = MaxLRNCArea)) +
+  geom_histogram(bins = 15, col = "#D53E4F", fill = "#D53E4F", alpha = .5) +
+  xlab("Transformed MaxLRNCArea") +
+  ylab("Frequency") +
+  ggtitle("(b)") +
+  theme_bw()
+
+#sidebyside with patchwork
+fig_2_2_a + fig_2_2_b
+```
+
+### understanding interactions and multicollinearity
+
+some models hate correlated traits
+
+this only looks at imaging traits, (why is it called risk?)
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-10}
+risk_train <-
+  recipe(Stroke ~ ., data = stroke_train) %>%
+  step_center(all_of(VC_preds)) %>% # center the data
+  step_scale(all_of(VC_preds)) %>% # scale the data
+  step_YeoJohnson(all_of(VC_preds)) %>% # YeoJohnson transform https://recipes.tidymodels.org/reference/step_YeoJohnson.html
+  prep(.) %>% 
+  bake(., new_data = NULL) %>% # juice is superseded by bake
+  select(-one_of(c("Stroke", "NASCET", risk_preds))) #select everything but these
+
+risk_corr <- cor(risk_train) #make a correlation matrix
+
+corrplot(risk_corr, addgrid.col = rgb(0, 0, 0, .05), order = "hclust") #plot that
+
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-11}
+# you can remove these with step_corr(all_predictors(), threshold = 0.75) %>% 
+risk_train_step_corr <-
+  recipe(Stroke ~ ., data = stroke_train) %>%
+  step_center(all_of(VC_preds)) %>% # center the data
+  step_scale(all_of(VC_preds)) %>% # scale the data
+  step_YeoJohnson(all_of(VC_preds)) %>% # YeoJohnson transform https://recipes.tidymodels.org/reference/step_YeoJohnson.html
+  step_corr(all_predictors(), threshold = 0.75) %>% # remove "extra" predictors with correlations higher than 0.75
+  prep(.) %>% 
+  bake(., new_data = NULL) %>% # juice is superseded by bake
+  select(-one_of(c("Stroke", "NASCET", risk_preds))) #select everything but these
+
+risk_corr_step_corr <- cor(risk_train_step_corr) #make a correlation matrix
+
+corrplot(risk_corr_step_corr, addgrid.col = rgb(0, 0, 0, .05), order = "hclust") #plot that
+
+#BUT WE'RE NOT DOING THAT YET! Chapter 3 shows more methods on this.
+
+```
+
+
+## Example 2
+
+Code for Section 2.4 at
+https://bookdown.org/max/FES/stroke-tour.html#stroke-exploration
+
+
+Code to compare 2-way interaction models to their main effects model
+
+`a` and `b` are two models from `train()`
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-12}
+compare_models_1way <- function(a, b, metric = a$metric[1], ...) {
+  mods <- list(a, b)
+  rs <- resamples(mods)
+  diffs <- diff(rs, metric = metric[1], ...)
+  diffs$statistics[[1]][[1]]
+}
+```
+
+
+
+`risk_preds` is contained in the original data file and has the predictor 
+names for the risk related variables
+
+
+### Create a "null model" with no predictors to get baseline performance
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-13, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+null_mat <- data.frame(intercept = rep(1, nrow(stroke_train)))
+
+ctrl <- 
+  trainControl(method = "repeatedcv", repeats = 5,
+               classProbs = TRUE, 
+               summaryFunction = twoClassSummary)
+
+set.seed(63331)
+null_mod <- train(x = null_mat, 
+                  y = stroke_train$Stroke, 
+                  preProc = "YeoJohnson",
+                  method = "glm", 
+                  metric = "ROC", 
+                  trControl = ctrl)
+```
+
+Compare the models with single predictors to the risk model. These data make
+
+https://bookdown.org/max/FES/stroke-tour.html#tab:stroke-strokeRiskAssociations
+
+`VC_preds` and `risk_preds` contain the predictor names for different sets.
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-14, eval=TRUE}
+one_predictor_res <- 
+  data.frame(Predictor = c(VC_preds, risk_preds), 
+             Improvement = NA,
+             Pvalue = NA,
+             ROC = NA,
+             stringsAsFactors = FALSE)
+
+
+for (i in 1:nrow(one_predictor_res)) {
+  set.seed(63331)
+  var_mod <- train(Stroke ~ ., 
+                   data = stroke_train[, c("Stroke", one_predictor_res$Predictor[i])], 
+                   method = "glm", 
+                   metric = "ROC",
+                   trControl = ctrl)  
+  tmp_diff <- compare_models_1way(var_mod, 
+                                  null_mod, 
+                                  alternative = "greater")
+  one_predictor_res$ROC[i] <- getTrainPerf(var_mod)[1, "TrainROC"]
+  one_predictor_res$Improvement[i] <- tmp_diff$estimate
+  one_predictor_res$Pvalue[i] <- tmp_diff$p.value
+}
+```
+
+
+
+### With Tidymodels
+
+
+attempting this with tidymodels, not exactly the same
+need to make some sort of resample object to feed workflow_map
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-15}
+
+model_folds <- vfold_cv(tidy_training, v = 10, repeats = 5)
+# model_boots <- bootstraps(tidy_training, times = 50) #want to bootstrap this?
+
+#defining the null model
+null_class_model <- 
+	null_model() %>%
+	set_engine("parsnip") %>%
+	set_mode("classification")
+
+null_model <- workflow_set(preproc = c(Stroke ~ .), 
+                           models = list(null_mod = null_class_model))
+
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-16}
+# defining the model
+lm_model <- 
+  logistic_reg(
+  mode = "classification", # outcome is a classification Stroke Y/N
+  engine = "glm",	#using glm like the example
+  penalty = NULL,	
+  mixture = NULL		
+)
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-17}
+# make named list of single variable formulae
+single_var_formulae <-
+	c(VC_preds, risk_preds) %>%
+	paste0("Stroke ~ ", .) %>%
+	set_names(., c(VC_preds, risk_preds)) %>%
+	as.list() %>%
+	map(., as.formula)
+```
+
+Create the workflow set, all of our models use the same type of model and input data
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-18}
+
+single_var_models <- workflow_set(preproc = single_var_formulae, 
+                                     models = list(lm = lm_model))
+
+all_models <- bind_rows(null_model, single_var_models)
+
+# control grid/resamples allow processing of resampled data and parallel processing
+# here we are asking only to save the predictions
+control <- control_resamples(save_pred = TRUE)
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-19, eval=FALSE}
+doParallel::registerDoParallel()
+all_models1 <- 
+	all_models %>%
+	#map over each model and it's resamples, use the control parameters, and be noisy
+ 	workflow_map(., 
+ 	             resamples = model_folds, 
+ 	             control = control, 
+ 	             verbose = TRUE)
+
+# save(all_models1,file="data/all_models1.RData")
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-20, echo=FALSE}
+load("data/all_models1.RData")
+```
+
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-21}
+# per model what are the predictions, summmarize over resamples
+collect_predictions(all_models1, summarize = TRUE)
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-22}
+# per model what are the outputs in terms of fit (auc_roc) and accuracy 
+collect_metrics(all_models1)
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-23}
+# plot the output to show which individual parameters have the most impact
+autoplot(
+   all_models1,
+   rank_metric = "roc_auc",  # <- how to order models
+   metric = "roc_auc",       # <- which metric to visualize
+   select_best = FALSE     # <- one point per workflow
+) +
+   geom_text(aes(y = mean - 1/10*mean, 
+                 label = wflow_id),
+             angle = 90, hjust = 1) +
+   theme(legend.position = "none")
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-24}
+# per model, sort by auc_roc
+all_models1 %>%
+rank_results() %>% 
+   filter(.metric == "roc_auc")
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-25}
+# Data in table 2.3
+# https://bookdown.org/max/FES/stroke-tour.html#tab:stroke-strokeRiskAssociations
+
+one_predictor_res %>% 
+  dplyr::filter(Predictor %in% risk_preds) %>% 
+  arrange(Pvalue)
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-26}
+# Figure 2.4
+# https://bookdown.org/max/FES/stroke-tour.html#fig:stroke-vascuCAPAssocations
+
+vc_pred <- 
+  recipe(Stroke ~ ., data = stroke_train %>% dplyr::select(Stroke, !!!VC_preds)) %>% 
+  	step_YeoJohnson(all_predictors()) %>% 
+  	prep(stroke_train %>% dplyr::select(Stroke, !!!VC_preds)) %>% 
+  	bake(., new_data = NULL) %>% 
+  	gather(Predictor, value, -Stroke)
+vc_pred%>%head
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-27}
+pred_max <- 
+  vc_pred %>% 
+  group_by(Predictor) %>% 
+  summarize(max_val = max(value)) %>% 
+  inner_join(one_predictor_res %>% dplyr::select(Pvalue, Predictor)) %>% 
+  mutate(
+    x = 1.5, 
+    value = 1.25 * max_val,
+    label = paste0("p-value: ", format.pval(Pvalue, digits = 2, sci = FALSE, eps = .0001))
+  )
+pred_max%>%head
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-28}
+new_order <- pred_max$Predictor[order(pred_max$Pvalue)]
+
+vc_pred <- 
+  vc_pred %>% 
+  mutate(Predictor = factor(Predictor, levels = new_order))
+
+pred_max <- 
+  pred_max %>% 
+  mutate(Predictor = factor(Predictor, levels = new_order))
+
+fig_2_4 <-
+  ggplot(vc_pred, aes(x = Stroke, y = value)) + 
+  geom_boxplot() + 
+  geom_point(alpha = 0.3, cex = .5) + 
+  geom_text(data = pred_max, aes(x = x, label = label), size = 3) + 
+  facet_wrap(~Predictor, scales = "free_y") + 
+  ylab("")
+fig_2_4
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-29}
+# Figure 2.5
+# https://bookdown.org/max/FES/stroke-tour.html#fig:stroke-maxRemodelingRatioROC
+
+fig_2_5 <- 
+  roc_curve(stroke_train, Stroke, MaxRemodelingRatio) %>% 
+  # used opposite values
+  ggplot(aes(x = specificity, y = 1-sensitivity)) + 
+  geom_abline(alpha = .5, lty = 2) +
+  geom_path()
+
+fig_2_5
+```
+
+### Interaction exploration
+
+
+Here they create all the pairs of all of the image analysis components 
+there are 171 interactions
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-30, eval=TRUE}
+pairs <- 
+  combn(VC_preds, 2) %>% 
+  t() %>% 
+  as.data.frame(stringsAsFactors = FALSE) %>% 
+  mutate(
+    Improvement = NA,
+    Pvalue = NA,
+    ROC = NA
+  )
+```
+
+Run comparisons with caret
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-31, eval=FALSE,message=FALSE, warning=FALSE, cache=TRUE, include=FALSE, paged.print=FALSE}
+for (i in 1:nrow(pairs)) {
+  tmp_vars <- c("Stroke", pairs$V1[i], pairs$V2[i])
+  set.seed(63331)
+  main_eff <- train(Stroke ~ ., 
+                    data = stroke_train[, tmp_vars], 
+                    preProc = c("center", "scale", "YeoJohnson"),
+                    method = "glm", 
+                    metric = "ROC",
+                    trControl = ctrl)
+  set.seed(63331)
+  main_int <- train(Stroke ~ (.)^2, 
+                    data = stroke_train[, tmp_vars], 
+                    preProc = c("center", "scale", "YeoJohnson"), 
+                    method = "glm", 
+                    metric = "ROC", 
+                    trControl = ctrl)  
+  tmp_diff <- compare_models_1way(main_int, main_eff, alternative = "greater")
+  pairs$ROC[i] <- getTrainPerf(main_eff)[1, "TrainROC"]
+  pairs$Improvement[i] <- tmp_diff$estimate
+  pairs$Pvalue[i] <- tmp_diff$p.value
+}
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-32, eval=FALSE,include=FALSE}
+pairs1 <- pairs
+# save(pairs1,file = "data/pairs1.RData")
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-33, echo=FALSE}
+load("data/pairs1.RData")
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-34}
+retained_pairs <- 
+  pairs1 %>% 
+  dplyr::filter(ROC > 0.5  & Pvalue <= 0.2)
+retained_pairs%>%head
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-35, message=FALSE, warning=FALSE, paged.print=FALSE}
+# Figure 2.6
+# https://bookdown.org/max/FES/stroke-tour.html#fig:stroke-interactionScreening
+
+vol_plot <- 
+  pairs1 %>% 
+  dplyr::filter(ROC > 0.5) %>%
+  mutate(Term = paste(V1, "by", V2, "\nROC:", round(ROC, 2))) %>%
+  ggplot(aes(x = Improvement, y = -log10(Pvalue))) + 
+  xlab("Improvement") +
+  geom_point(alpha = .2, aes(size = ROC, text = Term))
+
+vol_plot <- ggplotly(vol_plot, tooltip = "Term")
+vol_plot
+```
+
+Create interaction formula of things that matter most
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-36}
+int_form <- 
+  pairs1 %>% 
+  dplyr::filter(ROC > 0.5  & Pvalue <= 0.2 & Improvement > 0) %>% 
+  mutate(form  = paste0(V1, ":", V2)) %>% 
+  pull(form) %>% 
+  paste(collapse = "+")
+
+int_form <- paste("~", int_form)
+int_form <- as.formula(int_form)
+int_form%>%head
+```
+
+
+This part of the script is to work through all of of the potential models:
+
+- original risk set alone
+- imaging predictors alone
+- risk and imaging predictors together
+- imaging predictors and interactions of imaging predictors, and
+- risk, imaging predictors, and interactions of imaging predictors 
+
+
+All the models are run below.
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-37}
+risk_train <- 
+  stroke_train %>%
+  dplyr::select(one_of(risk_preds), Stroke)
+
+risk_train%>%head
+```
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-38}
+image_train <- 
+  stroke_train %>%
+  dplyr::select(one_of(VC_preds), Stroke)
+
+image_train%>%head
+```
+
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-39 }
+fiveStats <- function(...) c(twoClassSummary(...), defaultSummary(...))
+internal_ctrl = trainControl(method = "none", classProbs = TRUE,
+                             allowParallel = FALSE)
+lrFuncsNew <- caretFuncs  
+lrFuncsNew$summary <- fiveStats
+rfeCtrl <- rfeControl(functions = lrFuncsNew,
+                      method = "repeatedcv",
+                      repeats = 5,
+                      rerank = FALSE,
+                      returnResamp = "all",
+                      saveDetails = TRUE,
+                      verbose = FALSE)
+
+```
+
+
+RFE procedure using risk predictors
+
+All pair-wise interactions.
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-40}
+risk_int_filtered_recipe <-
+  recipe(Stroke ~ ., data = risk_train) %>%
+  step_interact(~ all_predictors():all_predictors()) %>%
+  step_corr(all_predictors(), threshold = 0.75) %>% 
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_zv(all_predictors())
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-41, eval=FALSE}
+set.seed(63331)
+risk_int_filtered_rfe <- rfe(
+  risk_int_filtered_recipe,
+  data = risk_train,
+  sizes = 1:36,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-42, eval=FALSE}
+# Main effects
+risk_main_filtered_recipe <-
+  recipe(Stroke ~ ., data = risk_train) %>%
+  step_corr(all_predictors(), threshold = 0.75) %>% 
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+risk_main_filtered_rfe <- rfe(
+  risk_main_filtered_recipe,
+  data = risk_train,
+  sizes = 1:8,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+```
+
+
+RFE procedure using imaging predictors.
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-43, eval=FALSE}
+img_int_filtered_recipe <-
+  recipe(Stroke ~ ., data = image_train) %>%
+  step_interact(int_form)  %>%
+  step_corr(all_predictors(), threshold = 0.75) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_YeoJohnson(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+img_int_filtered_rfe <- rfe(
+  img_int_filtered_recipe,
+  data = image_train,
+  sizes = 1:35,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-44, eval=FALSE}
+img_main_filtered_recipe <-
+  recipe(Stroke ~ ., data = image_train)  %>%
+  step_corr(all_predictors(), threshold = 0.75) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_YeoJohnson(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+img_main_filtered_rfe <- rfe(
+  img_main_filtered_recipe,
+  data = image_train,
+  sizes = 1:19,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-45, eval=FALSE}
+both_int_filtered_recipe <-
+  recipe(Stroke ~ ., data = stroke_train) %>%
+  step_interact(int_form)  %>%
+  step_corr(all_predictors(), threshold = 0.75) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_YeoJohnson(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+both_int_filtered_rfe <- rfe(
+  both_int_filtered_recipe,
+  data = stroke_train,
+  sizes = 1:44,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+
+both_main_filtered_recipe <-
+  recipe(Stroke ~ ., data = stroke_train)  %>%
+  step_corr(all_predictors(), threshold = 0.75) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_YeoJohnson(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+both_main_filtered_rfe <- rfe(
+  both_main_filtered_recipe,
+  data = stroke_train,
+  sizes = 1:28,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-46, eval=FALSE}
+risk_int_recipe <-
+  recipe(Stroke ~ ., data = risk_train) %>%
+  step_interact(~ all_predictors():all_predictors()) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+risk_int_rfe <- rfe(
+  risk_int_recipe,
+  data = risk_train,
+  sizes = 1:36,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-47, eval=FALSE}
+risk_main_recipe <-
+  recipe(Stroke ~ ., data = risk_train) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+risk_main_rfe <- rfe(
+  risk_main_recipe,
+  data = risk_train,
+  sizes = 1:8,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-48, eval=FALSE}
+img_int_recipe <-
+  recipe(Stroke ~ ., data = image_train) %>%
+  step_interact(int_form)  %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_YeoJohnson(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+img_int_rfe <- rfe(
+  img_int_recipe,
+  data = image_train,
+  sizes = 1:35,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-49, eval=FALSE}
+img_main_recipe <-
+  recipe(Stroke ~ ., data = image_train)  %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_YeoJohnson(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+img_main_rfe <- rfe(
+  img_main_recipe,
+  data = image_train,
+  sizes = 1:19,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+
+```
+
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-50, eval=FALSE}
+both_int_recipe <-
+  recipe(Stroke ~ ., data = stroke_train) %>%
+  step_interact(int_form)  %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_YeoJohnson(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+both_int_rfe <- rfe(
+  both_int_recipe,
+  data = stroke_train,
+  sizes = 1:44,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+
+both_main_recipe <-
+  recipe(Stroke ~ ., data = stroke_train)  %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors()) %>%
+  step_YeoJohnson(all_predictors()) %>%
+  step_zv(all_predictors())
+
+set.seed(63331)
+both_main_rfe <- rfe(
+  both_main_recipe,
+  data = stroke_train,
+  sizes = 1:28,
+  rfeControl = rfeCtrl,
+  metric = "ROC",
+  ## train options
+  method = "glm",
+  trControl = internal_ctrl
+)
+
+```
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-51}
+format_data <- function(x, lab, int = FALSE) {
+  dat <- 
+    x %>% 
+    pluck("results") %>% 
+    mutate(Predictors = !!lab) %>% 
+    dplyr::select(ROC, Variables, Predictors, Variables, Num_Resamples) %>% 
+    mutate(Model = "Main Effects")
+  if (int)
+    dat$Model <- "Interactions"
+  dat
+  
+}
+
+filtered_dat <- 
+  bind_rows(
+    format_data(risk_main_filtered_rfe, lab = "Risk Predictors"),
+    format_data(risk_int_filtered_rfe, lab = "Risk Predictors", TRUE),
+    format_data(img_main_filtered_rfe, lab = "Imaging Predictors"),
+    format_data(img_int_filtered_rfe, lab = "Imaging Predictors", TRUE),
+    format_data(both_main_filtered_rfe, lab = "All Predictors"),
+    format_data(both_int_filtered_rfe, lab = "All Predictors", TRUE)
+  ) %>% 
+  mutate(
+    Predictors = factor(
+      Predictors, 
+      levels = c("Risk Predictors", "Imaging Predictors", "All Predictors")
+    ),
+    Model = factor(Model, levels = c("Main Effects", "Interactions")),
+    Filtering = "Correlation Filter"
+  )
+
+unfiltered_dat <- 
+  bind_rows(
+    format_data(risk_main_rfe, lab = "Risk Predictors"),
+    format_data(risk_int_rfe, lab = "Risk Predictors", TRUE),
+    format_data(img_main_rfe, lab = "Imaging Predictors"),
+    format_data(img_int_rfe, lab = "Imaging Predictors", TRUE),
+    format_data(both_main_rfe, lab = "All Predictors"),
+    format_data(both_int_rfe, lab = "All Predictors", TRUE)
+  ) %>% 
+  mutate(
+    Predictors = factor(
+      Predictors, 
+      levels = c("Risk Predictors", "Imaging Predictors", "All Predictors")
+    ),
+    Model = factor(Model, levels = c("Main Effects", "Interactions")),
+    Filtering = "No Filter"
+  )
+
+rfe_data <- 
+  bind_rows(filtered_dat, unfiltered_dat) %>% 
+  mutate(
+    Filtering = factor(Filtering, levels = c("No Filter", "Correlation Filter"))
+  )
+
+```
+
+
+
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-52}
+# https://bookdown.org/max/FES/predictive-modeling-across-sets.html#fig:stroke-rfe-res
+ggplot(rfe_data, aes(x = Variables, y = ROC, col = Model)) +
+  geom_point(size = 0.75) + 
+  geom_line() + 
+  facet_grid(Filtering ~ Predictors) + 
+  scale_color_manual(values = c("#6A3D9A", "#CAB2D6"))
+```
+
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-53}
+# https://bookdown.org/max/FES/predictive-modeling-across-sets.html#tab:stroke-rfe-tab
+rfe_tab <-
+  img_main_filtered_rfe %>% 
+  pluck("variables") %>% 
+  filter(Variables == img_main_filtered_rfe$optsize) %>% 
+  group_by(var) %>% 
+  count() %>% 
+  arrange(desc(n)) %>% 
+  mutate(final = ifelse(var %in% img_main_filtered_rfe$optVariables, "Yes", "No")) %>% 
+  ungroup()
+
+```
+
+
+ Meeting Videos
 
 ### Cohort 1
 
