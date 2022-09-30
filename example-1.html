@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2.2 Example 1 | Feature Engineering and Selection Book Club</title>
+  <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2.2 Example 1 | Feature Engineering and Selection Book Club" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2.2 Example 1 | Feature Engineering and Selection Book Club" />
+  
+  <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  
+
+<meta name="author" content="The R4DS Online Learning Community" />
+
+
+<meta name="date" content="2022-09-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-1.html"/>
+<link rel="next" href="example-2.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/d3-3.3.8/d3.min.js"></script>
+<script src="libs/dagre-0.4.0/dagre-d3.min.js"></script>
+<link href="libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
+<script src="libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/chromatography-0.1/chromatography.js"></script>
+<script src="libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Feature Engineering and Selection Book Club</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="book-club-meetings.html"><a href="book-club-meetings.html"><i class="fa fa-check"></i>Book club meetings</a></li>
+<li class="chapter" data-level="" data-path="pace.html"><a href="pace.html"><i class="fa fa-check"></i>Pace</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="structure-of-the-book.html"><a href="structure-of-the-book.html"><i class="fa fa-check"></i><b>1.1</b> Structure of the book</a></li>
+<li class="chapter" data-level="1.2" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html"><i class="fa fa-check"></i><b>1.2</b> Good Practice guidelines</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html#what-is-feature-engineering"><i class="fa fa-check"></i><b>1.2.1</b> What is feature engineering</a></li>
+<li class="chapter" data-level="1.2.2" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html#nature-of-modeling"><i class="fa fa-check"></i><b>1.2.2</b> Nature of modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="a-model-with-two-predictors.html"><a href="a-model-with-two-predictors.html"><i class="fa fa-check"></i><b>1.3</b> A model with two predictors</a></li>
+<li class="chapter" data-level="1.4" data-path="important-concepts.html"><a href="important-concepts.html"><i class="fa fa-check"></i><b>1.4</b> Important concepts</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="important-concepts.html"><a href="important-concepts.html#acknowledge-vulnerabilities"><i class="fa fa-check"></i><b>1.4.1</b> Acknowledge vulnerabilities</a></li>
+<li class="chapter" data-level="1.4.2" data-path="important-concepts.html"><a href="important-concepts.html#the-modeling-process"><i class="fa fa-check"></i><b>1.4.2</b> The <strong>Modeling process</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="predicting-ridership-on-chicago.html"><a href="predicting-ridership-on-chicago.html"><i class="fa fa-check"></i><b>1.5</b> Predicting ridership on Chicago</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="predicting-ridership-on-chicago.html"><a href="predicting-ridership-on-chicago.html#extra-resources"><i class="fa fa-check"></i><b>1.5.1</b> Extra Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="meeting-videos.html"><a href="meeting-videos.html"><i class="fa fa-check"></i><b>1.6</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="meeting-videos.html"><a href="meeting-videos.html#cohort-1"><i class="fa fa-check"></i><b>1.6.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="illustrative-example-predicting-risk-of-ischemic-stroke.html"><a href="illustrative-example-predicting-risk-of-ischemic-stroke.html"><i class="fa fa-check"></i><b>2</b> Illustrative Example: Predicting Risk of Ischemic Stroke</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-1.html"><a href="introduction-1.html"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="example-1.html"><a href="example-1.html"><i class="fa fa-check"></i><b>2.2</b> Example 1</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="example-1.html"><a href="example-1.html#predictor-quality"><i class="fa fa-check"></i><b>2.2.1</b> Predictor Quality</a></li>
+<li class="chapter" data-level="2.2.2" data-path="example-1.html"><a href="example-1.html#understanding-interactions-and-multicollinearity"><i class="fa fa-check"></i><b>2.2.2</b> understanding interactions and multicollinearity</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="example-2.html"><a href="example-2.html"><i class="fa fa-check"></i><b>2.3</b> Example 2</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="example-2.html"><a href="example-2.html#create-a-null-model-with-no-predictors-to-get-baseline-performance"><i class="fa fa-check"></i><b>2.3.1</b> Create a “null model” with no predictors to get baseline performance</a></li>
+<li class="chapter" data-level="2.3.2" data-path="example-2.html"><a href="example-2.html#with-tidymodels"><i class="fa fa-check"></i><b>2.3.2</b> With Tidymodels</a></li>
+<li class="chapter" data-level="2.3.3" data-path="example-2.html"><a href="example-2.html#interaction-exploration"><i class="fa fa-check"></i><b>2.3.3</b> Interaction exploration</a></li>
+<li class="chapter" data-level="2.3.4" data-path="example-2.html"><a href="example-2.html#cohort-1-1"><i class="fa fa-check"></i><b>2.3.4</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="a-review-of-the-predictive-modeling-process.html"><a href="a-review-of-the-predictive-modeling-process.html"><i class="fa fa-check"></i><b>3</b> A Review of the Predictive Modeling Process</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="slide-1.html"><a href="slide-1.html"><i class="fa fa-check"></i><b>3.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="3.2" data-path="meeting-videos-1.html"><a href="meeting-videos-1.html"><i class="fa fa-check"></i><b>3.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="meeting-videos-1.html"><a href="meeting-videos-1.html#cohort-1-2"><i class="fa fa-check"></i><b>3.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-visualizations.html"><a href="exploratory-visualizations.html"><i class="fa fa-check"></i><b>4</b> Exploratory Visualizations</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-visualization-chart.html"><a href="data-visualization-chart.html"><i class="fa fa-check"></i><b>4.1</b> Data Visualization Chart</a></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-the-chicago-train-ridership-dataset.html"><a href="introduction-to-the-chicago-train-ridership-dataset.html"><i class="fa fa-check"></i><b>4.2</b> Introduction to the Chicago Train Ridership Dataset</a></li>
+<li class="chapter" data-level="4.3" data-path="chicago-train-ridership-dataset.html"><a href="chicago-train-ridership-dataset.html"><i class="fa fa-check"></i><b>4.3</b> Chicago Train Ridership dataset</a></li>
+<li class="chapter" data-level="4.4" data-path="preliminary-exploratory-visualizations.html"><a href="preliminary-exploratory-visualizations.html"><i class="fa fa-check"></i><b>4.4</b> Preliminary exploratory visualizations</a></li>
+<li class="chapter" data-level="4.5" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html"><i class="fa fa-check"></i><b>4.5</b> Visualizations for Numeric Data</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#box-plots-violin-plots-and-histograms"><i class="fa fa-check"></i><b>4.5.1</b> Box Plots, Violin Plots, and Histograms</a></li>
+<li class="chapter" data-level="4.5.2" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#augmenting-visualizations-through-faceting-colors-and-shapes"><i class="fa fa-check"></i><b>4.5.2</b> Augmenting Visualizations through Faceting, Colors, and Shapes</a></li>
+<li class="chapter" data-level="4.5.3" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#scatterplots"><i class="fa fa-check"></i><b>4.5.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="4.5.4" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#scatterplots---exclude-u.s.-holidays"><i class="fa fa-check"></i><b>4.5.4</b> Scatterplots - Exclude U.S. holidays</a></li>
+<li class="chapter" data-level="4.5.5" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#heatmaps"><i class="fa fa-check"></i><b>4.5.5</b> Heatmaps</a></li>
+<li class="chapter" data-level="4.5.6" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#correlation-matrix-plots"><i class="fa fa-check"></i><b>4.5.6</b> Correlation Matrix Plots</a></li>
+<li class="chapter" data-level="4.5.7" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#line-plots"><i class="fa fa-check"></i><b>4.5.7</b> Line plots</a></li>
+<li class="chapter" data-level="4.5.8" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.5.8</b> Principal Component Analysis (PCA)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><i class="fa fa-check"></i><b>4.6</b> Visualizations for Categorical Data: Exploring the OKCupid dataset</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html#visualizing-relationships-between-outcomes-and-predictors"><i class="fa fa-check"></i><b>4.6.1</b> Visualizing Relationships between Outcomes and Predictors</a></li>
+<li class="chapter" data-level="4.6.2" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html#exploring-relationships-between-categorical-predictors"><i class="fa fa-check"></i><b>4.6.2</b> Exploring Relationships Between Categorical Predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="post-modeling-exploratory-visualizations.html"><a href="post-modeling-exploratory-visualizations.html"><i class="fa fa-check"></i><b>4.7</b> Post Modeling Exploratory Visualizations</a></li>
+<li class="chapter" data-level="4.8" data-path="residual-diagnostic-plots.html"><a href="residual-diagnostic-plots.html"><i class="fa fa-check"></i><b>4.8</b> Residual Diagnostic Plots</a></li>
+<li class="chapter" data-level="4.9" data-path="meeting-videos-2.html"><a href="meeting-videos-2.html"><i class="fa fa-check"></i><b>4.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="meeting-videos-2.html"><a href="meeting-videos-2.html#cohort-1-3"><i class="fa fa-check"></i><b>4.9.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="encoding-categorical-predictors.html"><a href="encoding-categorical-predictors.html"><i class="fa fa-check"></i><b>5</b> Encoding Categorical Predictors</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="creating-dummy-variables-for-unordered-categories.html"><a href="creating-dummy-variables-for-unordered-categories.html"><i class="fa fa-check"></i><b>5.1</b> Creating Dummy Variables for Unordered Categories</a></li>
+<li class="chapter" data-level="5.2" data-path="encoding-predictors-for-many-categories.html"><a href="encoding-predictors-for-many-categories.html"><i class="fa fa-check"></i><b>5.2</b> Encoding Predictors for Many Categories</a></li>
+<li class="chapter" data-level="5.3" data-path="approaches-for-novel-categories.html"><a href="approaches-for-novel-categories.html"><i class="fa fa-check"></i><b>5.3</b> Approaches for Novel Categories</a></li>
+<li class="chapter" data-level="5.4" data-path="supervised-encoding-methods.html"><a href="supervised-encoding-methods.html"><i class="fa fa-check"></i><b>5.4</b> Supervised Encoding Methods</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="supervised-encoding-methods.html"><a href="supervised-encoding-methods.html#likelihood-encoding"><i class="fa fa-check"></i><b>5.4.1</b> Likelihood Encoding</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="encodings-for-ordered-data.html"><a href="encodings-for-ordered-data.html"><i class="fa fa-check"></i><b>5.5</b> Encodings for Ordered Data</a></li>
+<li class="chapter" data-level="5.6" data-path="creating-features-for-text-data.html"><a href="creating-features-for-text-data.html"><i class="fa fa-check"></i><b>5.6</b> Creating Features for Text Data</a></li>
+<li class="chapter" data-level="5.7" data-path="factors-versus-dummy-variables-in-tree-based-models.html"><a href="factors-versus-dummy-variables-in-tree-based-models.html"><i class="fa fa-check"></i><b>5.7</b> Factors versus Dummy Variables in Tree-Based Models</a></li>
+<li class="chapter" data-level="5.8" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>5.8</b> Summary</a></li>
+<li class="chapter" data-level="5.9" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html"><i class="fa fa-check"></i><b>5.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html#cohort-1-4"><i class="fa fa-check"></i><b>5.9.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="engineering-numeric-predictors.html"><a href="engineering-numeric-predictors.html"><i class="fa fa-check"></i><b>6</b> Engineering Numeric Predictors</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>6.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="6.2" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html"><i class="fa fa-check"></i><b>6.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html#cohort-1-5"><i class="fa fa-check"></i><b>6.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="detecting-interaction-effects.html"><a href="detecting-interaction-effects.html"><i class="fa fa-check"></i><b>7</b> Detecting Interaction Effects</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="introduction-2.html"><a href="introduction-2.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="four-type-of-interactions.html"><a href="four-type-of-interactions.html"><i class="fa fa-check"></i><b>7.2</b> Four type of Interactions</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="four-type-of-interactions.html"><a href="four-type-of-interactions.html#building-the-base-model-for-ames-data"><i class="fa fa-check"></i><b>7.2.1</b> Building the base-model for <strong>Ames</strong> data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="guiding-principles-in-the-search-for-interactions.html"><a href="guiding-principles-in-the-search-for-interactions.html"><i class="fa fa-check"></i><b>7.3</b> Guiding Principles in the Search for Interactions</a></li>
+<li class="chapter" data-level="7.4" data-path="practical-considerations.html"><a href="practical-considerations.html"><i class="fa fa-check"></i><b>7.4</b> Practical Considerations</a></li>
+<li class="chapter" data-level="7.5" data-path="the-brute-force-approach-to-identifying-predictive-interactions.html"><a href="the-brute-force-approach-to-identifying-predictive-interactions.html"><i class="fa fa-check"></i><b>7.5</b> The Brute-Force Approach to Identifying Predictive Interactions</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="the-brute-force-approach-to-identifying-predictive-interactions.html"><a href="the-brute-force-approach-to-identifying-predictive-interactions.html#simple-screening"><i class="fa fa-check"></i><b>7.5.1</b> Simple Screening</a></li>
+<li class="chapter" data-level="7.5.2" data-path="the-brute-force-approach-to-identifying-predictive-interactions.html"><a href="the-brute-force-approach-to-identifying-predictive-interactions.html#penalized-regression"><i class="fa fa-check"></i><b>7.5.2</b> Penalized Regression</a></li>
+<li class="chapter" data-level="7.5.3" data-path="the-brute-force-approach-to-identifying-predictive-interactions.html"><a href="the-brute-force-approach-to-identifying-predictive-interactions.html#practical-example-with-ames-data-and-glmnet"><i class="fa fa-check"></i><b>7.5.3</b> Practical example with Ames data and glmnet</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="approaches-when-complete-enumeration-is-practically-impossible.html"><a href="approaches-when-complete-enumeration-is-practically-impossible.html"><i class="fa fa-check"></i><b>7.6</b> Approaches when Complete Enumeration is Practically Impossible</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="approaches-when-complete-enumeration-is-practically-impossible.html"><a href="approaches-when-complete-enumeration-is-practically-impossible.html#guiding-principles-and-two-stage-modeling"><i class="fa fa-check"></i><b>7.6.1</b> Guiding Principles and Two-stage Modeling</a></li>
+<li class="chapter" data-level="7.6.2" data-path="approaches-when-complete-enumeration-is-practically-impossible.html"><a href="approaches-when-complete-enumeration-is-practically-impossible.html#tree-based-methods"><i class="fa fa-check"></i><b>7.6.2</b> Tree-based Methods</a></li>
+<li class="chapter" data-level="7.6.3" data-path="approaches-when-complete-enumeration-is-practically-impossible.html"><a href="approaches-when-complete-enumeration-is-practically-impossible.html#the-feasible-solution-algorithm"><i class="fa fa-check"></i><b>7.6.3</b> The Feasible Solution Algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="other-potentially-useful-tools.html"><a href="other-potentially-useful-tools.html"><i class="fa fa-check"></i><b>7.7</b> Other Potentially Useful Tools</a></li>
+<li class="chapter" data-level="7.8" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7.8</b> Conclusion</a></li>
+<li class="chapter" data-level="7.9" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html"><i class="fa fa-check"></i><b>7.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="7.9.1" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html#cohort-1-6"><i class="fa fa-check"></i><b>7.9.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handling-missing-data.html"><a href="handling-missing-data.html"><i class="fa fa-check"></i><b>8</b> Handling Missing Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>8.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="8.2" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html"><i class="fa fa-check"></i><b>8.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html#cohort-1-7"><i class="fa fa-check"></i><b>8.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="working-with-profile-data.html"><a href="working-with-profile-data.html"><i class="fa fa-check"></i><b>9</b> Working with Profile Data</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="slide-1-3.html"><a href="slide-1-3.html"><i class="fa fa-check"></i><b>9.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="9.2" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html"><i class="fa fa-check"></i><b>9.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html#cohort-1-8"><i class="fa fa-check"></i><b>9.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>10</b> Feature Selection Overview</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="slide-1-4.html"><a href="slide-1-4.html"><i class="fa fa-check"></i><b>10.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="10.2" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html"><i class="fa fa-check"></i><b>10.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html#cohort-1-9"><i class="fa fa-check"></i><b>10.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="greedy-search-methods.html"><a href="greedy-search-methods.html"><i class="fa fa-check"></i><b>11</b> Greedy Search Methods</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="slide-1-5.html"><a href="slide-1-5.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="11.2" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i><b>11.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-10"><i class="fa fa-check"></i><b>11.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="slide-1-6.html"><a href="slide-1-6.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="12.2" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Feature Engineering and Selection Book Club</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="example-1" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Example 1<a href="example-1.html#example-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Code for Ischemic Stroke case study.
+Code requires these packages, across all of Chapter 2:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="example-1.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb22-2"><a href="example-1.html#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(utils)</span>
+<span id="cb22-3"><a href="example-1.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pROC)</span>
+<span id="cb22-4"><a href="example-1.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb22-5"><a href="example-1.html#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb22-6"><a href="example-1.html#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb22-7"><a href="example-1.html#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb22-8"><a href="example-1.html#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="example-1.html#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code></pre></div>
+<p>Load the stroke_data.R.data from the Ischemic_Stroke folder here: <a href="https://github.com/topepo/FES/tree/master/Data_Sets" class="uri">https://github.com/topepo/FES/tree/master/Data_Sets</a></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="example-1.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/topepo/FES/blob/master/Data_Sets/Ischemic_Stroke/stroke_data.RData?raw=true&quot;</span>))</span>
+<span id="cb23-2"><a href="example-1.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="fu">url</span>(<span class="st">&quot;https://github.com/topepo/FES/blob/master/02_Predicting_Risk_of_Ischemic_Stroke/stroke_rfe.RData?raw=true&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="example-1.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#pre_split data how many in each class by set</span></span>
+<span id="cb24-2"><a href="example-1.html#cb24-2" aria-hidden="true" tabindex="-1"></a>stroke_train <span class="sc">%&gt;%</span> </span>
+<span id="cb24-3"><a href="example-1.html#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Stroke) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-4"><a href="example-1.html#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Data =</span> <span class="st">&quot;Training&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-5"><a href="example-1.html#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb24-6"><a href="example-1.html#cb24-6" aria-hidden="true" tabindex="-1"></a>    stroke_test <span class="sc">%&gt;%</span> </span>
+<span id="cb24-7"><a href="example-1.html#cb24-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">count</span>(Stroke) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-8"><a href="example-1.html#cb24-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Data =</span> <span class="st">&quot;Testing&quot;</span>)</span>
+<span id="cb24-9"><a href="example-1.html#cb24-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-10"><a href="example-1.html#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(Stroke, n)</span></code></pre></div>
+<pre><code>##       Data  N  Y
+## 1  Testing 18 19
+## 2 Training 44 45</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="example-1.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sampling using tidymodels/rsample package</span></span>
+<span id="cb26-2"><a href="example-1.html#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="example-1.html#cb26-3" aria-hidden="true" tabindex="-1"></a>all_stroke <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(stroke_train, stroke_test) <span class="co">#put all the data back together</span></span>
+<span id="cb26-4"><a href="example-1.html#cb26-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-5"><a href="example-1.html#cb26-5" aria-hidden="true" tabindex="-1"></a>tidy_sample <span class="ot">&lt;-</span> <span class="co">#sample, but fixing proportion of Stroke between test and train</span></span>
+<span id="cb26-6"><a href="example-1.html#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">initial_split</span>(all_stroke, <span class="at">prop =</span> <span class="fl">0.71</span>, <span class="at">strata =</span> Stroke) </span>
+<span id="cb26-7"><a href="example-1.html#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="example-1.html#cb26-8" aria-hidden="true" tabindex="-1"></a>tidy_testing <span class="ot">&lt;-</span> <span class="fu">testing</span>(tidy_sample) <span class="co">#extract testing</span></span>
+<span id="cb26-9"><a href="example-1.html#cb26-9" aria-hidden="true" tabindex="-1"></a>tidy_training <span class="ot">&lt;-</span> <span class="fu">training</span>(tidy_sample) <span class="co">#extract training</span></span>
+<span id="cb26-10"><a href="example-1.html#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="example-1.html#cb26-11" aria-hidden="true" tabindex="-1"></a>tidy_training <span class="sc">%&gt;%</span> </span>
+<span id="cb26-12"><a href="example-1.html#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Stroke) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-13"><a href="example-1.html#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Data =</span> <span class="st">&quot;Training&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-14"><a href="example-1.html#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
+<span id="cb26-15"><a href="example-1.html#cb26-15" aria-hidden="true" tabindex="-1"></a>    tidy_testing <span class="sc">%&gt;%</span> </span>
+<span id="cb26-16"><a href="example-1.html#cb26-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">count</span>(Stroke) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-17"><a href="example-1.html#cb26-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">Data =</span> <span class="st">&quot;Testing&quot;</span>)</span>
+<span id="cb26-18"><a href="example-1.html#cb26-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-19"><a href="example-1.html#cb26-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(Stroke, n)</span></code></pre></div>
+<pre><code>##       Data  N  Y
+## 1  Testing 18 19
+## 2 Training 44 45</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="example-1.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># distribution of training and testing is either exactly the same or one off depending on seed</span></span></code></pre></div>
+<div id="predictor-quality" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Predictor Quality<a href="example-1.html#predictor-quality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The first thing is to just look at your data:</p>
+<ul>
+<li>what’s missing</li>
+<li>what’s normal(ish)</li>
+<li>what’s the range</li>
+<li>what’s the data type</li>
+</ul>
+<p>dplyr’s glimpse is a good starting point.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="example-1.html#cb29-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">glimpse</span>(tidy_training)</span></code></pre></div>
+<pre><code>## Rows: 89
+## Columns: 29
+## $ Stroke                      &lt;fct&gt; N, N, N, N, N, N, N, N, N, N, N, N, N, N, …
+## $ NASCET                      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+## $ CALCVol                     &lt;dbl&gt; 235.25260, 31.43360, 360.73754, 433.34638,…
+## $ CALCVolProp                 &lt;dbl&gt; 0.070442702, 0.016164769, 0.073350960, 0.1…
+## $ MATXVol                     &lt;dbl&gt; 3156.835, 3032.861, 4444.045, 3106.593, 24…
+## $ MATXVolProp                 &lt;dbl&gt; 0.7599582, 0.8133063, 0.7839963, 0.7520699…
+## $ LRNCVol                     &lt;dbl&gt; 224.87171, 368.56066, 277.26275, 36.50728,…
+## $ LRNCVolProp                 &lt;dbl&gt; 0.09108513, 0.13398944, 0.06073955, 0.0146…
+## $ MaxCALCArea                 &lt;dbl&gt; 12.350494, 7.130660, 21.297476, 27.488064,…
+## $ MaxCALCAreaProp             &lt;dbl&gt; 0.3657684, 0.2112469, 0.3862498, 0.4901225…
+## $ MaxDilationByArea           &lt;dbl&gt; 520.98259, 91.72005, 60.42487, 240.78404, …
+## $ MaxMATXArea                 &lt;dbl&gt; 71.24743, 27.21084, 43.43857, 38.78870, 36…
+## $ MaxMATXAreaProp             &lt;dbl&gt; 0.9523705, 0.9455539, 0.9526153, 0.9439308…
+## $ MaxLRNCArea                 &lt;dbl&gt; 21.686815, 6.434661, 9.403324, 3.242581, 3…
+## $ MaxLRNCAreaProp             &lt;dbl&gt; 0.42957812, 0.28151013, 0.35606305, 0.0725…
+## $ MaxMaxWallThickness         &lt;dbl&gt; 2.409943, 2.540334, 3.411158, 3.695132, 4.…
+## $ MaxRemodelingRatio          &lt;dbl&gt; 5.697931, 1.739927, 2.059370, 2.909791, 2.…
+## $ MaxStenosisByArea           &lt;dbl&gt; 18.99554, 30.23761, 41.56107, 42.17789, 43…
+## $ MaxWallArea                 &lt;dbl&gt; 106.20676, 33.36714, 62.27910, 59.76256, 5…
+## $ WallVol                     &lt;dbl&gt; 4192.170, 3917.040, 5814.552, 2489.344, 29…
+## $ MaxStenosisByDiameter       &lt;dbl&gt; 10.54411, 18.64620, 36.52606, 31.82890, 33…
+## $ age                         &lt;int&gt; 72, 76, 82, 83, 85, 56, 60, 70, 63, 77, 90…
+## $ sex                         &lt;int&gt; 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, …
+## $ SmokingHistory              &lt;int&gt; 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, …
+## $ AtrialFibrillation          &lt;int&gt; 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, …
+## $ CoronaryArteryDisease       &lt;int&gt; 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, …
+## $ DiabetesHistory             &lt;int&gt; 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, …
+## $ HypercholesterolemiaHistory &lt;int&gt; 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, …
+## $ HypertensionHistory         &lt;int&gt; 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, …</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="example-1.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># skimr is better (by a lot)</span></span>
+<span id="cb31-2"><a href="example-1.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://github.com/ropensci/skimr</span></span>
+<span id="cb31-3"><a href="example-1.html#cb31-3" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(all_stroke)</span></code></pre></div>
+<table>
+<caption><span id="tab:02-illustrative-example-predicting-risk-of-ischemic-stroke-6">Table 2.1: </span>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">all_stroke</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">126</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">29</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">factor</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">28</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">ordered</th>
+<th align="right">n_unique</th>
+<th align="left">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Stroke</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">Y: 64, N: 62</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">NASCET</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.35</td>
+<td align="right">0.48</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="left">▇▁▁▁▅</td>
+</tr>
+<tr class="even">
+<td align="left">CALCVol</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">199.45</td>
+<td align="right">213.49</td>
+<td align="right">4.02</td>
+<td align="right">77.12</td>
+<td align="right">146.76</td>
+<td align="right">253.95</td>
+<td align="right">1517.54</td>
+<td align="left">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">CALCVolProp</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.07</td>
+<td align="right">0.06</td>
+<td align="right">0.00</td>
+<td align="right">0.04</td>
+<td align="right">0.06</td>
+<td align="right">0.10</td>
+<td align="right">0.44</td>
+<td align="left">▇▂▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">MATXVol</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3074.68</td>
+<td align="right">738.98</td>
+<td align="right">939.34</td>
+<td align="right">2525.41</td>
+<td align="right">3070.49</td>
+<td align="right">3596.27</td>
+<td align="right">4821.52</td>
+<td align="left">▁▅▇▇▂</td>
+</tr>
+<tr class="odd">
+<td align="left">MATXVolProp</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.77</td>
+<td align="right">0.06</td>
+<td align="right">0.48</td>
+<td align="right">0.75</td>
+<td align="right">0.78</td>
+<td align="right">0.81</td>
+<td align="right">0.87</td>
+<td align="left">▁▁▂▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">LRNCVol</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">387.00</td>
+<td align="right">307.26</td>
+<td align="right">15.66</td>
+<td align="right">156.85</td>
+<td align="right">317.70</td>
+<td align="right">508.37</td>
+<td align="right">1612.40</td>
+<td align="left">▇▅▂▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">LRNCVolProp</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.11</td>
+<td align="right">0.07</td>
+<td align="right">0.01</td>
+<td align="right">0.06</td>
+<td align="right">0.10</td>
+<td align="right">0.15</td>
+<td align="right">0.49</td>
+<td align="left">▇▅▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">MaxCALCArea</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">20.40</td>
+<td align="right">13.13</td>
+<td align="right">1.75</td>
+<td align="right">10.86</td>
+<td align="right">16.54</td>
+<td align="right">26.77</td>
+<td align="right">63.35</td>
+<td align="left">▇▇▃▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">MaxCALCAreaProp</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.35</td>
+<td align="right">0.16</td>
+<td align="right">0.01</td>
+<td align="right">0.24</td>
+<td align="right">0.33</td>
+<td align="right">0.42</td>
+<td align="right">0.96</td>
+<td align="left">▂▇▅▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">MaxDilationByArea</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">451.18</td>
+<td align="right">870.06</td>
+<td align="right">15.53</td>
+<td align="right">78.83</td>
+<td align="right">150.26</td>
+<td align="right">370.28</td>
+<td align="right">5920.63</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">MaxMATXArea</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">65.49</td>
+<td align="right">58.05</td>
+<td align="right">17.19</td>
+<td align="right">36.63</td>
+<td align="right">45.73</td>
+<td align="right">67.48</td>
+<td align="right">341.12</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">MaxMATXAreaProp</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.95</td>
+<td align="right">0.09</td>
+<td align="right">0.83</td>
+<td align="right">0.94</td>
+<td align="right">0.95</td>
+<td align="right">0.96</td>
+<td align="right">1.94</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">MaxLRNCArea</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">17.62</td>
+<td align="right">17.83</td>
+<td align="right">1.26</td>
+<td align="right">6.82</td>
+<td align="right">12.87</td>
+<td align="right">20.51</td>
+<td align="right">134.34</td>
+<td align="left">▇▂▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">MaxLRNCAreaProp</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.33</td>
+<td align="right">0.15</td>
+<td align="right">0.03</td>
+<td align="right">0.20</td>
+<td align="right">0.32</td>
+<td align="right">0.44</td>
+<td align="right">0.74</td>
+<td align="left">▃▇▆▅▁</td>
+</tr>
+<tr class="odd">
+<td align="left">MaxMaxWallThickness</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">5.86</td>
+<td align="right">9.23</td>
+<td align="right">1.31</td>
+<td align="right">3.62</td>
+<td align="right">4.72</td>
+<td align="right">5.51</td>
+<td align="right">83.56</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">MaxRemodelingRatio</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4.75</td>
+<td align="right">4.48</td>
+<td align="right">1.21</td>
+<td align="right">2.31</td>
+<td align="right">3.22</td>
+<td align="right">5.35</td>
+<td align="right">27.88</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">MaxStenosisByArea</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">74.80</td>
+<td align="right">19.67</td>
+<td align="right">19.00</td>
+<td align="right">61.81</td>
+<td align="right">79.34</td>
+<td align="right">90.00</td>
+<td align="right">100.00</td>
+<td align="left">▁▃▃▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">MaxWallArea</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">89.94</td>
+<td align="right">74.97</td>
+<td align="right">19.97</td>
+<td align="right">53.21</td>
+<td align="right">66.67</td>
+<td align="right">92.80</td>
+<td align="right">454.17</td>
+<td align="left">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">WallVol</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4156.53</td>
+<td align="right">1083.81</td>
+<td align="right">1416.75</td>
+<td align="right">3464.17</td>
+<td align="right">4056.41</td>
+<td align="right">5066.84</td>
+<td align="right">6306.81</td>
+<td align="left">▁▅▇▆▃</td>
+</tr>
+<tr class="even">
+<td align="left">MaxStenosisByDiameter</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">63.76</td>
+<td align="right">22.64</td>
+<td align="right">10.54</td>
+<td align="right">47.63</td>
+<td align="right">63.42</td>
+<td align="right">78.97</td>
+<td align="right">100.00</td>
+<td align="left">▁▆▇▅▆</td>
+</tr>
+<tr class="odd">
+<td align="left">age</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">72.10</td>
+<td align="right">10.83</td>
+<td align="right">39.00</td>
+<td align="right">65.00</td>
+<td align="right">72.00</td>
+<td align="right">80.00</td>
+<td align="right">90.00</td>
+<td align="left">▁▂▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">sex</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.56</td>
+<td align="right">0.50</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="left">▆▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td align="left">SmokingHistory</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.58</td>
+<td align="right">0.50</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="left">▆▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">AtrialFibrillation</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.12</td>
+<td align="right">0.33</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">CoronaryArteryDisease</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.28</td>
+<td align="right">0.45</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="left">▇▁▁▁▃</td>
+</tr>
+<tr class="even">
+<td align="left">DiabetesHistory</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.22</td>
+<td align="right">0.42</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="left">▇▁▁▁▂</td>
+</tr>
+<tr class="odd">
+<td align="left">HypercholesterolemiaHistory</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.53</td>
+<td align="right">0.50</td>
+<td align="right">0.00</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="left">▇▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">HypertensionHistory</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.77</td>
+<td align="right">0.42</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="right">1.00</td>
+<td align="left">▂▁▁▁▇</td>
+</tr>
+</tbody>
+</table>
+<p>The book says original dataset has 4 missing data points, but already been median imputed via <code>recipes::step_impute_median()</code>
+imputation methhods discussed more in Chapter 8, some models hate missing data</p>
+<p>if you have missing data…
+use naniar/visdat to visualize datasets and understand where you’re missing data
+<a href="https://cran.r-project.org/web/packages/naniar/vignettes/getting-started-w-naniar.html">getting-started-w-naniar</a></p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="example-1.html#cb32-1" aria-hidden="true" tabindex="-1"></a>visdat<span class="sc">::</span><span class="fu">vis_dat</span>(tidy_training)</span></code></pre></div>
+<p><img src="bookclub-feat_eng_files/figure-html/02-illustrative-example-predicting-risk-of-ischemic-stroke-7-1.png" width="672" /></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="example-1.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># https://bookdown.org/max/FES/numeric-one-to-one.html#numeric-one-to-one</span></span>
+<span id="cb33-2"><a href="example-1.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># this is a plot of the distribution of MaxLRNCArea, very right skewed</span></span>
+<span id="cb33-3"><a href="example-1.html#cb33-3" aria-hidden="true" tabindex="-1"></a>fig_2_2_a <span class="ot">&lt;-</span> </span>
+<span id="cb33-4"><a href="example-1.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  all_stroke <span class="sc">%&gt;%</span> </span>
+<span id="cb33-5"><a href="example-1.html#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> MaxLRNCArea)) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="example-1.html#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">col =</span> <span class="st">&quot;#D53E4F&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;#D53E4F&quot;</span>, <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb33-7"><a href="example-1.html#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;MaxLRNCArea&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="example-1.html#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-9"><a href="example-1.html#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;(a)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-10"><a href="example-1.html#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb33-11"><a href="example-1.html#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="example-1.html#cb33-12" aria-hidden="true" tabindex="-1"></a>fig_2_2_a</span></code></pre></div>
+<p><img src="bookclub-feat_eng_files/figure-html/02-illustrative-example-predicting-risk-of-ischemic-stroke-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="example-1.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># same plot but after yeojohnson transformmation, become normal-like</span></span>
+<span id="cb34-2"><a href="example-1.html#cb34-2" aria-hidden="true" tabindex="-1"></a>fig_2_2_b <span class="ot">&lt;-</span> </span>
+<span id="cb34-3"><a href="example-1.html#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Stroke <span class="sc">~</span> ., <span class="at">data =</span> all_stroke) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-4"><a href="example-1.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-5"><a href="example-1.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-6"><a href="example-1.html#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(., <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-7"><a href="example-1.html#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> MaxLRNCArea)) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="example-1.html#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">col =</span> <span class="st">&quot;#D53E4F&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;#D53E4F&quot;</span>, <span class="at">alpha =</span> .<span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb34-9"><a href="example-1.html#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Transformed MaxLRNCArea&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-10"><a href="example-1.html#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Frequency&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-11"><a href="example-1.html#cb34-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;(b)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb34-12"><a href="example-1.html#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb34-13"><a href="example-1.html#cb34-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-14"><a href="example-1.html#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="co">#sidebyside with patchwork</span></span>
+<span id="cb34-15"><a href="example-1.html#cb34-15" aria-hidden="true" tabindex="-1"></a>fig_2_2_a <span class="sc">+</span> fig_2_2_b</span></code></pre></div>
+<p><img src="bookclub-feat_eng_files/figure-html/02-illustrative-example-predicting-risk-of-ischemic-stroke-9-1.png" width="672" /></p>
+</div>
+<div id="understanding-interactions-and-multicollinearity" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> understanding interactions and multicollinearity<a href="example-1.html#understanding-interactions-and-multicollinearity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>some models hate correlated traits</p>
+<p>this only looks at imaging traits, (why is it called risk?)</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="example-1.html#cb35-1" aria-hidden="true" tabindex="-1"></a>risk_train <span class="ot">&lt;-</span></span>
+<span id="cb35-2"><a href="example-1.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Stroke <span class="sc">~</span> ., <span class="at">data =</span> stroke_train) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="example-1.html#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_center</span>(<span class="fu">all_of</span>(VC_preds)) <span class="sc">%&gt;%</span> <span class="co"># center the data</span></span>
+<span id="cb35-4"><a href="example-1.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_scale</span>(<span class="fu">all_of</span>(VC_preds)) <span class="sc">%&gt;%</span> <span class="co"># scale the data</span></span>
+<span id="cb35-5"><a href="example-1.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_of</span>(VC_preds)) <span class="sc">%&gt;%</span> <span class="co"># YeoJohnson transform https://recipes.tidymodels.org/reference/step_YeoJohnson.html</span></span>
+<span id="cb35-6"><a href="example-1.html#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-7"><a href="example-1.html#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(., <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> <span class="co"># juice is superseded by bake</span></span>
+<span id="cb35-8"><a href="example-1.html#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">one_of</span>(<span class="fu">c</span>(<span class="st">&quot;Stroke&quot;</span>, <span class="st">&quot;NASCET&quot;</span>, risk_preds))) <span class="co">#select everything but these</span></span>
+<span id="cb35-9"><a href="example-1.html#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="example-1.html#cb35-10" aria-hidden="true" tabindex="-1"></a>risk_corr <span class="ot">&lt;-</span> <span class="fu">cor</span>(risk_train) <span class="co">#make a correlation matrix</span></span>
+<span id="cb35-11"><a href="example-1.html#cb35-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-12"><a href="example-1.html#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(risk_corr, <span class="at">addgrid.col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">05</span>), <span class="at">order =</span> <span class="st">&quot;hclust&quot;</span>) <span class="co">#plot that</span></span></code></pre></div>
+<p><img src="bookclub-feat_eng_files/figure-html/02-illustrative-example-predicting-risk-of-ischemic-stroke-10-1.png" width="672" /></p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="example-1.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># you can remove these with step_corr(all_predictors(), threshold = 0.75) %&gt;% </span></span>
+<span id="cb36-2"><a href="example-1.html#cb36-2" aria-hidden="true" tabindex="-1"></a>risk_train_step_corr <span class="ot">&lt;-</span></span>
+<span id="cb36-3"><a href="example-1.html#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Stroke <span class="sc">~</span> ., <span class="at">data =</span> stroke_train) <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="example-1.html#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_center</span>(<span class="fu">all_of</span>(VC_preds)) <span class="sc">%&gt;%</span> <span class="co"># center the data</span></span>
+<span id="cb36-5"><a href="example-1.html#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_scale</span>(<span class="fu">all_of</span>(VC_preds)) <span class="sc">%&gt;%</span> <span class="co"># scale the data</span></span>
+<span id="cb36-6"><a href="example-1.html#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_of</span>(VC_preds)) <span class="sc">%&gt;%</span> <span class="co"># YeoJohnson transform https://recipes.tidymodels.org/reference/step_YeoJohnson.html</span></span>
+<span id="cb36-7"><a href="example-1.html#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_corr</span>(<span class="fu">all_predictors</span>(), <span class="at">threshold =</span> <span class="fl">0.75</span>) <span class="sc">%&gt;%</span> <span class="co"># remove &quot;extra&quot; predictors with correlations higher than 0.75</span></span>
+<span id="cb36-8"><a href="example-1.html#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>(.) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-9"><a href="example-1.html#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bake</span>(., <span class="at">new_data =</span> <span class="cn">NULL</span>) <span class="sc">%&gt;%</span> <span class="co"># juice is superseded by bake</span></span>
+<span id="cb36-10"><a href="example-1.html#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">one_of</span>(<span class="fu">c</span>(<span class="st">&quot;Stroke&quot;</span>, <span class="st">&quot;NASCET&quot;</span>, risk_preds))) <span class="co">#select everything but these</span></span>
+<span id="cb36-11"><a href="example-1.html#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="example-1.html#cb36-12" aria-hidden="true" tabindex="-1"></a>risk_corr_step_corr <span class="ot">&lt;-</span> <span class="fu">cor</span>(risk_train_step_corr) <span class="co">#make a correlation matrix</span></span>
+<span id="cb36-13"><a href="example-1.html#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="example-1.html#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(risk_corr_step_corr, <span class="at">addgrid.col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">05</span>), <span class="at">order =</span> <span class="st">&quot;hclust&quot;</span>) <span class="co">#plot that</span></span></code></pre></div>
+<p><img src="bookclub-feat_eng_files/figure-html/02-illustrative-example-predicting-risk-of-ischemic-stroke-11-1.png" width="672" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="example-1.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">#BUT WE&#39;RE NOT DOING THAT YET! Chapter 3 shows more methods on this.</span></span></code></pre></div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="example-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/02-illustrative_example_predicting_risk_of_ischemic_stroke.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

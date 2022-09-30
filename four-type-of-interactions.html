@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7.2 Four type of Interactions | Feature Engineering and Selection Book Club</title>
+  <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7.2 Four type of Interactions | Feature Engineering and Selection Book Club" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7.2 Four type of Interactions | Feature Engineering and Selection Book Club" />
+  
+  <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
+  
+
+<meta name="author" content="The R4DS Online Learning Community" />
+
+
+<meta name="date" content="2022-09-30" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-2.html"/>
+<link rel="next" href="guiding-principles-in-the-search-for-interactions.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/d3-3.3.8/d3.min.js"></script>
+<script src="libs/dagre-0.4.0/dagre-d3.min.js"></script>
+<link href="libs/mermaid-0.3.0/dist/mermaid.css" rel="stylesheet" />
+<script src="libs/mermaid-0.3.0/dist/mermaid.slim.min.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/chromatography-0.1/chromatography.js"></script>
+<script src="libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Feature Engineering and Selection Book Club</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="book-club-meetings.html"><a href="book-club-meetings.html"><i class="fa fa-check"></i>Book club meetings</a></li>
+<li class="chapter" data-level="" data-path="pace.html"><a href="pace.html"><i class="fa fa-check"></i>Pace</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="structure-of-the-book.html"><a href="structure-of-the-book.html"><i class="fa fa-check"></i><b>1.1</b> Structure of the book</a></li>
+<li class="chapter" data-level="1.2" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html"><i class="fa fa-check"></i><b>1.2</b> Good Practice guidelines</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html#what-is-feature-engineering"><i class="fa fa-check"></i><b>1.2.1</b> What is feature engineering</a></li>
+<li class="chapter" data-level="1.2.2" data-path="good-practice-guidelines.html"><a href="good-practice-guidelines.html#nature-of-modeling"><i class="fa fa-check"></i><b>1.2.2</b> Nature of modeling</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="a-model-with-two-predictors.html"><a href="a-model-with-two-predictors.html"><i class="fa fa-check"></i><b>1.3</b> A model with two predictors</a></li>
+<li class="chapter" data-level="1.4" data-path="important-concepts.html"><a href="important-concepts.html"><i class="fa fa-check"></i><b>1.4</b> Important concepts</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="important-concepts.html"><a href="important-concepts.html#acknowledge-vulnerabilities"><i class="fa fa-check"></i><b>1.4.1</b> Acknowledge vulnerabilities</a></li>
+<li class="chapter" data-level="1.4.2" data-path="important-concepts.html"><a href="important-concepts.html#the-modeling-process"><i class="fa fa-check"></i><b>1.4.2</b> The <strong>Modeling process</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="predicting-ridership-on-chicago.html"><a href="predicting-ridership-on-chicago.html"><i class="fa fa-check"></i><b>1.5</b> Predicting ridership on Chicago</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="predicting-ridership-on-chicago.html"><a href="predicting-ridership-on-chicago.html#extra-resources"><i class="fa fa-check"></i><b>1.5.1</b> Extra Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="meeting-videos.html"><a href="meeting-videos.html"><i class="fa fa-check"></i><b>1.6</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="1.6.1" data-path="meeting-videos.html"><a href="meeting-videos.html#cohort-1"><i class="fa fa-check"></i><b>1.6.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="illustrative-example-predicting-risk-of-ischemic-stroke.html"><a href="illustrative-example-predicting-risk-of-ischemic-stroke.html"><i class="fa fa-check"></i><b>2</b> Illustrative Example: Predicting Risk of Ischemic Stroke</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="introduction-1.html"><a href="introduction-1.html"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="example-1.html"><a href="example-1.html"><i class="fa fa-check"></i><b>2.2</b> Example 1</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="example-1.html"><a href="example-1.html#predictor-quality"><i class="fa fa-check"></i><b>2.2.1</b> Predictor Quality</a></li>
+<li class="chapter" data-level="2.2.2" data-path="example-1.html"><a href="example-1.html#understanding-interactions-and-multicollinearity"><i class="fa fa-check"></i><b>2.2.2</b> understanding interactions and multicollinearity</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="example-2.html"><a href="example-2.html"><i class="fa fa-check"></i><b>2.3</b> Example 2</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="example-2.html"><a href="example-2.html#create-a-null-model-with-no-predictors-to-get-baseline-performance"><i class="fa fa-check"></i><b>2.3.1</b> Create a “null model” with no predictors to get baseline performance</a></li>
+<li class="chapter" data-level="2.3.2" data-path="example-2.html"><a href="example-2.html#with-tidymodels"><i class="fa fa-check"></i><b>2.3.2</b> With Tidymodels</a></li>
+<li class="chapter" data-level="2.3.3" data-path="example-2.html"><a href="example-2.html#interaction-exploration"><i class="fa fa-check"></i><b>2.3.3</b> Interaction exploration</a></li>
+<li class="chapter" data-level="2.3.4" data-path="example-2.html"><a href="example-2.html#cohort-1-1"><i class="fa fa-check"></i><b>2.3.4</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="a-review-of-the-predictive-modeling-process.html"><a href="a-review-of-the-predictive-modeling-process.html"><i class="fa fa-check"></i><b>3</b> A Review of the Predictive Modeling Process</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="slide-1.html"><a href="slide-1.html"><i class="fa fa-check"></i><b>3.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="3.2" data-path="meeting-videos-1.html"><a href="meeting-videos-1.html"><i class="fa fa-check"></i><b>3.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="meeting-videos-1.html"><a href="meeting-videos-1.html#cohort-1-2"><i class="fa fa-check"></i><b>3.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-visualizations.html"><a href="exploratory-visualizations.html"><i class="fa fa-check"></i><b>4</b> Exploratory Visualizations</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="data-visualization-chart.html"><a href="data-visualization-chart.html"><i class="fa fa-check"></i><b>4.1</b> Data Visualization Chart</a></li>
+<li class="chapter" data-level="4.2" data-path="introduction-to-the-chicago-train-ridership-dataset.html"><a href="introduction-to-the-chicago-train-ridership-dataset.html"><i class="fa fa-check"></i><b>4.2</b> Introduction to the Chicago Train Ridership Dataset</a></li>
+<li class="chapter" data-level="4.3" data-path="chicago-train-ridership-dataset.html"><a href="chicago-train-ridership-dataset.html"><i class="fa fa-check"></i><b>4.3</b> Chicago Train Ridership dataset</a></li>
+<li class="chapter" data-level="4.4" data-path="preliminary-exploratory-visualizations.html"><a href="preliminary-exploratory-visualizations.html"><i class="fa fa-check"></i><b>4.4</b> Preliminary exploratory visualizations</a></li>
+<li class="chapter" data-level="4.5" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html"><i class="fa fa-check"></i><b>4.5</b> Visualizations for Numeric Data</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#box-plots-violin-plots-and-histograms"><i class="fa fa-check"></i><b>4.5.1</b> Box Plots, Violin Plots, and Histograms</a></li>
+<li class="chapter" data-level="4.5.2" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#augmenting-visualizations-through-faceting-colors-and-shapes"><i class="fa fa-check"></i><b>4.5.2</b> Augmenting Visualizations through Faceting, Colors, and Shapes</a></li>
+<li class="chapter" data-level="4.5.3" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#scatterplots"><i class="fa fa-check"></i><b>4.5.3</b> Scatterplots</a></li>
+<li class="chapter" data-level="4.5.4" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#scatterplots---exclude-u.s.-holidays"><i class="fa fa-check"></i><b>4.5.4</b> Scatterplots - Exclude U.S. holidays</a></li>
+<li class="chapter" data-level="4.5.5" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#heatmaps"><i class="fa fa-check"></i><b>4.5.5</b> Heatmaps</a></li>
+<li class="chapter" data-level="4.5.6" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#correlation-matrix-plots"><i class="fa fa-check"></i><b>4.5.6</b> Correlation Matrix Plots</a></li>
+<li class="chapter" data-level="4.5.7" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#line-plots"><i class="fa fa-check"></i><b>4.5.7</b> Line plots</a></li>
+<li class="chapter" data-level="4.5.8" data-path="visualizations-for-numeric-data.html"><a href="visualizations-for-numeric-data.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.5.8</b> Principal Component Analysis (PCA)</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><i class="fa fa-check"></i><b>4.6</b> Visualizations for Categorical Data: Exploring the OKCupid dataset</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html#visualizing-relationships-between-outcomes-and-predictors"><i class="fa fa-check"></i><b>4.6.1</b> Visualizing Relationships between Outcomes and Predictors</a></li>
+<li class="chapter" data-level="4.6.2" data-path="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html"><a href="visualizations-for-categorical-data-exploring-the-okcupid-dataset.html#exploring-relationships-between-categorical-predictors"><i class="fa fa-check"></i><b>4.6.2</b> Exploring Relationships Between Categorical Predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="post-modeling-exploratory-visualizations.html"><a href="post-modeling-exploratory-visualizations.html"><i class="fa fa-check"></i><b>4.7</b> Post Modeling Exploratory Visualizations</a></li>
+<li class="chapter" data-level="4.8" data-path="residual-diagnostic-plots.html"><a href="residual-diagnostic-plots.html"><i class="fa fa-check"></i><b>4.8</b> Residual Diagnostic Plots</a></li>
+<li class="chapter" data-level="4.9" data-path="meeting-videos-2.html"><a href="meeting-videos-2.html"><i class="fa fa-check"></i><b>4.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="4.9.1" data-path="meeting-videos-2.html"><a href="meeting-videos-2.html#cohort-1-3"><i class="fa fa-check"></i><b>4.9.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="encoding-categorical-predictors.html"><a href="encoding-categorical-predictors.html"><i class="fa fa-check"></i><b>5</b> Encoding Categorical Predictors</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="creating-dummy-variables-for-unordered-categories.html"><a href="creating-dummy-variables-for-unordered-categories.html"><i class="fa fa-check"></i><b>5.1</b> Creating Dummy Variables for Unordered Categories</a></li>
+<li class="chapter" data-level="5.2" data-path="encoding-predictors-for-many-categories.html"><a href="encoding-predictors-for-many-categories.html"><i class="fa fa-check"></i><b>5.2</b> Encoding Predictors for Many Categories</a></li>
+<li class="chapter" data-level="5.3" data-path="approaches-for-novel-categories.html"><a href="approaches-for-novel-categories.html"><i class="fa fa-check"></i><b>5.3</b> Approaches for Novel Categories</a></li>
+<li class="chapter" data-level="5.4" data-path="supervised-encoding-methods.html"><a href="supervised-encoding-methods.html"><i class="fa fa-check"></i><b>5.4</b> Supervised Encoding Methods</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="supervised-encoding-methods.html"><a href="supervised-encoding-methods.html#likelihood-encoding"><i class="fa fa-check"></i><b>5.4.1</b> Likelihood Encoding</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="encodings-for-ordered-data.html"><a href="encodings-for-ordered-data.html"><i class="fa fa-check"></i><b>5.5</b> Encodings for Ordered Data</a></li>
+<li class="chapter" data-level="5.6" data-path="creating-features-for-text-data.html"><a href="creating-features-for-text-data.html"><i class="fa fa-check"></i><b>5.6</b> Creating Features for Text Data</a></li>
+<li class="chapter" data-level="5.7" data-path="factors-versus-dummy-variables-in-tree-based-models.html"><a href="factors-versus-dummy-variables-in-tree-based-models.html"><i class="fa fa-check"></i><b>5.7</b> Factors versus Dummy Variables in Tree-Based Models</a></li>
+<li class="chapter" data-level="5.8" data-path="summary.html"><a href="summary.html"><i class="fa fa-check"></i><b>5.8</b> Summary</a></li>
+<li class="chapter" data-level="5.9" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html"><i class="fa fa-check"></i><b>5.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="5.9.1" data-path="meeting-videos-3.html"><a href="meeting-videos-3.html#cohort-1-4"><i class="fa fa-check"></i><b>5.9.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="engineering-numeric-predictors.html"><a href="engineering-numeric-predictors.html"><i class="fa fa-check"></i><b>6</b> Engineering Numeric Predictors</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>6.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="6.2" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html"><i class="fa fa-check"></i><b>6.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html#cohort-1-5"><i class="fa fa-check"></i><b>6.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="detecting-interaction-effects.html"><a href="detecting-interaction-effects.html"><i class="fa fa-check"></i><b>7</b> Detecting Interaction Effects</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="introduction-2.html"><a href="introduction-2.html"><i class="fa fa-check"></i><b>7.1</b> Introduction</a></li>
+<li class="chapter" data-level="7.2" data-path="four-type-of-interactions.html"><a href="four-type-of-interactions.html"><i class="fa fa-check"></i><b>7.2</b> Four type of Interactions</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="four-type-of-interactions.html"><a href="four-type-of-interactions.html#building-the-base-model-for-ames-data"><i class="fa fa-check"></i><b>7.2.1</b> Building the base-model for <strong>Ames</strong> data</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="guiding-principles-in-the-search-for-interactions.html"><a href="guiding-principles-in-the-search-for-interactions.html"><i class="fa fa-check"></i><b>7.3</b> Guiding Principles in the Search for Interactions</a></li>
+<li class="chapter" data-level="7.4" data-path="practical-considerations.html"><a href="practical-considerations.html"><i class="fa fa-check"></i><b>7.4</b> Practical Considerations</a></li>
+<li class="chapter" data-level="7.5" data-path="the-brute-force-approach-to-identifying-predictive-interactions.html"><a href="the-brute-force-approach-to-identifying-predictive-interactions.html"><i class="fa fa-check"></i><b>7.5</b> The Brute-Force Approach to Identifying Predictive Interactions</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="the-brute-force-approach-to-identifying-predictive-interactions.html"><a href="the-brute-force-approach-to-identifying-predictive-interactions.html#simple-screening"><i class="fa fa-check"></i><b>7.5.1</b> Simple Screening</a></li>
+<li class="chapter" data-level="7.5.2" data-path="the-brute-force-approach-to-identifying-predictive-interactions.html"><a href="the-brute-force-approach-to-identifying-predictive-interactions.html#penalized-regression"><i class="fa fa-check"></i><b>7.5.2</b> Penalized Regression</a></li>
+<li class="chapter" data-level="7.5.3" data-path="the-brute-force-approach-to-identifying-predictive-interactions.html"><a href="the-brute-force-approach-to-identifying-predictive-interactions.html#practical-example-with-ames-data-and-glmnet"><i class="fa fa-check"></i><b>7.5.3</b> Practical example with Ames data and glmnet</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="approaches-when-complete-enumeration-is-practically-impossible.html"><a href="approaches-when-complete-enumeration-is-practically-impossible.html"><i class="fa fa-check"></i><b>7.6</b> Approaches when Complete Enumeration is Practically Impossible</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="approaches-when-complete-enumeration-is-practically-impossible.html"><a href="approaches-when-complete-enumeration-is-practically-impossible.html#guiding-principles-and-two-stage-modeling"><i class="fa fa-check"></i><b>7.6.1</b> Guiding Principles and Two-stage Modeling</a></li>
+<li class="chapter" data-level="7.6.2" data-path="approaches-when-complete-enumeration-is-practically-impossible.html"><a href="approaches-when-complete-enumeration-is-practically-impossible.html#tree-based-methods"><i class="fa fa-check"></i><b>7.6.2</b> Tree-based Methods</a></li>
+<li class="chapter" data-level="7.6.3" data-path="approaches-when-complete-enumeration-is-practically-impossible.html"><a href="approaches-when-complete-enumeration-is-practically-impossible.html#the-feasible-solution-algorithm"><i class="fa fa-check"></i><b>7.6.3</b> The Feasible Solution Algorithm</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="other-potentially-useful-tools.html"><a href="other-potentially-useful-tools.html"><i class="fa fa-check"></i><b>7.7</b> Other Potentially Useful Tools</a></li>
+<li class="chapter" data-level="7.8" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7.8</b> Conclusion</a></li>
+<li class="chapter" data-level="7.9" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html"><i class="fa fa-check"></i><b>7.9</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="7.9.1" data-path="meeting-videos-5.html"><a href="meeting-videos-5.html#cohort-1-6"><i class="fa fa-check"></i><b>7.9.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handling-missing-data.html"><a href="handling-missing-data.html"><i class="fa fa-check"></i><b>8</b> Handling Missing Data</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>8.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="8.2" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html"><i class="fa fa-check"></i><b>8.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="meeting-videos-6.html"><a href="meeting-videos-6.html#cohort-1-7"><i class="fa fa-check"></i><b>8.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="working-with-profile-data.html"><a href="working-with-profile-data.html"><i class="fa fa-check"></i><b>9</b> Working with Profile Data</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="slide-1-3.html"><a href="slide-1-3.html"><i class="fa fa-check"></i><b>9.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="9.2" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html"><i class="fa fa-check"></i><b>9.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html#cohort-1-8"><i class="fa fa-check"></i><b>9.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>10</b> Feature Selection Overview</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="slide-1-4.html"><a href="slide-1-4.html"><i class="fa fa-check"></i><b>10.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="10.2" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html"><i class="fa fa-check"></i><b>10.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html#cohort-1-9"><i class="fa fa-check"></i><b>10.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="greedy-search-methods.html"><a href="greedy-search-methods.html"><i class="fa fa-check"></i><b>11</b> Greedy Search Methods</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="slide-1-5.html"><a href="slide-1-5.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="11.2" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i><b>11.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-10"><i class="fa fa-check"></i><b>11.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="slide-1-6.html"><a href="slide-1-6.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="12.2" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Feature Engineering and Selection Book Club</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="four-type-of-interactions" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Four type of Interactions<a href="four-type-of-interactions.html#four-type-of-interactions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>additive is when <span class="math inline">\(\beta_3 \approx{0}\)</span></li>
+<li>antagonistic is when <span class="math inline">\(\beta_3 &lt; 0\)</span><br />
+</li>
+<li>synergistic is when <span class="math inline">\(\beta_3 &gt; 0\)</span><br />
+</li>
+<li>atypical is when <span class="math inline">\(\beta_3 \neq 0\)</span></li>
+</ol>
+<p>The main difference is that in the atypical interaction one of the two predictors doesn’t affect the response.</p>
+<p><img src="images/07-contour_plots.png" width="1048" /></p>
+<p>see full code: <strong>1_geom_contour.R</strong></p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="four-type-of-interactions.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb163-2"><a href="four-type-of-interactions.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="co"># simulated data</span></span>
+<span id="cb163-3"><a href="four-type-of-interactions.html#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb163-4"><a href="four-type-of-interactions.html#cb163-4" aria-hidden="true" tabindex="-1"></a>beta0<span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>)</span>
+<span id="cb163-5"><a href="four-type-of-interactions.html#cb163-5" aria-hidden="true" tabindex="-1"></a>beta1<span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">200</span>)</span>
+<span id="cb163-6"><a href="four-type-of-interactions.html#cb163-6" aria-hidden="true" tabindex="-1"></a>beta2<span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">200</span>)</span>
+<span id="cb163-7"><a href="four-type-of-interactions.html#cb163-7" aria-hidden="true" tabindex="-1"></a>x1<span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>,<span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb163-8"><a href="four-type-of-interactions.html#cb163-8" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">200</span>,<span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>)</span>
+<span id="cb163-9"><a href="four-type-of-interactions.html#cb163-9" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">200</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="four-type-of-interactions.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="do">##################################################</span></span>
+<span id="cb164-2"><a href="four-type-of-interactions.html#cb164-2" aria-hidden="true" tabindex="-1"></a><span class="co"># synergism</span></span>
+<span id="cb164-3"><a href="four-type-of-interactions.html#cb164-3" aria-hidden="true" tabindex="-1"></a>beta3<span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">10</span>,<span class="dv">200</span>) <span class="co"># c(-10,0,10) # antagonism, no interaction, or synergism</span></span>
+<span id="cb164-4"><a href="four-type-of-interactions.html#cb164-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-5"><a href="four-type-of-interactions.html#cb164-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> beta0 <span class="sc">+</span> beta1<span class="sc">*</span>x1 <span class="sc">+</span> beta2<span class="sc">*</span>x2 <span class="sc">+</span> beta3<span class="sc">*</span>(x1<span class="sc">*</span>x2) <span class="sc">+</span> e</span>
+<span id="cb164-6"><a href="four-type-of-interactions.html#cb164-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-7"><a href="four-type-of-interactions.html#cb164-7" aria-hidden="true" tabindex="-1"></a>observed<span class="ot">&lt;-</span> <span class="fu">tibble</span>(y,x1,x2)</span>
+<span id="cb164-8"><a href="four-type-of-interactions.html#cb164-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-9"><a href="four-type-of-interactions.html#cb164-9" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x1<span class="sc">*</span>x2,observed)</span>
+<span id="cb164-10"><a href="four-type-of-interactions.html#cb164-10" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod,observed)</span>
+<span id="cb164-11"><a href="four-type-of-interactions.html#cb164-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-12"><a href="four-type-of-interactions.html#cb164-12" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">with</span>(observed, interp<span class="sc">::</span><span class="fu">interp</span>(<span class="at">x=</span>x1,<span class="at">y=</span>x2,z))</span>
+<span id="cb164-13"><a href="four-type-of-interactions.html#cb164-13" aria-hidden="true" tabindex="-1"></a>griddf <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">rep</span>(grid<span class="sc">$</span>x, <span class="fu">nrow</span>(grid<span class="sc">$</span>z)),</span>
+<span id="cb164-14"><a href="four-type-of-interactions.html#cb164-14" aria-hidden="true" tabindex="-1"></a>                            <span class="at">y =</span> <span class="fu">rep</span>(grid<span class="sc">$</span>y, <span class="at">each =</span> <span class="fu">ncol</span>(grid<span class="sc">$</span>z)),</span>
+<span id="cb164-15"><a href="four-type-of-interactions.html#cb164-15" aria-hidden="true" tabindex="-1"></a>                            <span class="at">z =</span> <span class="fu">as.numeric</span>(grid<span class="sc">$</span>z)),<span class="sc">!</span><span class="fu">is.na</span>(z))</span>
+<span id="cb164-16"><a href="four-type-of-interactions.html#cb164-16" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(griddf, <span class="fu">aes</span>(x, y, <span class="at">z =</span> z)) <span class="sc">+</span></span>
+<span id="cb164-17"><a href="four-type-of-interactions.html#cb164-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="fu">aes</span>(<span class="at">colour =</span> <span class="fu">after_stat</span>(level)),<span class="at">size=</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb164-18"><a href="four-type-of-interactions.html#cb164-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_point(data = observed,aes(x1,x2)) +</span></span>
+<span id="cb164-19"><a href="four-type-of-interactions.html#cb164-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>()<span class="sc">+</span></span>
+<span id="cb164-20"><a href="four-type-of-interactions.html#cb164-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Synergistic&quot;</span>,<span class="at">color=</span><span class="st">&quot;Prediction&quot;</span>,<span class="at">x=</span><span class="st">&quot;x1&quot;</span>,<span class="at">y=</span><span class="st">&quot;x2&quot;</span>)<span class="sc">+</span></span>
+<span id="cb164-21"><a href="four-type-of-interactions.html#cb164-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)</span>
+<span id="cb164-22"><a href="four-type-of-interactions.html#cb164-22" aria-hidden="true" tabindex="-1"></a><span class="do">##################################################</span></span>
+<span id="cb164-23"><a href="four-type-of-interactions.html#cb164-23" aria-hidden="true" tabindex="-1"></a><span class="co"># no interaction</span></span>
+<span id="cb164-24"><a href="four-type-of-interactions.html#cb164-24" aria-hidden="true" tabindex="-1"></a>beta3 <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">200</span>) <span class="co"># c(10,0,10) # antagonism, no interaction, or synergism</span></span>
+<span id="cb164-25"><a href="four-type-of-interactions.html#cb164-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-26"><a href="four-type-of-interactions.html#cb164-26" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> beta0 <span class="sc">+</span> beta1<span class="sc">*</span>x1 <span class="sc">+</span> beta2<span class="sc">*</span>x2 <span class="sc">+</span> beta3<span class="sc">*</span>(x1<span class="sc">*</span>x2) <span class="sc">+</span> e</span>
+<span id="cb164-27"><a href="four-type-of-interactions.html#cb164-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-28"><a href="four-type-of-interactions.html#cb164-28" aria-hidden="true" tabindex="-1"></a>observed<span class="ot">&lt;-</span> <span class="fu">tibble</span>(y,x1,x2)</span>
+<span id="cb164-29"><a href="four-type-of-interactions.html#cb164-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-30"><a href="four-type-of-interactions.html#cb164-30" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x1<span class="sc">*</span>x2,observed)</span>
+<span id="cb164-31"><a href="four-type-of-interactions.html#cb164-31" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod,observed)</span>
+<span id="cb164-32"><a href="four-type-of-interactions.html#cb164-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-33"><a href="four-type-of-interactions.html#cb164-33" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">with</span>(observed, interp<span class="sc">::</span><span class="fu">interp</span>(<span class="at">x=</span>x1,<span class="at">y=</span>x2,z))</span>
+<span id="cb164-34"><a href="four-type-of-interactions.html#cb164-34" aria-hidden="true" tabindex="-1"></a>griddf <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">rep</span>(grid<span class="sc">$</span>x, <span class="fu">nrow</span>(grid<span class="sc">$</span>z)),</span>
+<span id="cb164-35"><a href="four-type-of-interactions.html#cb164-35" aria-hidden="true" tabindex="-1"></a>                            <span class="at">y =</span> <span class="fu">rep</span>(grid<span class="sc">$</span>y, <span class="at">each =</span> <span class="fu">ncol</span>(grid<span class="sc">$</span>z)),</span>
+<span id="cb164-36"><a href="four-type-of-interactions.html#cb164-36" aria-hidden="true" tabindex="-1"></a>                            <span class="at">z =</span> <span class="fu">as.numeric</span>(grid<span class="sc">$</span>z)),<span class="sc">!</span><span class="fu">is.na</span>(z))</span>
+<span id="cb164-37"><a href="four-type-of-interactions.html#cb164-37" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(griddf, <span class="fu">aes</span>(x, y, <span class="at">z =</span> z)) <span class="sc">+</span></span>
+<span id="cb164-38"><a href="four-type-of-interactions.html#cb164-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="fu">aes</span>(<span class="at">colour =</span> <span class="fu">after_stat</span>(level)),<span class="at">size=</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb164-39"><a href="four-type-of-interactions.html#cb164-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_point(data = observed,aes(x1,x2)) +</span></span>
+<span id="cb164-40"><a href="four-type-of-interactions.html#cb164-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>()<span class="sc">+</span></span>
+<span id="cb164-41"><a href="four-type-of-interactions.html#cb164-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Additive&quot;</span>,<span class="at">color=</span><span class="st">&quot;Prediction&quot;</span>,<span class="at">x=</span><span class="st">&quot;x1&quot;</span>,<span class="at">y=</span><span class="st">&quot;x2&quot;</span>)<span class="sc">+</span></span>
+<span id="cb164-42"><a href="four-type-of-interactions.html#cb164-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)</span>
+<span id="cb164-43"><a href="four-type-of-interactions.html#cb164-43" aria-hidden="true" tabindex="-1"></a><span class="do">##################################################</span></span>
+<span id="cb164-44"><a href="four-type-of-interactions.html#cb164-44" aria-hidden="true" tabindex="-1"></a><span class="co"># antagonism</span></span>
+<span id="cb164-45"><a href="four-type-of-interactions.html#cb164-45" aria-hidden="true" tabindex="-1"></a>beta3<span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">200</span>) <span class="co"># c(-10,0,10) # antagonism, no interaction, or synergism</span></span>
+<span id="cb164-46"><a href="four-type-of-interactions.html#cb164-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-47"><a href="four-type-of-interactions.html#cb164-47" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> beta0 <span class="sc">+</span> beta1<span class="sc">*</span>x1 <span class="sc">+</span> beta2<span class="sc">*</span>x2 <span class="sc">+</span> beta3<span class="sc">*</span>(x1<span class="sc">*</span>x2) <span class="sc">+</span> e</span>
+<span id="cb164-48"><a href="four-type-of-interactions.html#cb164-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-49"><a href="four-type-of-interactions.html#cb164-49" aria-hidden="true" tabindex="-1"></a>observed<span class="ot">&lt;-</span> <span class="fu">tibble</span>(y,x1,x2)</span>
+<span id="cb164-50"><a href="four-type-of-interactions.html#cb164-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-51"><a href="four-type-of-interactions.html#cb164-51" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span> x1 <span class="sc">*</span> x2 , <span class="at">data =</span> observed)  <span class="co"># rnd effects (1 + x1 | x2)</span></span>
+<span id="cb164-52"><a href="four-type-of-interactions.html#cb164-52" aria-hidden="true" tabindex="-1"></a>observed<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">predict</span>(mod,observed)</span>
+<span id="cb164-53"><a href="four-type-of-interactions.html#cb164-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb164-54"><a href="four-type-of-interactions.html#cb164-54" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">with</span>(observed, interp<span class="sc">::</span><span class="fu">interp</span>(<span class="at">x=</span>x1,<span class="at">y=</span>x2,z))</span>
+<span id="cb164-55"><a href="four-type-of-interactions.html#cb164-55" aria-hidden="true" tabindex="-1"></a>griddf <span class="ot">&lt;-</span> <span class="fu">subset</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">rep</span>(grid<span class="sc">$</span>x, <span class="fu">nrow</span>(grid<span class="sc">$</span>z)),</span>
+<span id="cb164-56"><a href="four-type-of-interactions.html#cb164-56" aria-hidden="true" tabindex="-1"></a>                            <span class="at">y =</span> <span class="fu">rep</span>(grid<span class="sc">$</span>y, <span class="at">each =</span> <span class="fu">ncol</span>(grid<span class="sc">$</span>z)),</span>
+<span id="cb164-57"><a href="four-type-of-interactions.html#cb164-57" aria-hidden="true" tabindex="-1"></a>                            <span class="at">z =</span> <span class="fu">as.numeric</span>(grid<span class="sc">$</span>z)),<span class="sc">!</span><span class="fu">is.na</span>(z))</span>
+<span id="cb164-58"><a href="four-type-of-interactions.html#cb164-58" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(griddf, <span class="fu">aes</span>(x, y, <span class="at">z =</span> z)) <span class="sc">+</span></span>
+<span id="cb164-59"><a href="four-type-of-interactions.html#cb164-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_contour</span>(<span class="fu">aes</span>(<span class="at">colour =</span> <span class="fu">after_stat</span>(level)),<span class="at">size=</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb164-60"><a href="four-type-of-interactions.html#cb164-60" aria-hidden="true" tabindex="-1"></a>  <span class="co"># geom_point(data = observed,aes(x1,x2)) +</span></span>
+<span id="cb164-61"><a href="four-type-of-interactions.html#cb164-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>()<span class="sc">+</span></span>
+<span id="cb164-62"><a href="four-type-of-interactions.html#cb164-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Antagonistic&quot;</span>,<span class="at">color=</span><span class="st">&quot;Prediction&quot;</span>,<span class="at">x=</span><span class="st">&quot;x1&quot;</span>,<span class="at">y=</span><span class="st">&quot;x2&quot;</span>)<span class="sc">+</span></span>
+<span id="cb164-63"><a href="four-type-of-interactions.html#cb164-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning: namespace &#39;glmnet&#39; is not available and has been replaced
+## by .GlobalEnv when processing object &#39;int_glmn&#39;</code></pre>
+<pre><code>## Warning: namespace &#39;glmnet&#39; is not available and has been replaced
+## by .GlobalEnv when processing object &#39;two_stage_glmn&#39;</code></pre>
+<p>Visualizing interaction effects for the Ames data:
+<img src="images/07-interaction.png" width="763" /></p>
+<p>see the code: <strong>2_manipulate.R</strong></p>
+<p>The general model function for interaction effects:</p>
+<p><span class="math display">\[y=\beta_0+\beta_1x_1+\beta_2x_2+\beta_3x_1x_2+\text{error}\]</span></p>
+<p><strong>Which predictors interact?</strong></p>
+<blockquote>
+<p>interaction can be uncovered by more complex modeling techniques</p>
+</blockquote>
+<ul>
+<li>tree-based models</li>
+<li>random forests</li>
+<li>boosted tree model</li>
+<li>search techniques and svm</li>
+</ul>
+<p>Feature engineering helps improving the effectiveness of a models by featuring selection of predictors, so as a consequence simplify the detection of interaction effects.</p>
+<div id="building-the-base-model-for-ames-data" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Building the base-model for <strong>Ames</strong> data<a href="four-type-of-interactions.html#building-the-base-model-for-ames-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here are the predictors divided by type, we will be looking at different ways to make a selection of the predictors and what are the best interactions for this data, which will be influencing model preformance.</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="four-type-of-interactions.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AmesHousing)</span>
+<span id="cb167-2"><a href="four-type-of-interactions.html#cb167-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">make_ames</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb167-3"><a href="four-type-of-interactions.html#cb167-3" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
+<span id="cb167-4"><a href="four-type-of-interactions.html#cb167-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb167-5"><a href="four-type-of-interactions.html#cb167-5" aria-hidden="true" tabindex="-1"></a>ames1 <span class="ot">&lt;-</span> </span>
+<span id="cb167-6"><a href="four-type-of-interactions.html#cb167-6" aria-hidden="true" tabindex="-1"></a>  ames <span class="sc">%&gt;%</span>  <span class="co"># names%&gt;%sort</span></span>
+<span id="cb167-7"><a href="four-type-of-interactions.html#cb167-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="co"># continuous</span></span>
+<span id="cb167-8"><a href="four-type-of-interactions.html#cb167-8" aria-hidden="true" tabindex="-1"></a>         gr_liv_area,lot_area,</span>
+<span id="cb167-9"><a href="four-type-of-interactions.html#cb167-9" aria-hidden="true" tabindex="-1"></a>         lot_frontage,year_built,</span>
+<span id="cb167-10"><a href="four-type-of-interactions.html#cb167-10" aria-hidden="true" tabindex="-1"></a>         year_sold,pool_area,longitude,</span>
+<span id="cb167-11"><a href="four-type-of-interactions.html#cb167-11" aria-hidden="true" tabindex="-1"></a>         latitude,full_bath,</span>
+<span id="cb167-12"><a href="four-type-of-interactions.html#cb167-12" aria-hidden="true" tabindex="-1"></a>         <span class="co"># qualitative</span></span>
+<span id="cb167-13"><a href="four-type-of-interactions.html#cb167-13" aria-hidden="true" tabindex="-1"></a>         neighborhood,bldg_type,</span>
+<span id="cb167-14"><a href="four-type-of-interactions.html#cb167-14" aria-hidden="true" tabindex="-1"></a>         central_air,ms_sub_class,</span>
+<span id="cb167-15"><a href="four-type-of-interactions.html#cb167-15" aria-hidden="true" tabindex="-1"></a>         foundation,roof_style,alley,</span>
+<span id="cb167-16"><a href="four-type-of-interactions.html#cb167-16" aria-hidden="true" tabindex="-1"></a>         garage_type,land_contour)</span></code></pre></div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="guiding-principles-in-the-search-for-interactions.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/07-detecting_interaction_effects.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
