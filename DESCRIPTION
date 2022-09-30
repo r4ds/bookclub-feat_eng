@@ -23,6 +23,7 @@ Imports:
     ggthemes,
     heatmaply,
     interp,
+    janitor,
     kableExtra,
     lubridate,
     patchwork,
