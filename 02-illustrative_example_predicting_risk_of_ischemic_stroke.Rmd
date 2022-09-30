@@ -326,13 +326,13 @@ control <- control_resamples(save_pred = TRUE)
 doParallel::registerDoParallel()
 all_models1 <- 
 	all_models %>%
-	#map over each model and it's resamples, use the control parameters, and be noisy
+	#map over each model and its resamples, use the control parameters, and be noisy
  	workflow_map(., 
  	             resamples = model_folds, 
  	             control = control, 
  	             verbose = TRUE)
 
-# save(all_models1,file="data/all_models1.RData")
+# save(all_models1, file = "data/all_models1.RData", compress = "xz")
 ```
 
 
@@ -469,7 +469,7 @@ pairs <-
 
 Run comparisons with caret
 
-```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-31, eval=FALSE,message=FALSE, warning=FALSE, cache=TRUE, include=FALSE, paged.print=FALSE}
+```{r 02-illustrative-example-predicting-risk-of-ischemic-stroke-31, eval=FALSE,message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 for (i in 1:nrow(pairs)) {
   tmp_vars <- c("Stroke", pairs$V1[i], pairs$V2[i])
   set.seed(63331)
