@@ -302,7 +302,7 @@ with_pred_natural_units  %>%
 
 Let's compare the two transformations with a `workflow_set()`:
 
-```{r model, message=FALSE, warning=FALSE, cache=TRUE,comment="", paged.print=FALSE}
+```{r model, message=FALSE, warning=FALSE, comment="", paged.print=FALSE}
 full_workflow <- workflow_set(
   models = list(logitstic = logistic_reg_glm_spec),
   preproc = list(natural_units = log_rec_natural_units,
