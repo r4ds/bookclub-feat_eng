@@ -10,6 +10,7 @@ Authors@R: c(
   )
 URL: https://r4ds.github.io/bookclub-feat_eng, https://github.com/r4ds/bookclub-feat_eng
 Imports: 
+    AmesHousing,
     bookdown,
     caret,
     cli,
@@ -21,10 +22,13 @@ Imports:
     ggiraph,
     ggthemes,
     heatmaply,
+    interp,
+    janitor,
     kableExtra,
     lubridate,
     patchwork,
     plotly,
+    pROC,
     RColorBrewer,
     rmarkdown,
     scales,
@@ -32,4 +36,5 @@ Imports:
     themis,
     tidymodels,
     tidyverse,
-    vcd
+    vcd,
+    visdat
