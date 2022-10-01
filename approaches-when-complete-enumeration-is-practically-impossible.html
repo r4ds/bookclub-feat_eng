@@ -23,7 +23,7 @@
 <meta name="author" content="The R4DS Online Learning Community" />
 
 
-<meta name="date" content="2022-09-30" />
+<meta name="date" content="2022-10-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -391,13 +391,14 @@ Random measurement error remains unexplained.</p>
 <p>Here is a representation of the clusters for Ames data:
 <img src="images/07-tree_based_method.png" width="733" /></p>
 <p>Here is the outcome of a basic decision tree for the Ischemic Stroke data:</p>
-<p>see code: <strong>6_decision_tree_is.R</strong>
+<p>see full code in the scripts folder: <strong>6_ames_hclust.R</strong>
 <img src="images/07-dt_is.png" width="838" /></p>
 <p>Tree ensembles are so effective at identifying predictor-response relationships because they are aggregating many trees from slightly different versions of the original data.</p>
 <p>An example is <strong>Random Forest</strong> which is a variation of <strong>bagging</strong>.</p>
 <p><strong>Partial dependency</strong> compares the joint effect of two (or more) predictors with the individual effect of each predictor in a model. This comparison is named <strong>H</strong> statistic, which is 0 if no interaction is found and &gt;0 otherwise.</p>
 <p>More about the <strong>H</strong> statistic can be found in <a href="http://www.feat.engineering/references.html#ref-friedman2008predictive">Friedman and Popescu 2008</a>.</p>
-<p>see the code: <a href="https://github.com/topepo/FES/blob/master/07_Detecting_Interaction_Effects/7_05_Approaches_when_Complete_Enumeration_is_Practically_Impossible/ames_trees.R">Ames trees example with H statistic</a></p>
+<p>see full code in the scripts folder: <strong>7_ames_H_stat.R</strong>
+see the code: <a href="https://github.com/topepo/FES/blob/master/07_Detecting_Interaction_Effects/7_05_Approaches_when_Complete_Enumeration_is_Practically_Impossible/ames_trees.R">Ames trees example with H statistic</a></p>
 <p><strong>Out-of-bag (OOB)</strong> samples: Random forest uses bootstrap samples to create many models to be used in the ensemble. Since the bootstrap is being used, each tree has an associated assessment set (historically called the out-of-bag (OOB) samples) that we not used to fit the model.</p>
 <p>To be mentioned is this interesting package: <a href="https://github.com/marjoleinF/pre">pre package</a></p>
 </div>

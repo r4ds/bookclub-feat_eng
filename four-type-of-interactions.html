@@ -23,7 +23,7 @@
 <meta name="author" content="The R4DS Online Learning Community" />
 
 
-<meta name="date" content="2022-09-30" />
+<meta name="date" content="2022-10-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -359,7 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ol>
 <p>The main difference is that in the atypical interaction one of the two predictors doesn’t affect the response.</p>
 <p><img src="images/07-contour_plots.png" width="1048" /></p>
-<p>see full code: <strong>1_geom_contour.R</strong></p>
+<p>see full code in the scripts folder: <strong>1_geom_contour.R</strong></p>
 <div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="four-type-of-interactions.html#cb163-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb163-2"><a href="four-type-of-interactions.html#cb163-2" aria-hidden="true" tabindex="-1"></a><span class="co"># simulated data</span></span>
 <span id="cb163-3"><a href="four-type-of-interactions.html#cb163-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
@@ -432,13 +432,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb164-61"><a href="four-type-of-interactions.html#cb164-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>()<span class="sc">+</span></span>
 <span id="cb164-62"><a href="four-type-of-interactions.html#cb164-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Antagonistic&quot;</span>,<span class="at">color=</span><span class="st">&quot;Prediction&quot;</span>,<span class="at">x=</span><span class="st">&quot;x1&quot;</span>,<span class="at">y=</span><span class="st">&quot;x2&quot;</span>)<span class="sc">+</span></span>
 <span id="cb164-63"><a href="four-type-of-interactions.html#cb164-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning: namespace &#39;glmnet&#39; is not available and has been replaced
-## by .GlobalEnv when processing object &#39;int_glmn&#39;</code></pre>
-<pre><code>## Warning: namespace &#39;glmnet&#39; is not available and has been replaced
-## by .GlobalEnv when processing object &#39;two_stage_glmn&#39;</code></pre>
 <p>Visualizing interaction effects for the Ames data:
 <img src="images/07-interaction.png" width="763" /></p>
-<p>see the code: <strong>2_manipulate.R</strong></p>
+<p>see full code in the scripts folder: <strong>2_manipulate.R</strong></p>
 <p>The general model function for interaction effects:</p>
 <p><span class="math display">\[y=\beta_0+\beta_1x_1+\beta_2x_2+\beta_3x_1x_2+\text{error}\]</span></p>
 <p><strong>Which predictors interact?</strong></p>
@@ -455,22 +451,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="building-the-base-model-for-ames-data" class="section level3 hasAnchor" number="7.2.1">
 <h3><span class="header-section-number">7.2.1</span> Building the base-model for <strong>Ames</strong> data<a href="four-type-of-interactions.html#building-the-base-model-for-ames-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here are the predictors divided by type, we will be looking at different ways to make a selection of the predictors and what are the best interactions for this data, which will be influencing model preformance.</p>
-<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="four-type-of-interactions.html#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AmesHousing)</span>
-<span id="cb167-2"><a href="four-type-of-interactions.html#cb167-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">make_ames</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb167-3"><a href="four-type-of-interactions.html#cb167-3" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
-<span id="cb167-4"><a href="four-type-of-interactions.html#cb167-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb167-5"><a href="four-type-of-interactions.html#cb167-5" aria-hidden="true" tabindex="-1"></a>ames1 <span class="ot">&lt;-</span> </span>
-<span id="cb167-6"><a href="four-type-of-interactions.html#cb167-6" aria-hidden="true" tabindex="-1"></a>  ames <span class="sc">%&gt;%</span>  <span class="co"># names%&gt;%sort</span></span>
-<span id="cb167-7"><a href="four-type-of-interactions.html#cb167-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="co"># continuous</span></span>
-<span id="cb167-8"><a href="four-type-of-interactions.html#cb167-8" aria-hidden="true" tabindex="-1"></a>         gr_liv_area,lot_area,</span>
-<span id="cb167-9"><a href="four-type-of-interactions.html#cb167-9" aria-hidden="true" tabindex="-1"></a>         lot_frontage,year_built,</span>
-<span id="cb167-10"><a href="four-type-of-interactions.html#cb167-10" aria-hidden="true" tabindex="-1"></a>         year_sold,pool_area,longitude,</span>
-<span id="cb167-11"><a href="four-type-of-interactions.html#cb167-11" aria-hidden="true" tabindex="-1"></a>         latitude,full_bath,</span>
-<span id="cb167-12"><a href="four-type-of-interactions.html#cb167-12" aria-hidden="true" tabindex="-1"></a>         <span class="co"># qualitative</span></span>
-<span id="cb167-13"><a href="four-type-of-interactions.html#cb167-13" aria-hidden="true" tabindex="-1"></a>         neighborhood,bldg_type,</span>
-<span id="cb167-14"><a href="four-type-of-interactions.html#cb167-14" aria-hidden="true" tabindex="-1"></a>         central_air,ms_sub_class,</span>
-<span id="cb167-15"><a href="four-type-of-interactions.html#cb167-15" aria-hidden="true" tabindex="-1"></a>         foundation,roof_style,alley,</span>
-<span id="cb167-16"><a href="four-type-of-interactions.html#cb167-16" aria-hidden="true" tabindex="-1"></a>         garage_type,land_contour)</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="four-type-of-interactions.html#cb165-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AmesHousing)</span>
+<span id="cb165-2"><a href="four-type-of-interactions.html#cb165-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">make_ames</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb165-3"><a href="four-type-of-interactions.html#cb165-3" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span>
+<span id="cb165-4"><a href="four-type-of-interactions.html#cb165-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb165-5"><a href="four-type-of-interactions.html#cb165-5" aria-hidden="true" tabindex="-1"></a>ames1 <span class="ot">&lt;-</span> </span>
+<span id="cb165-6"><a href="four-type-of-interactions.html#cb165-6" aria-hidden="true" tabindex="-1"></a>  ames <span class="sc">%&gt;%</span>  <span class="co"># names%&gt;%sort</span></span>
+<span id="cb165-7"><a href="four-type-of-interactions.html#cb165-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="co"># continuous</span></span>
+<span id="cb165-8"><a href="four-type-of-interactions.html#cb165-8" aria-hidden="true" tabindex="-1"></a>         gr_liv_area,lot_area,</span>
+<span id="cb165-9"><a href="four-type-of-interactions.html#cb165-9" aria-hidden="true" tabindex="-1"></a>         lot_frontage,year_built,</span>
+<span id="cb165-10"><a href="four-type-of-interactions.html#cb165-10" aria-hidden="true" tabindex="-1"></a>         year_sold,pool_area,longitude,</span>
+<span id="cb165-11"><a href="four-type-of-interactions.html#cb165-11" aria-hidden="true" tabindex="-1"></a>         latitude,full_bath,</span>
+<span id="cb165-12"><a href="four-type-of-interactions.html#cb165-12" aria-hidden="true" tabindex="-1"></a>         <span class="co"># qualitative</span></span>
+<span id="cb165-13"><a href="four-type-of-interactions.html#cb165-13" aria-hidden="true" tabindex="-1"></a>         neighborhood,bldg_type,</span>
+<span id="cb165-14"><a href="four-type-of-interactions.html#cb165-14" aria-hidden="true" tabindex="-1"></a>         central_air,ms_sub_class,</span>
+<span id="cb165-15"><a href="four-type-of-interactions.html#cb165-15" aria-hidden="true" tabindex="-1"></a>         foundation,roof_style,alley,</span>
+<span id="cb165-16"><a href="four-type-of-interactions.html#cb165-16" aria-hidden="true" tabindex="-1"></a>         garage_type,land_contour)</span></code></pre></div>
 </div>
 </div>
             </section>
