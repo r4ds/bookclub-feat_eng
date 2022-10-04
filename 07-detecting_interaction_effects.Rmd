@@ -14,7 +14,7 @@ In this chapter we will be looking at the interaction effects caused by predicto
 > ...additional variation in the response can be explained by the effect of two or more predictors working in conjunction with each other.
 
 
-As an example consided are the effects of water and fertilizer on the yield of a field corn crop. "With no water but some fertilizer, the crop of field corn will produce no yield since water is a necessary requirement for plant growth. Conversely, with a a sufficient amount of water but no fertilizer, a crop of field corn will produce some yield. However, yield is best optimized with a sufficient amount of water and a sufficient amount of fertilizer. Hence water and fertilizer, when combined in the right amounts, produce a yield that is greater than what either would produce alone."
+As an example consided are the effects of water and fertilizer on the yield of a field corn crop. "With no water but some fertilizer, the crop of field corn will produce no yield since water is a necessary requirement for plant growth. Conversely, with a sufficient amount of water but no fertilizer, a crop of field corn will produce some yield. However, yield is best optimized with a sufficient amount of water and a sufficient amount of fertilizer. Hence water and fertilizer, when combined in the right amounts, produce a yield that is greater than what either would produce alone."
 
 
 > predictors are said to interact if their combined effect is different (less or greater) than what we would expect if we were to add the impact of each of their effects when considered alone. 
@@ -23,7 +23,7 @@ As an example consided are the effects of water and fertilizer on the yield of a
 
 - Correlations between predictors, for example, are not directly related to whether there is an interaction effect or not
 
-- the individual variables (e.g., fertilizer and water) are referred to as the **main effect** terms when outside of an interaction.
+- The individual variables (e.g., fertilizer and water) are referred to as the **main effect** terms when outside of an interaction.
 
 
 ## Four type of Interactions
@@ -41,7 +41,7 @@ The main difference is that in the atypical interaction one of the two predictor
 knitr::include_graphics("images/07-contour_plots.png")
 ```
 
-see full code: **1_geom_contour.R**
+see full code in the scripts folder: **1_geom_contour.R**
 
 ```{r 07-detecting-interaction-effects-2, message=FALSE, warning=FALSE, paged.print=FALSE}
 library(tidyverse)
@@ -124,17 +124,17 @@ p3 <- ggplot(griddf, aes(x, y, z = z)) +
 
 
 
-```{r 07-detecting-interaction-effects-4, echo=FALSE}
+```{r 07-detecting-interaction-effects-4, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # ames_glmnet
 load(url("https://github.com/topepo/FES/blob/master/07_Detecting_Interaction_Effects/7_04_The_Brute-Force_Approach_to_Identifying_Predictive_Interactions/ames_glmnet.RData?raw=true"))
 ```
 
-```{r 07-detecting-interaction-effects-5, echo=FALSE}
+```{r 07-detecting-interaction-effects-5, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # ames_glmnet_two_stage
 load(url("https://github.com/topepo/FES/blob/master/07_Detecting_Interaction_Effects/7_04_The_Brute-Force_Approach_to_Identifying_Predictive_Interactions/ames_glmnet_two_stage.RData?raw=true"))
 ```
 
-```{r 07-detecting-interaction-effects-6, echo=FALSE}
+```{r 07-detecting-interaction-effects-6, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
 # ames_pairwise
 load(url("https://github.com/topepo/FES/blob/master/07_Detecting_Interaction_Effects/7_04_The_Brute-Force_Approach_to_Identifying_Predictive_Interactions/ames_pairwise.RData?raw=true"))
 ```
@@ -144,7 +144,7 @@ Visualizing interaction effects for the Ames data:
 knitr::include_graphics("images/07-interaction.png")
 ```
 
-see the code: **2_manipulate.R**
+see full code in the scripts folder: **2_manipulate.R**
 
 
 The general model function for interaction effects:
@@ -268,7 +268,7 @@ $$y=\beta_0+\beta_1x_1+\beta_2x_2+\text{error}$$
 $$y=\beta_0+\beta_1x_1+\beta_2x_2+\beta_3x_1x_2+\text{error}$$
 
 
-see the code: **3_comparisons_nested_models.R**
+see full code in the scripts folder: **3_comparisons_nested_models.R**
 
 **Objective function**: 
 
@@ -369,7 +369,7 @@ ames%>%
 ```
 
 
-see code: **5_ames_modeling.R**
+see full code in the scripts folder: **5_ames_modeling.R**
 
 ```{r 07-detecting-interaction-effects-14, echo=FALSE}
 knitr::include_graphics("images/07-tuning_parameters.png")
@@ -428,7 +428,7 @@ knitr::include_graphics("images/07-tree_based_method.png")
 
 Here is the outcome of a basic decision tree for the Ischemic Stroke data:
 
-see code: **6_decision_tree_is.R**
+see full code in the scripts folder: **6_ames_hclust.R**
 ```{r 07-detecting-interaction-effects-16, echo=FALSE}
 knitr::include_graphics("images/07-dt_is.png")
 ```
@@ -441,6 +441,8 @@ An example is **Random Forest** which is a variation of **bagging**.
 
 More about the **H** statistic can be found in [Friedman and Popescu 2008](http://www.feat.engineering/references.html#ref-friedman2008predictive).
 
+
+see full code in the scripts folder: **7_ames_H_stat.R**
 see the code: [Ames trees example with H statistic](https://github.com/topepo/FES/blob/master/07_Detecting_Interaction_Effects/7_05_Approaches_when_Complete_Enumeration_is_Practically_Impossible/ames_trees.R)
 
 
