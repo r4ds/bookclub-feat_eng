@@ -1,0 +1,118 @@
+WARNING: unknown option '-vanilla'
+
+
+R Under development (unstable) (2019-03-18 r76245) -- "Unsuffered Consequences"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(tidyverse)
+Registered S3 methods overwritten by 'ggplot2':
+  method         from 
+  [.quosures     rlang
+  c.quosures     rlang
+  print.quosures rlang
+Registered S3 method overwritten by 'rvest':
+  method            from
+  read_xml.response xml2
+── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+✔ ggplot2 3.1.0       ✔ purrr   0.3.2  
+✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
+✔ tidyr   0.8.3       ✔ stringr 1.4.0  
+✔ readr   1.3.1       ✔ forcats 0.4.0  
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+> library(rsample)
+> 
+> # data at https://archive.ics.uci.edu/ml/datasets/Parkinson%27s+Disease+Classification#
+> 
+> pd_speech <-
++   read_csv("pd_speech_features.csv", skip = 1) %>%
++   group_by(id) %>%
++   summarise_all(mean) %>%
++   mutate(
++     class = factor(
++       ifelse(class == 1, "PD", "control"),
++       levels = c("PD", "control")
++     )
++   ) %>%
++   dplyr::select(-id, -numPulses, -numPeriodsPulses, male = gender, Class = class)
+Parsed with column specification:
+cols(
+  .default = col_double()
+)
+See spec(...) for full column specifications.
+> 
+> save(pd_speech, file = "pd_data.RData")
+> 
+> # For our analyses, only look at scored numeric predictors ---------------------
+> 
+> pd_speech <-
++   pd_speech %>%
++   dplyr::select(-male)
+> 
+> # Split the data ---------------------------------------------------------------
+> 
+> set.seed(825)
+> pd_split <- initial_split(pd_speech, prop = 0.75)
+> 
+> pd_tr <- training(pd_split)
+> pd_te <-  testing(pd_split)
+> 
+> save(pd_tr, pd_te, file = "pd_split.RData")
+> 
+> # ------------------------------------------------------------------------------
+> 
+> sessionInfo()
+R Under development (unstable) (2019-03-18 r76245)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS High Sierra 10.13.6
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] rsample_0.0.4   forcats_0.4.0   stringr_1.4.0   dplyr_0.8.0.1  
+ [5] purrr_0.3.2     readr_1.3.1     tidyr_0.8.3     tibble_2.1.1   
+ [9] ggplot2_3.1.0   tidyverse_1.2.1
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.1       pillar_1.3.1     compiler_3.6.0   cellranger_1.1.0
+ [5] plyr_1.8.4       tools_3.6.0      jsonlite_1.6     lubridate_1.7.4 
+ [9] gtable_0.2.0     nlme_3.1-137     lattice_0.20-38  pkgconfig_2.0.2 
+[13] rlang_0.3.3      cli_1.1.0        rstudioapi_0.10  haven_2.1.0     
+[17] withr_2.1.2      xml2_1.2.0       httr_1.4.0       generics_0.0.2  
+[21] hms_0.4.2        grid_3.6.0       tidyselect_0.2.5 glue_1.3.1      
+[25] R6_2.4.0         readxl_1.3.1     modelr_0.1.4     magrittr_1.5    
+[29] backports_1.1.3  scales_1.0.0     rvest_0.3.2      assertthat_0.2.1
+[33] colorspace_1.4-1 stringi_1.4.3    lazyeval_0.2.2   munsell_0.5.0   
+[37] broom_0.5.1      crayon_1.3.4    
+> 
+> # ------------------------------------------------------------------------------
+> 
+> if (!interactive())
++   q("no")
+> proc.time()
+   user  system elapsed 
+  1.301   0.083   1.375 
