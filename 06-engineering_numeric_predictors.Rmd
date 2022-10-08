@@ -76,15 +76,15 @@ bc_after <- ggplot(simple_trans_test, aes(x = PredictorB)) +
 
     -   Consolidate redundant information
 
-## Problematic Characteristics of predictors 
+## Problematic Characteristics of predictors
 
 One of the first things we can do when transforming our data is to rescale it to improve model performance. There are several different methods that can be used in different situations. Box-Cox and Yeo Johnson transformations can be used to correct for highly skewed predictors. Standardizing strategies such as scaling, centering, and smoothing can also be used to ensure your predictors have similar qualities.
 
-### Dealing with Skewed Data  
+### Dealing with Skewed Data
 
 **Do a Box-Cox Transformation!**
 
-Originally developed to transform the outcome variable, box-cox uses maximum likelihood estimation to estimate a transformation parameter λ. The transformation allows the data to follow a normal distribution. The plot below shows the before and after effects. \
+Originally developed to transform the outcome variable, box-cox uses maximum likelihood estimation to estimate a transformation parameter λ. The transformation allows the data to follow a normal distribution. The plot below shows the before and after effects.\
 
 ```{r box_cox, echo=FALSE, fig.dim = c(8, 8)}
 
@@ -96,7 +96,7 @@ pw + plot_annotation(
 )
 ```
 
-#### What does a Box-Cox transformation do? 
+#### What does a Box-Cox transformation do?
 
 Because the estimated parameter is in the exponent, it is called a POWER transformation. Different values of the parameter mimick no transformation (1), log transformation (0), square root (0.5), or inverse (-1). Because it is so flexible it can handle many different types of distributions
 
@@ -106,17 +106,19 @@ Because the estimated parameter is in the exponent, it is called a POWER transfo
 
     -   Yeo-Johnson transformation can be used when there are negative values.
 
-    -   Best used for models that use polynomial transformations like linear regression, neural networks, or support vector machines. \
+    -   Best used for models that use polynomial transformations like linear regression, neural networks, or support vector machines.\
 
-#### Logit Transformation 
+#### Logit Transformation
 
 Proportions, or data that falls between 0 and 1, are a special case that warrants their own transformation! Sometimes when a proportion is the outcome variable, model predictions can include results that are outside these bounds. Using a **logit transformation**, we can correct for that by changing the values between negative and positive infinity. If π is the variable, the logit transformations is:
 
 $$
 logit(π) = log(\frac{π}{1-π})
-$$ After the predictions are calculated, you can use the inverse logit to return the data to its original form.
+$$
 
-### Standardizing 
+After the predictions are calculated, you can use the inverse logit to return the data to its original form.
+
+### Standardizing
 
 **Why standardize?** When your predictors are all in different units, with varying ranges, some may have an out-sized influence on the outcome when that should not be the case. This is especially true for models that use a distance computation like kNN, PCA, SVM, lasso and ridge regression, and variable importance calculation. Logistic regression and tree based methods not so much....
 
@@ -126,9 +128,7 @@ The main techniques illustrated in the book are centering, scaling, and smoothin
 
 **Centering** is pretty straight forward. For each variable, every value is subtracted by its average. After which, all variables will have a mean of zero.
 
-<br><br>
-
-**Scaling** is the process of dividing a variable by the corresponding training set\'s standard deviation. This ensures that that variables have a standard deviation of one.
+**Scaling** is the process of dividing a variable by the corresponding training set's standard deviation. This ensures that that variables have a standard deviation of one.
 
 In addition to improving model performance, centering and scaling can also help better interpret our models for a couple reasons
 
@@ -148,7 +148,7 @@ Computing the running median is especially important when there are major outlie
 
 Just like we can expand qualitative features into multiple useful columns, we can also take one numeric predictor and expand it into several more. The following subsection divides these expansions into two categories: nonlinear features via basis expansions and splines, and discretize predictors
 
-### Nonlinear Features via Basis Expansions and Splines 
+### Nonlinear Features via Basis Expansions and Splines
 
 #### Basis Expansions
 
@@ -176,7 +176,7 @@ Lastly, a multivariate adaptive regression spline (MARS) model includes a single
 
 ![(a) Features created using a natural spline basis function for the lot area predictor. The blue lines correspond to the knots. (b) The fit after the regression model estimated the model coefficients for each feature.](images/mars.svg)
 
-### Discretize Predictors as a Last Resort 
+### Discretize Predictors as a Last Resort
 
 If we discretize a predictor, or turn it into categorical, we are essentially binning the data. Unsupervised approaches to binning are rather straight forward using percentiles or the median, but they can also be set based on specific cut-off points to improve performance.
 
@@ -184,7 +184,7 @@ The books mentions many reason why this should NOT be done. Despite simplifying 
 
 ![Raw data (a) and binned (b) simulation data. Also, the results of a simulation (c) where the predictor is noninformative.](images/numeric-binning-1.svg)
 
-## New Features from Multiple predictors 
+## New Features from Multiple predictors
 
 The previous two sections focused on adjusting our features and creating new features from a single predictor, but we can also create new features from all of our predictors at once. This can correct issues like multicollinearity and outliers, while also reducing the dimensionality and speeding up computation times.
 
@@ -233,11 +233,11 @@ mem_in_gb <- function() {
 # ------------------------------------------------------------------------------
 
 # For plots
-source("./num_eg_data/06_Engineering_Numeric_Predictors/6_3_1_Linear_Projection_Methods/chicago_maps.R")
+source("data/num_eg_data/06_Engineering_Numeric_Predictors/6_3_1_Linear_Projection_Methods/chicago_maps.R")
 
 # ------------------------------------------------------------------------------
 
-load("./num_eg_data/Data_Sets/Chicago_trains/chicago.RData")
+load("data/num_eg_data/Data_Sets/Chicago_trains/chicago.RData")
 
 # ------------------------------------------------------------------------------
 
@@ -353,7 +353,7 @@ Because kPCA is more flexible, it can often lead to much better results. The fir
 
 ![A comparison of PCA and kernel PCA. (a) The training set data. (b) The simulated relation between x 1 and the outcome. (c) The PCA results (d) kPCA using a polynomial kernel shows better results. (e) Residual distributions for the two dimension reduction methods.](images/numeric-kPCA-comparison-1.svg)
 
-#### Independent Component Analysis  
+#### Independent Component Analysis
 
 PCA components are uncorrelated with each other, but they are often not independent.That's where ICA comes in! ICA is similar to PCA except that it components are also as statistically independent as possible. Unlike PCA, there is no ordering in ICA.
 
@@ -361,7 +361,7 @@ Preprocessing is essential for ICA. Predictors must be centered and then **"whit
 
 #### Non-negative factorization
 
--   when features are greater than or equal to zero. Most popular for text data! where the predictors are word counts, imaging, and biological measures. \
+-   when features are greater than or equal to zero. Most popular for text data! where the predictors are word counts, imaging, and biological measures.\
 
 #### Partial Least Squares
 
