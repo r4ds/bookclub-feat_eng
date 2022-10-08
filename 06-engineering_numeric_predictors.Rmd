@@ -209,7 +209,7 @@ Visualizing the principal components with a heat map can help us identify which 
 ```{r pca_heatmap,fig.dim = c(8, 12), echo=FALSE, message=FALSE, warning=FALSE}
 
 library(caret)
-library(NMF)
+#library(NMF)
 library(fastICA)
 library(tidymodels)
 library(kernlab)
