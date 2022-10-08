@@ -233,11 +233,14 @@ mem_in_gb <- function() {
 # ------------------------------------------------------------------------------
 
 # For plots
-source("data/06_Engineering_Numeric_Predictors/6_3_1_Linear_Projection_Methods/chicago_maps.R")
+source(url("https://raw.githubusercontent.com/topepo/FES/master/06_Engineering_Numeric_Predictors/6_3_1_Linear_Projection_Methods/chicago_maps.R"))
 
 # ------------------------------------------------------------------------------
 
-load("data/06_Engineering_Numeric_Predictors/Data_Sets/Chicago_trains/chicago.RData")
+
+load(url("https://github.com/topepo/FES/blob/master/Data_Sets/Chicago_trains/chicago.RData?raw=true"))
+
+
 
 # ------------------------------------------------------------------------------
 
