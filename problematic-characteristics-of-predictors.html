@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>12.1 SLIDE 1 | Feature Engineering and Selection Book Club</title>
+  <title>6.1 Problematic Characteristics of predictors | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="12.1 SLIDE 1 | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="6.1 Problematic Characteristics of predictors | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="12.1 SLIDE 1 | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="6.1 Problematic Characteristics of predictors | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -23,15 +23,15 @@
 <meta name="author" content="The R4DS Online Learning Community" />
 
 
-<meta name="date" content="2022-10-04" />
+<meta name="date" content="2022-10-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="global-search-methods.html"/>
-<link rel="next" href="meeting-videos-10.html"/>
+<link rel="prev" href="engineering-numeric-predictors.html"/>
+<link rel="next" href="expanding-numeric-transformations.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -253,10 +253,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="engineering-numeric-predictors.html"><a href="engineering-numeric-predictors.html"><i class="fa fa-check"></i><b>6</b> Engineering Numeric Predictors</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>6.1</b> SLIDE 1</a></li>
-<li class="chapter" data-level="6.2" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html"><i class="fa fa-check"></i><b>6.2</b> Meeting Videos</a>
+<li class="chapter" data-level="6.1" data-path="problematic-characteristics-of-predictors.html"><a href="problematic-characteristics-of-predictors.html"><i class="fa fa-check"></i><b>6.1</b> Problematic Characteristics of predictors</a>
 <ul>
-<li class="chapter" data-level="6.2.1" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html#cohort-1-5"><i class="fa fa-check"></i><b>6.2.1</b> Cohort 1</a></li>
+<li class="chapter" data-level="6.1.1" data-path="problematic-characteristics-of-predictors.html"><a href="problematic-characteristics-of-predictors.html#dealing-with-skewed-data"><i class="fa fa-check"></i><b>6.1.1</b> Dealing with Skewed Data</a></li>
+<li class="chapter" data-level="6.1.2" data-path="problematic-characteristics-of-predictors.html"><a href="problematic-characteristics-of-predictors.html#standardizing"><i class="fa fa-check"></i><b>6.1.2</b> Standardizing</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="expanding-numeric-transformations.html"><a href="expanding-numeric-transformations.html"><i class="fa fa-check"></i><b>6.2</b> Expanding Numeric Transformations</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="expanding-numeric-transformations.html"><a href="expanding-numeric-transformations.html#nonlinear-features-via-basis-expansions-and-splines"><i class="fa fa-check"></i><b>6.2.1</b> Nonlinear Features via Basis Expansions and Splines</a></li>
+<li class="chapter" data-level="6.2.2" data-path="expanding-numeric-transformations.html"><a href="expanding-numeric-transformations.html#discretize-predictors-as-a-last-resort"><i class="fa fa-check"></i><b>6.2.2</b> Discretize Predictors as a Last Resort</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="new-features-from-multiple-predictors.html"><a href="new-features-from-multiple-predictors.html"><i class="fa fa-check"></i><b>6.3</b> New Features from Multiple predictors</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="new-features-from-multiple-predictors.html"><a href="new-features-from-multiple-predictors.html#linear-projection-methods"><i class="fa fa-check"></i><b>6.3.1</b> Linear Projection Methods</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html"><i class="fa fa-check"></i><b>6.4</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="meeting-videos-4.html"><a href="meeting-videos-4.html#cohort-1-5"><i class="fa fa-check"></i><b>6.4.1</b> Cohort 1</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="detecting-interaction-effects.html"><a href="detecting-interaction-effects.html"><i class="fa fa-check"></i><b>7</b> Detecting Interaction Effects</a>
@@ -309,7 +322,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="9" data-path="working-with-profile-data.html"><a href="working-with-profile-data.html"><i class="fa fa-check"></i><b>9</b> Working with Profile Data</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>9.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="9.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>9.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="9.2" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html"><i class="fa fa-check"></i><b>9.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="9.2.1" data-path="meeting-videos-7.html"><a href="meeting-videos-7.html#cohort-1-8"><i class="fa fa-check"></i><b>9.2.1</b> Cohort 1</a></li>
@@ -317,7 +330,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="10" data-path="feature-selection-overview.html"><a href="feature-selection-overview.html"><i class="fa fa-check"></i><b>10</b> Feature Selection Overview</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="slide-1-3.html"><a href="slide-1-3.html"><i class="fa fa-check"></i><b>10.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="10.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>10.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="10.2" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html"><i class="fa fa-check"></i><b>10.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="10.2.1" data-path="meeting-videos-8.html"><a href="meeting-videos-8.html#cohort-1-9"><i class="fa fa-check"></i><b>10.2.1</b> Cohort 1</a></li>
@@ -325,7 +338,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11" data-path="greedy-search-methods.html"><a href="greedy-search-methods.html"><i class="fa fa-check"></i><b>11</b> Greedy Search Methods</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="slide-1-4.html"><a href="slide-1-4.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="11.1" data-path="slide-1-3.html"><a href="slide-1-3.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="11.2" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i><b>11.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="11.2.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-10"><i class="fa fa-check"></i><b>11.2.1</b> Cohort 1</a></li>
@@ -333,7 +346,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="slide-1-5.html"><a href="slide-1-5.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="12.1" data-path="slide-1-4.html"><a href="slide-1-4.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="12.2" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="12.2.1" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
@@ -359,20 +372,70 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="slide-1-5" class="section level2 hasAnchor" number="12.1">
-<h2><span class="header-section-number">12.1</span> SLIDE 1<a href="slide-1-5.html#slide-1-5" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="problematic-characteristics-of-predictors" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Problematic Characteristics of predictors<a href="problematic-characteristics-of-predictors.html#problematic-characteristics-of-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>One of the first things we can do when transforming our data is to rescale it to improve model performance. There are several different methods that can be used in different situations. Box-Cox and Yeo Johnson transformations can be used to correct for highly skewed predictors. Standardizing strategies such as scaling, centering, and smoothing can also be used to ensure your predictors have similar qualities.</p>
+<div id="dealing-with-skewed-data" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Dealing with Skewed Data<a href="problematic-characteristics-of-predictors.html#dealing-with-skewed-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Do a Box-Cox Transformation!</strong></p>
+<p>Originally developed to transform the outcome variable, box-cox uses maximum likelihood estimation to estimate a transformation parameter λ. The transformation allows the data to follow a normal distribution. The plot below shows the before and after effects.<br />
+</p>
+<p><img src="images/box_cox-1.png" width="768" /></p>
+<div id="what-does-a-box-cox-transformation-do" class="section level4 hasAnchor" number="6.1.1.1">
+<h4><span class="header-section-number">6.1.1.1</span> What does a Box-Cox transformation do?<a href="problematic-characteristics-of-predictors.html#what-does-a-box-cox-transformation-do" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Because the estimated parameter is in the exponent, it is called a POWER transformation. Different values of the parameter mimick no transformation (1), log transformation (0), square root (0.5), or inverse (-1). Because it is so flexible it can handle many different types of distributions</p>
 <ul>
-<li>ADD SLIDES AS SECTIONS (<code>##</code>).</li>
-<li>TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.</li>
+<li><p>Several caveats:</p>
+<ul>
+<li><p>Can only be used when predictors are greater or equal to 0</p></li>
+<li><p>Yeo-Johnson transformation can be used when there are negative values.</p></li>
+<li><p>Best used for models that use polynomial transformations like linear regression, neural networks, or support vector machines.<br />
+</p></li>
+</ul></li>
 </ul>
+</div>
+<div id="logit-transformation" class="section level4 hasAnchor" number="6.1.1.2">
+<h4><span class="header-section-number">6.1.1.2</span> Logit Transformation<a href="problematic-characteristics-of-predictors.html#logit-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Proportions, or data that falls between 0 and 1, are a special case that warrants their own transformation! Sometimes when a proportion is the outcome variable, model predictions can include results that are outside these bounds. Using a <strong>logit transformation</strong>, we can correct for that by changing the values between negative and positive infinity. If π is the variable, the logit transformations is:</p>
+<p><span class="math display">\[
+logit(π) = log(\frac{π}{1-π})
+\]</span></p>
+<p>After the predictions are calculated, you can use the inverse logit to return the data to its original form.</p>
+</div>
+</div>
+<div id="standardizing" class="section level3 hasAnchor" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Standardizing<a href="problematic-characteristics-of-predictors.html#standardizing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Why standardize?</strong> When your predictors are all in different units, with varying ranges, some may have an out-sized influence on the outcome when that should not be the case. This is especially true for models that use a distance computation like kNN, PCA, SVM, lasso and ridge regression, and variable importance calculation. Logistic regression and tree based methods not so much….</p>
+<p>The main techniques illustrated in the book are centering, scaling, and smoothing sequential (time) data.</p>
+<div id="centering-and-scaling" class="section level4 hasAnchor" number="6.1.2.1">
+<h4><span class="header-section-number">6.1.2.1</span> Centering and Scaling<a href="problematic-characteristics-of-predictors.html#centering-and-scaling" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><strong>Centering</strong> is pretty straight forward. For each variable, every value is subtracted by its average. After which, all variables will have a mean of zero.</p>
+<p><strong>Scaling</strong> is the process of dividing a variable by the corresponding training set’s standard deviation. This ensures that that variables have a standard deviation of one.</p>
+<p>In addition to improving model performance, centering and scaling can also help better interpret our models for a couple reasons</p>
+<ol style="list-style-type: decimal">
+<li><p>It is easier to interpret the y-intercept when the predictors have been centered and scaled</p></li>
+<li><p>Centering allows for an easier interpretation of coefficients with different magnitudes<br />
+</p></li>
+</ol>
+</div>
+<div id="time-data-smoothing" class="section level4 hasAnchor" number="6.1.2.2">
+<h4><span class="header-section-number">6.1.2.2</span> Time data: Smoothing<a href="problematic-characteristics-of-predictors.html#time-data-smoothing" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>When your model uses sequential, or time related, there can be a lot of noise in your model. By computing a running average,or a running median, we can <em>smooth</em> out our predictor and reduce noise. These are computed by taking the average of a point and one point before and after. The size of the moving window is extremely important. Small windows might not involve much smoothing at all, and large windows may miss out on important trends.</p>
+<p>Computing the running median is especially important when there are major outliers in your sequential data.</p>
+<div class="figure">
+<img src="images/smoothing.svg" alt="" />
+<p class="caption">A sequence of outcome values over time. The raw data contain outliers on days 10 and 45. The smoothed values are the result of a 3-point running median.</p>
+</div>
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="global-search-methods.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="meeting-videos-10.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="engineering-numeric-predictors.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="expanding-numeric-transformations.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -403,7 +466,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/12-global_search_methods.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/06-engineering_numeric_predictors.Rmd",
 "text": "Edit"
 },
 "history": {
