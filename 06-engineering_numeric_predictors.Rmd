@@ -16,6 +16,7 @@
 
 library(caret)
 library(tidymodels)
+library(tidyverse)
 
 theme_set(theme_bw() + theme(legend.position = "top"))
 
