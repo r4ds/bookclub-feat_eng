@@ -1,13 +1,24 @@
 # Working with Profile Data
 
-**Learning objectives:**
+**What even is profile data???** Not hierarchical structures?!?!
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+Profile data refers to datasets that have complex hierachcical relationships.An example would be if you're trying to predict whether a student would pass a course. You might have demographic data on that student, but you'd probably also have data on the courses they took, absences grades etc.. There might also be a time component related to how quickly they're finishing their degree. There are a lot of layers to this, and feature engineering can help us create better models, insofar as we understand the data's structure.
 
-## SLIDE 1
+\*look up variabnce of a difference **Learning objectives:**
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+-   THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+
+## Illustrative Data: Pharmaceutical Manufacturing Monitoring
+
+-   Company is trying to produce a drug that uses specific proteins
+
+-   Cell are placed in a bioreactor where they produce the proteins (the yield)
+
+-   factors like humidity and temperature can be recorded, as well as cell specific data like glucose produce and ammonia (which can negatively impact the yield)
+
+-   Measuring glucose and ammonia is time consuming, so a spectroscopy is used to make the predictions
+
+-   
 
 ## Meeting Videos
 
@@ -16,9 +27,9 @@
 `r knitr::include_url("https://www.youtube.com/embed/URL")`
 
 <details>
-<summary> Meeting chat log </summary>
 
-```
-LOG
-```
+<summary>Meeting chat log</summary>
+
+    LOG
+
 </details>
