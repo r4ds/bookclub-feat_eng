@@ -14,11 +14,19 @@ Profile data refers to datasets that have complex hierachcical relationships.An 
 
 -   Cell are placed in a bioreactor where they produce the proteins (the yield)
 
--   factors like humidity and temperature can be recorded, as well as cell specific data like glucose produce and ammonia (which can negatively impact the yield)
+-   factors like humidity and temperature can be recorded, as well as cell specific celluar data like glucose productiion and ammonia (which can negatively impact the yield)
 
--   Measuring glucose and ammonia is time consuming, so a spectroscopy is used to make the predictions
+-   Measuring glucose and ammonia is time consuming, so a spectroscopy is used to make the predictions, from 15 small reactors and 3 large reactors
 
--   
+![A schematic for the experimental design for pharmaceutical manufacturing.](images/09_pharm_example.png)
+
+The goal here is to see if we can take the results from the small reactors to predict the results of the big reactors.
+
+Looking at the spectra over multiple days we see that the intensity exhibits similar patterns in the small and large reactors. The difference being the big reactors lead to slightly higher intensities.
+
+![](images/09_profile-small-large-bioreactors.svg)
+
+![![](images/09_profile-small-large-bioreactors.svg)](images/09_profile-small-large-bioreactors.svg)
 
 ## Meeting Videos
 
