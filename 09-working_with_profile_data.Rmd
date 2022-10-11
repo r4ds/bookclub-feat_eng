@@ -24,15 +24,23 @@ The goal here is to see if we can take the results from the small reactors to pr
 
 Looking at the spectra over multiple days we see that the intensity exhibits similar patterns in the small and large reactors. The difference being the big reactors lead to slightly higher intensities.
 
+![](images/09_profile-small-large-bioreactors.svg){width="769" height="439"}
+
 ![](images/09_profile-small-large-bioreactors.svg)
+
+![(a) Spectra for a small- and large-scale reactor on days 1, 7, and 14. (b) The spectra for a single reactor over 14 days.](images/09_profile-small-large-bioreactors-2.svg)
 
 ![![](images/09_profile-small-large-bioreactors.svg)](images/09_profile-small-large-bioreactors.svg)
 
-## Meeting Videos
+## What are the Experimental Unit and the Unit of Prediction?
 
-### Cohort 1
+Nearly 2600 wavelengths are measured each day for two weeks for each of 15 small-scale bioreactors. This type of data forms a *hierarchical, or nested,* structure in which wavelengths are measured within each day and within each bioreactor. The key characteristic of this is that the data within a nesting is more related than data between nestings. For example, the spectra within a day are more related to each other than between different days, AND the wavelengths within the days are more correlated with each other than wavelengths between reactors.
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+### 🤯WOW this is confusing
+
+Interrelated correlations can be visualized through a plot of autocorrelations. In the plot below, we can see that the autocorrelation between wavelengths is different on different days, [confusiling]
+
+![(a) Autocorrelations for selected lags of wavelengths for small-scale bioreactor 1 on the first day. (b) Autocorrelations for lags of days for average wavelength intensity for small-scale bioreactor 1.](images/09_profile-acf-bioreactor1-1.svg)
 
 <details>
 
