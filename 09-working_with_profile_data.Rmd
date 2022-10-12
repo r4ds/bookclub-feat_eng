@@ -42,6 +42,26 @@ Interrelated correlations can be visualized through a plot of autocorrelations. 
 
 ![(a) Autocorrelations for selected lags of wavelengths for small-scale bioreactor 1 on the first day. (b) Autocorrelations for lags of days for average wavelength intensity for small-scale bioreactor 1.](images/09_profile-acf-bioreactor1-1.svg)
 
+Figure [9.4](http://www.feat.engineering/what-are-the-experimental-unit-and-the-unit-of-prediction.html#fig:profile-acf-bioreactor1) (b) shows the autocorrelations for the first 13 lagged days. Here correlations for the first lag is greater than 0.95, with correlations tailing off fairly quickly.
+
+So what is the unit of prediction? Spectra? Number of days to reach a certain wavelength? Because everything inside a bioreactor is independent of other bioreactors, the unit of analysis is day within a bioreactor.
+
+The unit of analysis will help us decide how to use cross-validation to evaluate our results honestly. Leave one, or more, bioreactors out should be used.
+
+## Reducing Background 
+
+Excess variation due to spurious sources can have a detrimental impact on the models (the book mentions principal component regression and partial least square). Removing all the background noise is almost impossible, but we can approximate it.
+
+Spectral data deviations across reactors and days can occur because of measurement error, interference, or fluorescent, and don't have an impact on actual glucose production in the cells. To get rid of this noise, the author uses a polynomial fit on the lowest intensities. Then they take the negative residuals and subtract those data points.
+
+![A polynomial baseline correction for the small-scale bioreactor 1, day 1 intensities.](images/09_noise_reduction.png)
+
+## Reducing Other Noise
+
+There can also be systemic variation between bioreactor measurement instruments rather than difference in the amount of molecules being sampled. You saw in the graph comparing small and large bioreactors that although the peaks were the same, the intensity appeared higher for large ones. Given that these peaks are most important, we can rescale the data across reactors to ensure results are comparable.
+
+The author uses **standard normal variate (SNV)** from spectroscopy literature to rescale the data based on the mean and standard deviation. Since these measures can be influenced by outliers, **trimming** is used to take out extreme values.
+
 <details>
 
 <summary>Meeting chat log</summary>
