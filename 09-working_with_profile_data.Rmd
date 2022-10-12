@@ -62,6 +62,16 @@ There can also be systemic variation between bioreactor measurement instruments 
 
 The author uses **standard normal variate (SNV)** from spectroscopy literature to rescale the data based on the mean and standard deviation. Since these measures can be influenced by outliers, **trimming** is used to take out extreme values.
 
+Figure [9.6](http://www.feat.engineering/reducing-other-noise.html#fig:profile-standardized) compares the profiles of the spectrum with the lowest variation and highest variation for (a) the baseline corrected data across all days and small-scale bioreactors. This figure demonstrates that the amplitudes of the profiles can vary greatly.
+
+![Figure 9.6: (a) The baseline-corrected intensities for the spectra that are the most- and least variable. (b) The spectra after standardizing each to have a mean of 0 and standard deviation of 1.](images/09_profile-standardized-1.svg)
+
+Another source of noise here was the intensity measurements for **EACH** wavelength within a spectrum. The author uses splines and moving averages to smooth out the intensities. The key here was to select the correct number of points to include in the moving averages.
+
+![Figure 9.7: The moving average of lengths 5, 15, and 50 applied to the first day of the first small-scale bioreactor for wavelengths 950 through 1200.](images/09_profile-smoothed-1.svg)
+
+## Exploiting Correlation
+
 <details>
 
 <summary>Meeting chat log</summary>
