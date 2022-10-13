@@ -48,7 +48,7 @@ So what is the unit of prediction? Spectra? Number of days to reach a certain wa
 
 The unit of analysis will help us decide how to use cross-validation to evaluate our results honestly. Leave one, or more, bioreactors out should be used.
 
-## Reducing Background 
+## Reducing Background
 
 Excess variation due to spurious sources can have a detrimental impact on the models (the book mentions principal component regression and partial least square). Removing all the background noise is almost impossible, but we can approximate it.
 
@@ -71,6 +71,24 @@ Another source of noise here was the intensity measurements for **EACH** wavelen
 ![Figure 9.7: The moving average of lengths 5, 15, and 50 applied to the first day of the first small-scale bioreactor for wavelengths 950 through 1200.](images/09_profile-smoothed-1.svg)
 
 ## Exploiting Correlation
+
+The previous two chapter were about reducing the noise , which allows us to make better predictions. However, this does not help us deal with the correlation between features -in this case the correlation between wavelengths within a spectra (I think?).\
+
+One approach to dealing with correlation is principal component analysis (PCA), which gets rid of the correlation between features, but isn't guranteed to improve the predictive power because the output isn't taken into account.
+
+![Figure 9.8: PCA dimension reduction applied across all small-scale data. (a) A scree plot of the cumulative variability explained across components. (b) Scatterplots of Glucose and the first three principal components.](images/09_profile-small-pca-1.svg) ![Figure 9.8: PCA dimension reduction applied across all small-scale data. (a) A scree plot of the cumulative variability explained across components. (b) Scatterplots of Glucose and the first three principal components.](images/09_profile-small-pca-1.svg){width="600" height="500"}
+
+Using PCA, the 80% of the variation can be explained by using just 11 components, seen in the scree plot above. That being said, each component does not contain contain much predictive power to the response. For this reason, partial least squares should have been used. (Not sure why they didn't?)
+
+A second approach to deal with the correlation is to take the first-order derivative within each profile. To compute first-order differentiation, the response at the $(p−1)^{st}$ value in the profile is subtracted from the response at the $p^{th}$ value in the profile. This difference represents the rate of change of the response between consecutive measurements in the profile. Larger changes correspond to a larger movement and could potentially be related to the signal in the response. This means that the autocorrelation between profiles should be greatly reduced.
+
+![Figure 9.9: Autocorrelations before and after taking derivatives of the spectra.](images/09_profile-acf-bioreactor1-derivative-1.svg)
+
+We can see in **Figure 9.9** that using the first order derivatives dramatically takes out autocorrelation after the 3rd day lag.
+
+Taken altogether, subsequent preprocessing steps nearly eliminate within-spectra drift has been removed and most of the trends that are unrelated to the peaks have been minimized.
+
+![Figure 9.10: Spectra for the first day of the first small-scale bioreactor where the preprocessing steps have been sequentially applied.](images/09_profile-bioreactor1-day1-before-after-1.svg)
 
 <details>
 
