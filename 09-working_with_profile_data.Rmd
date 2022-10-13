@@ -94,6 +94,42 @@ Taken altogether, subsequent preprocessing steps nearly eliminate within-spectra
 
 ## Impacts of Data Processing on Modeling
 
+All of these preprocessing steps can be considered tuning parameters, where different combinations preprocessing and models are tested.
+
+In this case, our dataset is tiny with 15 small bioreactors that contain 14 daily measurements. Because of the size, we can try out leave-one-out and kfold cross validation.
+
+Both of these CV methods are at risk of being influenced by one unusual hold out or fold. For that reason, it's best to increase the number of repeats with kfold CV. The book recommends 5 repeats, depending on the computational load required.
+
+In terms of model selection, options are limited. PCA or PLS are often used, but these should only be selected if the predictors and response is linear or planar.
+
+For non-linear relationships, neural networks, support vector machines, or tree-based methods can be used. NN's and SVM's cannot handle profile data directly and need to be preprocessed. Tree based methods are a good option since they can handle correlated features, but variable importance can be deceiving because of their inclusion.
+
+In this section, PLS, SVM's, and NN's will be used, along with the preprocessing steps, to make comparison.
+
+![Figure 9.11: Cross-validation performance using different preprocessing steps for profile data across several models.](http://www.feat.engineering/figures/profile-cv-summary-1.svg)
+
+Results from cross-validation reveals several things:
+
+1.  Subsequent preprocessing steps generally decreases RMSE
+2.  Preprocessing had the biggest impact on NN's and regular SVM
+3.  The biggest decline were actually in the standard deviation of the performance (the error bars)
+4.  PLS after derivatives was clearly the best method overall
+5.  Cubist SVM also did well after smoothing
+
+Looking closer at PLS, we can see that preprocessing reduced both RMSE AND the number of components required. Using the derivatives on the final step, PLS only required 4 components, while the others needed around 10 to contain the same amount of variation.
+
+![Figure 9.12: The tuning parameter profiles for partial least squares across profile preprocessing steps.](http://www.feat.engineering/figures/profile-pls-comparison-1.svg)
+
+Comparing PLS and the Cubist SVM we can see the positive impact preprocessing has on the observed vs predicted plots. Without preprocessing, the models are quite biased. After taking the derivatives the predictive power significantly improves.
+
+![Figure 9.13: A comparison of the observed and predicted glucose values for the large-scale bioreactor data.](http://www.feat.engineering/figures/profile-test-summary-1.svg)
+
+It's important to note that the above modeling approach used the bioreactors as the unit of analysis because the days within them would be correlated. If cross-validation would have been done on the days instead of the bioreactors, the RMSE would have been small, but we would have an overlly optimistic interpretation of our results.
+
+Across all models and all profile preprocessing steps, the hold-out RMSE values are artificially lower when day is used as the experimental unit as compared to when bioreactor is used as the unit. Ignoring or being unaware that bioreactor was the experimental unit would likely lead one to be overly optimistic about the predictive performance of a model.
+
+![Figure 9.14: Cross-validation performance comparison using bioreactors, the experimental units, or naive resampling of rows.](http://www.feat.engineering/figures/profile-cv-performance-comparison-1.svg)
+
 <details>
 
 <summary>Meeting chat log</summary>
