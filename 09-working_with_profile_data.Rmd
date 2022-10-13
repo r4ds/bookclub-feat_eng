@@ -22,6 +22,8 @@ Profile data refers to datasets that have complex hierachcical relationships.An 
 
 The goal here is to see if we can take the results from the small reactors to predict the results of the big reactors.
 
+### IMPORTANT DEFINITIONS !
+
 Looking at the spectra over multiple days we see that the intensity exhibits similar patterns in the small and large reactors. The difference being the big reactors lead to slightly higher intensities.
 
 ![](images/09_profile-small-large-bioreactors.svg){width="769" height="439"}
@@ -89,6 +91,8 @@ We can see in **Figure 9.9** that using the first order derivatives dramatically
 Taken altogether, subsequent preprocessing steps nearly eliminate within-spectra drift has been removed and most of the trends that are unrelated to the peaks have been minimized.
 
 ![Figure 9.10: Spectra for the first day of the first small-scale bioreactor where the preprocessing steps have been sequentially applied.](images/09_profile-bioreactor1-day1-before-after-1.svg)
+
+## Impacts of Data Processing on Modeling
 
 <details>
 
