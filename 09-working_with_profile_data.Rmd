@@ -168,10 +168,16 @@ No one set of preprocessing steps or model will work best in every situation. Fi
 
 ![Fin](https://media2.giphy.com/media/lD76yTC5zxZPG/giphy.gif?cid=ecf05e47od2wru2otcd96gmxtvjqgq71jyz2xqclzhp6si6r&rid=giphy.gif&ct=g)
 
+## Meeting Videos
+
+### Cohort 1
+
+`r knitr::include_url("https://www.youtube.com/embed/URL")`
+
 <details>
+<summary> Meeting chat log </summary>
 
-<summary>Meeting chat log</summary>
-
-    LOG
-
+```
+LOG
+```
 </details>
