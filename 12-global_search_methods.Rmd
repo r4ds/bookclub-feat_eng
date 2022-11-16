@@ -2,12 +2,39 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+-   Genetic Algorithms
+-   Simulated Annealing
+-   Other global search methods, such as particle swarm optimization and simultaneous perturbation stochastic approximation
 
-## SLIDE 1
+## 12.1 Naive Bayes Models
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+-   The prior is the general probability of each class (e.g., the rate of STEM profiles)
+-   The likelihood measures the relative probability of the observed predictor data occurring for each class
+-   And the evidence is a normalization factor that can be computed from the prior and likelihood
+-   One key aspect of Naive Bayes is that it assumes that the predictors are independent
+-   Because they're independent we can compute the joint likelihood using a product of individual class-specific values
+
+### Computing the joint-likelihoods
+
+For categorical variables we can create a cross-tabulation between the values and the outcome and the probability of each religion value, within each class. **Fig. 12.1** (a) shows the results of the cross tabulation between religion and stem/non-stem variables.
+
+For the continuous predictor, the number of punctuation marks, the distribution of the predictor is computed separately for each class. One way to accomplish this is by binning the predictor and using the histogram frequencies to estimate the probabilities. You can also compute a nonparametric density function (through a log transform) as shown in **Fig. 12.1** (b)
+
+![Figure 12.1: Visualizations of the conditional distributions for a continuous and a discrete predictor for the OkCupid data.](http://www.feat.engineering/figures/global-bayes-pred-1.svg)
+
+Next, the predictor values can be multiplied together to form the likelihood statistic for both classes. To get the final prediction, the prior and likelihood are multiplied together and their values are normalized to sum to one to give us the *posterior probabilities* (which are just the class probability predictions).
+
+|           |               |                 |                |           |               |
+|-----------|---------------|-----------------|----------------|-----------|---------------|
+| **Class** | **Religion**  | **Punctuation** | **Likelihood** | **Prior** | **Posterior** |
+| STEM      | 0.213         | 0.697           | 0.148          | 0.185     | 0.37          |
+| other     | 0.103         | 0.558           | 0.057          | 0.815     | 0.63          |
+
+:  Table 12.1: Values used in the naive Bayes model computations.
+
+### Major Draw Backs
+
+Care must be taken to create a parsimonious model. Too many features and Naive Bayes tends to produce highly pathological class probability distributions as the number of predictors approaches the number of training set points. This is because of the assumption of independent variables.
 
 ## Meeting Videos
 
@@ -16,9 +43,9 @@
 `r knitr::include_url("https://www.youtube.com/embed/URL")`
 
 <details>
-<summary> Meeting chat log </summary>
 
-```
-LOG
-```
+<summary>Meeting chat log</summary>
+
+    LOG
+
 </details>
