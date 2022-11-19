@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5.4 Supervised Encoding Methods | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5.4 Supervised Encoding Methods | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="The R4DS Online Learning Community" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-11-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -60,12 +60,12 @@
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
 <script src="libs/chromatography-0.1/chromatography.js"></script>
 <script src="libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
-<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
@@ -362,15 +362,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11" data-path="greedy-search-methods.html"><a href="greedy-search-methods.html"><i class="fa fa-check"></i><b>11</b> Greedy Search Methods</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
-<li class="chapter" data-level="11.2" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i><b>11.2</b> Meeting Videos</a>
+<li class="chapter" data-level="" data-path="parkinsons-disease-data.html"><a href="parkinsons-disease-data.html"><i class="fa fa-check"></i>11.1 Parkinson’s Disease Data</a></li>
+<li class="chapter" data-level="" data-path="simple-filters.html"><a href="simple-filters.html"><i class="fa fa-check"></i>11.2 Simple Filters</a></li>
+<li class="chapter" data-level="" data-path="real-data-is-complex.html"><a href="real-data-is-complex.html"><i class="fa fa-check"></i>Real Data is complex</a></li>
+<li class="chapter" data-level="" data-path="converting-to-p-values.html"><a href="converting-to-p-values.html"><i class="fa fa-check"></i>Converting to p-values</a></li>
+<li class="chapter" data-level="" data-path="issues-with-simple-filters.html"><a href="issues-with-simple-filters.html"><i class="fa fa-check"></i>Issues with Simple Filters</a></li>
+<li class="chapter" data-level="" data-path="parkinsons-disease-data-1.html"><a href="parkinsons-disease-data-1.html"><i class="fa fa-check"></i>Parkinson’s Disease Data</a></li>
+<li class="chapter" data-level="" data-path="summarizing-simple-filters.html"><a href="summarizing-simple-filters.html"><i class="fa fa-check"></i>Summarizing Simple Filters</a></li>
+<li class="chapter" data-level="" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i>11.3 Recursive Feature Elimination</a></li>
+<li class="chapter" data-level="" data-path="step-wise-selection.html"><a href="step-wise-selection.html"><i class="fa fa-check"></i>11.4 Step-wise Selection</a></li>
+<li class="chapter" data-level="" data-path="how-does-it-work.html"><a href="how-does-it-work.html"><i class="fa fa-check"></i>How does it work?</a></li>
+<li class="chapter" data-level="" data-path="why-is-step-wise-selection-ungood.html"><a href="why-is-step-wise-selection-ungood.html"><i class="fa fa-check"></i>Why is Step-Wise Selection Ungood?</a></li>
+<li class="chapter" data-level="" data-path="step-wise-selection-has-two-primary-faults.html"><a href="step-wise-selection-has-two-primary-faults.html"><i class="fa fa-check"></i>Step-wise selection has two primary faults:</a></li>
+<li class="chapter" data-level="" data-path="step-wise-selection-example.html"><a href="step-wise-selection-example.html"><i class="fa fa-check"></i>Step-wise Selection Example</a></li>
+<li class="chapter" data-level="" data-path="our-recommendation-is-to-avoid-this-procedure-altogether..html"><a href="our-recommendation-is-to-avoid-this-procedure-altogether..html"><i class="fa fa-check"></i>“Our recommendation is to avoid this procedure altogether.”</a></li>
+<li class="chapter" data-level="" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i>Meeting Videos</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-10"><i class="fa fa-check"></i><b>11.2.1</b> Cohort 1</a></li>
+<li class="chapter" data-level="11.0.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-10"><i class="fa fa-check"></i><b>11.0.1</b> Cohort 1</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="12.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="12.2" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="12.2.1" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
@@ -405,8 +418,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For classification problems, a simple logistic regression model can be used to measure the effect between the categorical outcome and the categorical predictor.</p>
 <p>If the outcome event occurs with rate <span class="math display">\[ p \]</span>, the <em>odds</em> of that event is defined as <span class="math display">\[ p / ( 1 − p) \]</span>.</p>
 <p>This is an example of a single generalized linear model applied to the hair color feature, which woudl otherwise have 12 dummy levels.</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="supervised-encoding-methods.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(dplyr<span class="sc">::</span>starwars) <span class="sc">|&gt;</span> </span>
-<span id="cb148-2"><a href="supervised-encoding-methods.html#cb148-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(hair_color)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="supervised-encoding-methods.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(dplyr<span class="sc">::</span>starwars) <span class="sc">|&gt;</span> </span>
+<span id="cb150-2"><a href="supervised-encoding-methods.html#cb150-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(hair_color)</span></code></pre></div>
 <pre><code>## # A tibble: 13 × 2
 ##    hair_color        n
 ##    &lt;chr&gt;         &lt;int&gt;
@@ -423,15 +436,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 11 unknown           1
 ## 12 white             4
 ## 13 &lt;NA&gt;              5</code></pre>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="supervised-encoding-methods.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(skin_color <span class="sc">~</span> hair_color <span class="sc">+</span>  eye_color <span class="sc">+</span> mass, </span>
-<span id="cb150-2"><a href="supervised-encoding-methods.html#cb150-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="fu">as_tibble</span>(dplyr<span class="sc">::</span>starwars)) <span class="sc">|&gt;</span> </span>
-<span id="cb150-3"><a href="supervised-encoding-methods.html#cb150-3" aria-hidden="true" tabindex="-1"></a>  embed<span class="sc">::</span><span class="fu">step_lencode_glm</span>(hair_color, <span class="at">outcome =</span> <span class="st">&quot;skin_color&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb150-4"><a href="supervised-encoding-methods.html#cb150-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)    <span class="sc">|&gt;</span> </span>
-<span id="cb150-5"><a href="supervised-encoding-methods.html#cb150-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb150-6"><a href="supervised-encoding-methods.html#cb150-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
-<span id="cb150-7"><a href="supervised-encoding-methods.html#cb150-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Starwars Characters hair_color GLM embedding&quot;</span></span>
-<span id="cb150-8"><a href="supervised-encoding-methods.html#cb150-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
-<span id="cb150-9"><a href="supervised-encoding-methods.html#cb150-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="supervised-encoding-methods.html#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(skin_color <span class="sc">~</span> hair_color <span class="sc">+</span>  eye_color <span class="sc">+</span> mass, </span>
+<span id="cb152-2"><a href="supervised-encoding-methods.html#cb152-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> <span class="fu">as_tibble</span>(dplyr<span class="sc">::</span>starwars)) <span class="sc">|&gt;</span> </span>
+<span id="cb152-3"><a href="supervised-encoding-methods.html#cb152-3" aria-hidden="true" tabindex="-1"></a>  embed<span class="sc">::</span><span class="fu">step_lencode_glm</span>(hair_color, <span class="at">outcome =</span> <span class="st">&quot;skin_color&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb152-4"><a href="supervised-encoding-methods.html#cb152-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>)    <span class="sc">|&gt;</span> </span>
+<span id="cb152-5"><a href="supervised-encoding-methods.html#cb152-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb152-6"><a href="supervised-encoding-methods.html#cb152-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
+<span id="cb152-7"><a href="supervised-encoding-methods.html#cb152-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Starwars Characters hair_color GLM embedding&quot;</span></span>
+<span id="cb152-8"><a href="supervised-encoding-methods.html#cb152-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
+<span id="cb152-9"><a href="supervised-encoding-methods.html#cb152-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) </span></code></pre></div>
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
 (#tab:chapter 5 glm numeric embeddings)Starwars Characters hair_color GLM embedding
@@ -627,22 +640,22 @@ recipe(Survived ~ Class +  Sex + Age,
 <p>Use resampling.</p>
 <p>Another supervised approach comes from the deep learning literature on the analysis of textual data. In addition to the dimension reduction, there is the possibility that these methods can estimate semantic relationships between words so that words with similar themes (e.g., “dog”, “pet”, etc.) have similar values in the new encodings. This technique is not limited to text data and can be used to encode any type of qualitative variable.</p>
 <p>An example using <code>The Office</code> dialogue and one of the pre-trained <code>GloVe</code> embeddings.</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="supervised-encoding-methods.html#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textrecipes)</span>
-<span id="cb153-2"><a href="supervised-encoding-methods.html#cb153-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(schrute)</span>
-<span id="cb153-3"><a href="supervised-encoding-methods.html#cb153-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb153-4"><a href="supervised-encoding-methods.html#cb153-4" aria-hidden="true" tabindex="-1"></a>glove6b <span class="ot">&lt;-</span> textdata<span class="sc">::</span><span class="fu">embedding_glove6b</span>(<span class="at">dimensions =</span> <span class="dv">100</span>) <span class="co"># the download is 822.2 Mb</span></span>
-<span id="cb153-5"><a href="supervised-encoding-methods.html#cb153-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb153-6"><a href="supervised-encoding-methods.html#cb153-6" aria-hidden="true" tabindex="-1"></a>schrute<span class="sc">::</span>theoffice <span class="sc">|&gt;</span> </span>
-<span id="cb153-7"><a href="supervised-encoding-methods.html#cb153-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb153-8"><a href="supervised-encoding-methods.html#cb153-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(character, text)</span>
-<span id="cb153-9"><a href="supervised-encoding-methods.html#cb153-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb153-10"><a href="supervised-encoding-methods.html#cb153-10" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(character <span class="sc">~</span> text,</span>
-<span id="cb153-11"><a href="supervised-encoding-methods.html#cb153-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> schrute<span class="sc">::</span>theoffice) <span class="sc">|&gt;</span></span>
-<span id="cb153-12"><a href="supervised-encoding-methods.html#cb153-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text, <span class="at">options =</span> <span class="fu">list</span>(<span class="at">strip_punct =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb153-13"><a href="supervised-encoding-methods.html#cb153-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stem</span>(text) <span class="sc">|&gt;</span></span>
-<span id="cb153-14"><a href="supervised-encoding-methods.html#cb153-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_word_embeddings</span>(text, <span class="at">embeddings =</span> glove6b) <span class="sc">|&gt;</span></span>
-<span id="cb153-15"><a href="supervised-encoding-methods.html#cb153-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> schrute<span class="sc">::</span>theoffice <span class="sc">|&gt;</span></span>
-<span id="cb153-16"><a href="supervised-encoding-methods.html#cb153-16" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>))    </span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="supervised-encoding-methods.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textrecipes)</span>
+<span id="cb155-2"><a href="supervised-encoding-methods.html#cb155-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(schrute)</span>
+<span id="cb155-3"><a href="supervised-encoding-methods.html#cb155-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb155-4"><a href="supervised-encoding-methods.html#cb155-4" aria-hidden="true" tabindex="-1"></a>glove6b <span class="ot">&lt;-</span> textdata<span class="sc">::</span><span class="fu">embedding_glove6b</span>(<span class="at">dimensions =</span> <span class="dv">100</span>) <span class="co"># the download is 822.2 Mb</span></span>
+<span id="cb155-5"><a href="supervised-encoding-methods.html#cb155-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb155-6"><a href="supervised-encoding-methods.html#cb155-6" aria-hidden="true" tabindex="-1"></a>schrute<span class="sc">::</span>theoffice <span class="sc">|&gt;</span> </span>
+<span id="cb155-7"><a href="supervised-encoding-methods.html#cb155-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb155-8"><a href="supervised-encoding-methods.html#cb155-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(character, text)</span>
+<span id="cb155-9"><a href="supervised-encoding-methods.html#cb155-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb155-10"><a href="supervised-encoding-methods.html#cb155-10" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(character <span class="sc">~</span> text,</span>
+<span id="cb155-11"><a href="supervised-encoding-methods.html#cb155-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">data =</span> schrute<span class="sc">::</span>theoffice) <span class="sc">|&gt;</span></span>
+<span id="cb155-12"><a href="supervised-encoding-methods.html#cb155-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_tokenize</span>(text, <span class="at">options =</span> <span class="fu">list</span>(<span class="at">strip_punct =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb155-13"><a href="supervised-encoding-methods.html#cb155-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_stem</span>(text) <span class="sc">|&gt;</span></span>
+<span id="cb155-14"><a href="supervised-encoding-methods.html#cb155-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_word_embeddings</span>(text, <span class="at">embeddings =</span> glove6b) <span class="sc">|&gt;</span></span>
+<span id="cb155-15"><a href="supervised-encoding-methods.html#cb155-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> schrute<span class="sc">::</span>theoffice <span class="sc">|&gt;</span></span>
+<span id="cb155-16"><a href="supervised-encoding-methods.html#cb155-16" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>))    </span></code></pre></div>
 <pre><code>The Office dialogue word embeddings with glove6b
 
 # A tibble: 10 × 101

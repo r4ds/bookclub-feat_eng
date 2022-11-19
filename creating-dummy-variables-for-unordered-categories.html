@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5.1 Creating Dummy Variables for Unordered Categories | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5.1 Creating Dummy Variables for Unordered Categories | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="The R4DS Online Learning Community" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-11-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -60,12 +60,12 @@
 <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
 <script src="libs/chromatography-0.1/chromatography.js"></script>
 <script src="libs/DiagrammeR-binding-1.0.9/DiagrammeR.js"></script>
-<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
@@ -362,15 +362,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11" data-path="greedy-search-methods.html"><a href="greedy-search-methods.html"><i class="fa fa-check"></i><b>11</b> Greedy Search Methods</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>11.1</b> SLIDE 1</a></li>
-<li class="chapter" data-level="11.2" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i><b>11.2</b> Meeting Videos</a>
+<li class="chapter" data-level="" data-path="parkinsons-disease-data.html"><a href="parkinsons-disease-data.html"><i class="fa fa-check"></i>11.1 Parkinson’s Disease Data</a></li>
+<li class="chapter" data-level="" data-path="simple-filters.html"><a href="simple-filters.html"><i class="fa fa-check"></i>11.2 Simple Filters</a></li>
+<li class="chapter" data-level="" data-path="real-data-is-complex.html"><a href="real-data-is-complex.html"><i class="fa fa-check"></i>Real Data is complex</a></li>
+<li class="chapter" data-level="" data-path="converting-to-p-values.html"><a href="converting-to-p-values.html"><i class="fa fa-check"></i>Converting to p-values</a></li>
+<li class="chapter" data-level="" data-path="issues-with-simple-filters.html"><a href="issues-with-simple-filters.html"><i class="fa fa-check"></i>Issues with Simple Filters</a></li>
+<li class="chapter" data-level="" data-path="parkinsons-disease-data-1.html"><a href="parkinsons-disease-data-1.html"><i class="fa fa-check"></i>Parkinson’s Disease Data</a></li>
+<li class="chapter" data-level="" data-path="summarizing-simple-filters.html"><a href="summarizing-simple-filters.html"><i class="fa fa-check"></i>Summarizing Simple Filters</a></li>
+<li class="chapter" data-level="" data-path="recursive-feature-elimination.html"><a href="recursive-feature-elimination.html"><i class="fa fa-check"></i>11.3 Recursive Feature Elimination</a></li>
+<li class="chapter" data-level="" data-path="step-wise-selection.html"><a href="step-wise-selection.html"><i class="fa fa-check"></i>11.4 Step-wise Selection</a></li>
+<li class="chapter" data-level="" data-path="how-does-it-work.html"><a href="how-does-it-work.html"><i class="fa fa-check"></i>How does it work?</a></li>
+<li class="chapter" data-level="" data-path="why-is-step-wise-selection-ungood.html"><a href="why-is-step-wise-selection-ungood.html"><i class="fa fa-check"></i>Why is Step-Wise Selection Ungood?</a></li>
+<li class="chapter" data-level="" data-path="step-wise-selection-has-two-primary-faults.html"><a href="step-wise-selection-has-two-primary-faults.html"><i class="fa fa-check"></i>Step-wise selection has two primary faults:</a></li>
+<li class="chapter" data-level="" data-path="step-wise-selection-example.html"><a href="step-wise-selection-example.html"><i class="fa fa-check"></i>Step-wise Selection Example</a></li>
+<li class="chapter" data-level="" data-path="our-recommendation-is-to-avoid-this-procedure-altogether..html"><a href="our-recommendation-is-to-avoid-this-procedure-altogether..html"><i class="fa fa-check"></i>“Our recommendation is to avoid this procedure altogether.”</a></li>
+<li class="chapter" data-level="" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html"><i class="fa fa-check"></i>Meeting Videos</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-10"><i class="fa fa-check"></i><b>11.2.1</b> Cohort 1</a></li>
+<li class="chapter" data-level="11.0.1" data-path="meeting-videos-9.html"><a href="meeting-videos-9.html#cohort-1-10"><i class="fa fa-check"></i><b>11.0.1</b> Cohort 1</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="slide-1-2.html"><a href="slide-1-2.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
+<li class="chapter" data-level="12.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
 <li class="chapter" data-level="12.2" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
 <ul>
 <li class="chapter" data-level="12.2.1" data-path="meeting-videos-10.html"><a href="meeting-videos-10.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
@@ -410,18 +423,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>What is the interpretation of the dummy variables?</p>
 <p>Consider a linear model for the Chicago transit data that only uses the day of the week.</p>
 <p>Using the training set to fit the model, the intercept value estimates the mean of the reference cell, which is the average number of Sunday riders in the training set, estimated to be 3.84K people. The second model parameter, for Monday, is estimated to be 12.61K. In the reference cell model, the dummy variables represent the mean value above and beyond the reference cell mean. In this case, estimate indicates that there were 12.61K more riders on Monday than Sunday.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-1" aria-hidden="true" tabindex="-1"></a>train_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">m =</span> month.abb, <span class="at">number =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>, <span class="at">by =</span> <span class="dv">1</span>))</span>
-<span id="cb146-2"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb146-3"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-3" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(number <span class="sc">~</span> m, <span class="at">data =</span> train_df) <span class="sc">|&gt;</span> </span>
-<span id="cb146-4"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(),</span>
-<span id="cb146-5"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">one_hot =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb146-6"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>, <span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span>  </span>
-<span id="cb146-7"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable</span>(</span>
-<span id="cb146-8"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Preprocessing without One HOT (the default) contrasts with April&quot;</span></span>
-<span id="cb146-9"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
-<span id="cb146-10"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="at">row =</span> <span class="dv">4</span>, <span class="at">background =</span> <span class="st">&quot;orange&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb146-11"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb146-12"><a href="creating-dummy-variables-for-unordered-categories.html#cb146-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">&quot;800px&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-1" aria-hidden="true" tabindex="-1"></a>train_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">m =</span> month.abb, <span class="at">number =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">12</span>, <span class="at">by =</span> <span class="dv">1</span>))</span>
+<span id="cb148-2"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb148-3"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-3" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(number <span class="sc">~</span> m, <span class="at">data =</span> train_df) <span class="sc">|&gt;</span> </span>
+<span id="cb148-4"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(),</span>
+<span id="cb148-5"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">one_hot =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb148-6"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>, <span class="fu">all_predictors</span>()) <span class="sc">|&gt;</span>  </span>
+<span id="cb148-7"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable</span>(</span>
+<span id="cb148-8"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Preprocessing without One HOT (the default) contrasts with April&quot;</span></span>
+<span id="cb148-9"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
+<span id="cb148-10"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_spec</span>(<span class="at">row =</span> <span class="dv">4</span>, <span class="at">background =</span> <span class="st">&quot;orange&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb148-11"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb148-12"><a href="creating-dummy-variables-for-unordered-categories.html#cb148-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">&quot;800px&quot;</span>)</span></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:800px; ">
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
@@ -888,15 +901,15 @@ m_Sep
 </tbody>
 </table>
 </div>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(number <span class="sc">~</span> m, <span class="at">data =</span> train_df) <span class="sc">|&gt;</span> </span>
-<span id="cb147-2"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(),</span>
-<span id="cb147-3"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">one_hot =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb147-4"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>, <span class="fu">all_predictors</span>())  <span class="sc">|&gt;</span> </span>
-<span id="cb147-5"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable</span>(</span>
-<span id="cb147-6"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Preprocessing with One HOT.&quot;</span></span>
-<span id="cb147-7"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
-<span id="cb147-8"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb147-9"><a href="creating-dummy-variables-for-unordered-categories.html#cb147-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">&quot;800px&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(number <span class="sc">~</span> m, <span class="at">data =</span> train_df) <span class="sc">|&gt;</span> </span>
+<span id="cb149-2"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(),</span>
+<span id="cb149-3"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">one_hot =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb149-4"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prep</span>() <span class="sc">|&gt;</span> <span class="fu">bake</span>(<span class="at">new_data =</span> <span class="cn">NULL</span>, <span class="fu">all_predictors</span>())  <span class="sc">|&gt;</span> </span>
+<span id="cb149-5"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">kable</span>(</span>
+<span id="cb149-6"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Preprocessing with One HOT.&quot;</span></span>
+<span id="cb149-7"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span>  </span>
+<span id="cb149-8"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb149-9"><a href="creating-dummy-variables-for-unordered-categories.html#cb149-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width =</span> <span class="st">&quot;800px&quot;</span>)</span></code></pre></div>
 <div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:800px; ">
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>

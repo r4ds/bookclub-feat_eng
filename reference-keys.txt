@@ -152,10 +152,8 @@ conclusion-1
 meeting-videos-8
 cohort-1-9
 greedy-search-methods
-slide-1-1
-meeting-videos-9
 cohort-1-10
 global-search-methods
-slide-1-2
+slide-1-1
 meeting-videos-10
 cohort-1-11
