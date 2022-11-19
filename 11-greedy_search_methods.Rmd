@@ -108,10 +108,9 @@ Regularization methods, such as the previously discussed glmnet model, are far b
 
 <details>
 <summary> Meeting chat log </summary>
+```
 00:10:16	Federica Gazzelloni:	https://en.wikipedia.org/wiki/Maximal_information_coefficient
 00:29:07	Ricardo Serrano:	An alternative to RFE is the Boruta package for feature selection https://www.analyticsvidhya.com/blog/2016/03/select-important-variables-boruta-package/
 00:31:38	ethan tenison:	Looks promising Ricardo !
-```
-LOG
 ```
 </details>
