@@ -2,23 +2,122 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+- New Data (Parkinson's)
+- Simple Filters
+- Recursive Feature Elimination (RFE)
+- Stepwise Selection
 
-## SLIDE 1
+## 11.1 Parkinson's Disease Data {-}
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+A sound was spoken by each patient 3 times and signal processed to pull out 750 numerical features. The data has massive amounts of multicollinearity. A stratified random sample of 25% was taken (189 patients, 138 with Parkinsons)
 
-## Meeting Videos
+## 11.2 Simple Filters {-}
+
+A reasonable first approach to data is to figure out which variables have the highest predictive power on your dataset.
+
+Outcome Categorical
+
+- Predictor categorical
+  - 2 levels odds-ratio
+  - 3+ levels Contingency table with χ^2^ test
+  
+- Predictor Continuous
+  - 2 levels categorical t-test
+  - 3+ levels categorical ANOVA F-stat
+
+Outcome Continuous
+
+- Predictor categorical
+  - 2 levels categorical t-test
+  - 3+ levels categorical ANOVA F-stat
+
+- Predictor Continuous
+  - Pairwise or Rank correlation (linear)
+  - non-linear
+    - MIC or A statistic
+    - GAM
+
+## Real Data is complex {-}
+
+That's all great, but most datasets contain many different types of predictors. How do we know which ones are most important? The scales of the output statistics are often different. We can often convert to a p-value and go from there (and we do).
+
+A p-value is the chances of there being no association (p ≤ 0.05 or ≤ 5%). 
+
+
+## Converting to p-values {-}
+
+Converting many test results to a p-value is routine, but some tests are not easily translated. AUC curves (categorical feature and continuous outcome) can be converted using the permutation method where you randomly sample the predictor against the outcome variable, and then see where your outcome falls in that distribution. 
+
+## Issues with Simple Filters {-}
+
+Simple filters are an easy first step, but these filters easily get it wrong by showing a strong association in the training data, but not the test or new data. These are called "False Positive" variables. 
+Using cross-validation and resampling can reduce carrying False Positive variables forward. The model likely has tuning parameters too, and we end up exploding the models required to run 
+
+- I x E x T (Internal resamples x external resamples x tuning parameters) 
+
+![Fig 11.2](http://www.feat.engineering/figures/resampling-filters.svg)
+
+## Parkinson's Disease Data {-}
+
+"... the predictors have a high degree of multicollinearity, the sample size is small, and the outcome is imbalanced (74.6% of patients have the disease)."
+
+Models run. and we get Figure 11.3. Which is plotly. 
+
+## Summarizing Simple Filters {-}
+
+Using a simple filtering screen prior to modeling can be effective and relatively efficient. 
+1. The filters should be included in the resampling process to avoid optimistic assessments of performance.
+2. This can lead to redundancy in the selected features
+3. The filtering threshold is subjective and leave have some unknowns of how many features could be removed before performance is impacted
+
+
+## 11.3 Recursive Feature Elimination {-}
+
+"This technique begins by building a model on the entire set of predictors and computing an importance score for each predictor. The least important predictor(s) are then removed, the model is re-built, and importance scores are computed again."
+
+Not all models can be paired with the RFE method, and some models benefit more from RFE than others. Because RFE requires that the initial model uses the full predictor set, then some models cannot be used when the number of predictors exceeds the number of samples. As noted in previous chapters, these models include multiple linear regression, logistic regression, and linear discriminant analysis.
+In addition, some models benefit more from the use of RFE than others.
+
+Random Forests can handle multicollinearity, but the selection of important variables that are the same can vary based upon the sample splits, so one split might have one variable and another another. This can cause issues when you want to slim down variables because an RF takes all variables as input. 
+
+
+## 11.4 Step-wise Selection {-}
+
+This is a weird section. They explain it, but there's no code accompaniment and in the end they say don't do this. 
+
+## How does it work? {-}
+
+Model every variable independently. Based upon some cutoff, keep that variable and fix it in the model and then rerun all of them (p-1). Keep the best version of that and repeat until no variables reach your cutoff (they give p ≤ 0.15). 
+
+## Why is Step-Wise Selection Ungood? {-}
+
+## Step-wise selection has two primary faults: {-}
+
+1. Inflation of false positive findings: Stepwise selection uses many repeated hypothesis tests and corresponding p-values are unadjusted, which leads to an over-selection of features (i.e., false positive findings). In addition, this problem is exacerbated when highly correlated predictors are present.
+2. Model overfitting: The resulting model statistics, including the parameter estimates and associated uncertainty, are highly optimistic since they do not take the selection process into account.
+
+NOTE: 
+Interesting that they say that model overfitting is a watchout on all of the methods described in chapter 11 and 12 (global search methods)
+
+## Step-wise Selection Example {-}
+
+They use an example of a logistic regression model on OKCupid data with words in an essay when trying to associate them with being Caucasian (Binary Outcome). The step-wise model outputs are in a table and show that the initial model is most effective with "nerd", "firefly" and "im". The key is minimizing the AIC
+
+## "Our recommendation is to avoid this procedure altogether." {-}
+
+Regularization methods, such as the previously discussed glmnet model, are far better at selecting appropriate subsets in linear models. If model inference is needed, there are a number of Bayesian methods that can be used (Mallick and Yi 2013; Piironen and Vehtari 2017b, 2017a).
+
+## Meeting Videos {-}
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/IhYl5XsxsWM")`
 
 <details>
 <summary> Meeting chat log </summary>
-
 ```
-LOG
+00:10:16	Federica Gazzelloni:	https://en.wikipedia.org/wiki/Maximal_information_coefficient
+00:29:07	Ricardo Serrano:	An alternative to RFE is the Boruta package for feature selection https://www.analyticsvidhya.com/blog/2016/03/select-important-variables-boruta-package/
+00:31:38	ethan tenison:	Looks promising Ricardo !
 ```
 </details>
