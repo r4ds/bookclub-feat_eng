@@ -946,16 +946,21 @@ rfe_tab <-
 ```
 
 
- Meeting Videos
+## Meeting Videos
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/0j-2e2bKMwM")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:17:23	Ben G:	Have to jump into a work call O
+00:17:31	Ben G:	I'll jump back in later
+00:17:33	Federica Gazzelloni:	@Brandon can you put it a little bit bigger?
+00:21:39	Federica Gazzelloni:	even a little bit more
+01:07:05	Ricardo Serrano:	https://recipes.tidymodels.org/articles/Ordering.html
+01:08:02	Federica Gazzelloni:	thanks!
 ```
 </details>

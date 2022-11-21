@@ -13,12 +13,14 @@
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/wT3KfW2gUgM")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:57:29	Jim Gruman:	https://www.tmwr.org/pre-proc-table.html
+01:03:50	Jim Gruman:	new package name https://github.com/stevenpawley/colino
+01:06:05	Jim Gruman:	https://stevenpawley.github.io/colino/ is the latest iteration of what was "recipeselectors"
 ```
 </details>
