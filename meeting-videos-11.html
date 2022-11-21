@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>7.6 Approaches when Complete Enumeration is Practically Impossible | Feature Engineering and Selection Book Club</title>
+  <title>12.2 Meeting Videos | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="7.6 Approaches when Complete Enumeration is Practically Impossible | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="12.2 Meeting Videos | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="7.6 Approaches when Complete Enumeration is Practically Impossible | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="12.2 Meeting Videos | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="the-brute-force-approach-to-identifying-predictive-interactions.html"/>
-<link rel="next" href="other-potentially-useful-tools.html"/>
+<link rel="prev" href="slide-1-1.html"/>
+
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -412,88 +412,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="approaches-when-complete-enumeration-is-practically-impossible" class="section level2 hasAnchor" number="7.6">
-<h2><span class="header-section-number">7.6</span> Approaches when Complete Enumeration is Practically Impossible<a href="approaches-when-complete-enumeration-is-practically-impossible.html#approaches-when-complete-enumeration-is-practically-impossible" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="guiding-principles-and-two-stage-modeling" class="section level3 hasAnchor" number="7.6.1">
-<h3><span class="header-section-number">7.6.1</span> Guiding Principles and Two-stage Modeling<a href="approaches-when-complete-enumeration-is-practically-impossible.html#guiding-principles-and-two-stage-modeling" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Two-stage Modeling is another approach to use:</p>
-<ol style="list-style-type: decimal">
-<li>use simple models such as lm or glm then add interaction effects</li>
-<li>use models ready for considering interactions</li>
-</ol>
-<p>In the residuals are the predictors missing information.</p>
-<div id="example" class="section level4 hasAnchor" number="7.6.1.1">
-<h4><span class="header-section-number">7.6.1.1</span> Example<a href="approaches-when-complete-enumeration-is-practically-impossible.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Observed data are <span class="math inline">\(y\)</span> and <span class="math inline">\(x_1\)</span>, we know nothing about <span class="math inline">\(x_2\)</span>, and so <span class="math inline">\(x_1*x_2\)</span>.</p>
-<p><span class="math display">\[y=x_1+x_2+10x_1x_2+\text{error}\]</span></p>
-<p><span class="math display">\[y=\beta_1x_1+x_2+\text{error*}\]</span></p>
-<p><span class="math display">\[\text{error*}=\beta_2x_2+\beta_3x_1x_2+\text{error}\]</span>
-Random measurement error remains unexplained.</p>
-<ul>
-<li>hierarchy principle: first look at pairwise interactions</li>
-<li>sparsity principle: look for active interactions</li>
-<li>heredity principle: search for interactions among the predictors identified in the first stage</li>
-<li>choose the type of heredity: determine the number of interaction terms</li>
-</ul>
-<p>For classification outcome (categorical response) the <strong>Pearson residual</strong> should be used:</p>
-<p><span class="math display">\[\frac{y_i-p_i}{\sqrt{p_i(1-p_i)}}\]</span></p>
+<div id="meeting-videos-11" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Meeting Videos<a href="meeting-videos-11.html#meeting-videos-11" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="cohort-1-11" class="section level3 hasAnchor" number="12.2.1">
+<h3><span class="header-section-number">12.2.1</span> Cohort 1<a href="meeting-videos-11.html#cohort-1-11" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<iframe src="https://www.youtube.com/embed/wT3KfW2gUgM" width="100%" height="400px" data-external="1">
+</iframe>
+<details>
+<summary>
+Meeting chat log
+</summary>
+<pre><code>00:57:29    Jim Gruman: https://www.tmwr.org/pre-proc-table.html
+01:03:50    Jim Gruman: new package name https://github.com/stevenpawley/colino
+01:06:05    Jim Gruman: https://stevenpawley.github.io/colino/ is the latest iteration of what was &quot;recipeselectors&quot;</code></pre>
+</details>
+
 </div>
 </div>
-<div id="tree-based-methods" class="section level3 hasAnchor" number="7.6.2">
-<h3><span class="header-section-number">7.6.2</span> Tree-based Methods<a href="approaches-when-complete-enumeration-is-practically-impossible.html#tree-based-methods" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<blockquote>
-<p>“Tree-based models are usually thought of as pure interaction due to their prediction equation, which can be written as a set of multiplicative statements.”</p>
-</blockquote>
-<ul>
-<li>tree-based methods uncover potential interactions between variables</li>
-<li>recursive partitioning identifies important interactions among predictors</li>
-</ul>
-<blockquote>
-<p>“In essence, the partitioning aspect of trees impedes their ability to represent smooth, global interactions.”</p>
-</blockquote>
-<p>Moreover, a tree-based model does well at approximating the level of interaction but, it breaks the space into rectangular regions, and needs many regions to capture all possible interactions.</p>
-<p>For this reason, ensembles of trees such as <strong>bagging</strong> (many samples of the original data generated with replacement) and <strong>boosting</strong> (sequence of trees with restricted depth, improved performance and weighted stats) are better performers.</p>
-<p>Here is a representation of the clusters for Ames data:
-<img src="images/07-tree_based_method.png" width="733" /></p>
-<p>Here is the outcome of a basic decision tree for the Ischemic Stroke data:</p>
-<p>see full code in the scripts folder: <strong>6_ames_hclust.R</strong>
-<img src="images/07-dt_is.png" width="838" /></p>
-<p>Tree ensembles are so effective at identifying predictor-response relationships because they are aggregating many trees from slightly different versions of the original data.</p>
-<p>An example is <strong>Random Forest</strong> which is a variation of <strong>bagging</strong>.</p>
-<p><strong>Partial dependency</strong> compares the joint effect of two (or more) predictors with the individual effect of each predictor in a model. This comparison is named <strong>H</strong> statistic, which is 0 if no interaction is found and &gt;0 otherwise.</p>
-<p>More about the <strong>H</strong> statistic can be found in <a href="http://www.feat.engineering/references.html#ref-friedman2008predictive">Friedman and Popescu 2008</a>.</p>
-<p>see full code in the scripts folder: <strong>7_ames_H_stat.R</strong>
-see the code: <a href="https://github.com/topepo/FES/blob/master/07_Detecting_Interaction_Effects/7_05_Approaches_when_Complete_Enumeration_is_Practically_Impossible/ames_trees.R">Ames trees example with H statistic</a></p>
-<p><strong>Out-of-bag (OOB)</strong> samples: Random forest uses bootstrap samples to create many models to be used in the ensemble. Since the bootstrap is being used, each tree has an associated assessment set (historically called the out-of-bag (OOB) samples) that we not used to fit the model.</p>
-<p>To be mentioned is this interesting package: <a href="https://github.com/marjoleinF/pre">pre package</a></p>
-</div>
-<div id="the-feasible-solution-algorithm" class="section level3 hasAnchor" number="7.6.3">
-<h3><span class="header-section-number">7.6.3</span> The Feasible Solution Algorithm<a href="approaches-when-complete-enumeration-is-practically-impossible.html#the-feasible-solution-algorithm" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>A preselction is done before searching for interaction among predictors. When <strong>linear and logistic models</strong> are used some predictor selection methods are applied:</p>
-<ul>
-<li><p><strong>Forward selection</strong>: It starts with no predictors and select the best one, then select the second best and so on…</p></li>
-<li><p><strong>Backward selection</strong>: It starts with all predictors and make a selection based on least contribution on optimization.</p></li>
-<li><p><strong>Stepwise selection</strong>: It adds and removes predictors at a time at each step based on optimization criteria, until model’s results negatively impact model performance.</p></li>
-<li><p><strong>FSA</strong>: The <strong>feasible solution algorithm</strong> (Miller’s approach extended by Hawkins) to find the optimal subset. Miller’s approach with 10 predictors, randomly select 3 of the predictors among all the others. It makes a model selecting one of the three predictors. Then the other two are modeled against all the remaining ones. If any of the new added predictors gives a better result, the first predictor is chosen. Then more swapping is performed among the first three predictors against all the others, untile the best one is found, or until it <strong>converges</strong>.</p></li>
-</ul>
-<p><strong>Hawkins’ extension</strong>:</p>
-<ul>
-<li>q: random starts</li>
-<li>m: terms in the subset</li>
-<li>p: predictors</li>
-</ul>
-<p>The space is <span class="math inline">\(q\text{ x }m\text{ x }p\)</span>, in general the space is <span class="math inline">\(p^m\)</span>.</p>
-<p><strong>Lambert’s approach</strong> add the <strong>interaction</strong> selection to the <strong>FSA</strong> algorithm.</p>
-<p><a href="https://github.com/topepo/FES/blob/master/07_Detecting_Interaction_Effects/7_05_Approaches_when_Complete_Enumeration_is_Practically_Impossible/ames_fsa.R">See the code for FSA Application to Ames data</a></p>
-</div>
-</div>
+<!-- </div> -->
             </section>
 
           </div>
         </div>
       </div>
-<a href="the-brute-force-approach-to-identifying-predictive-interactions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="other-potentially-useful-tools.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="slide-1-1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -524,7 +467,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/07-detecting_interaction_effects.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/12-global_search_methods.Rmd",
 "text": "Edit"
 },
 "history": {
