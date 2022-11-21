@@ -262,12 +262,14 @@ Missing values are common occurrences in data. Unfortunately, most predictive mo
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/XdB85Hw1Igo")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:07:47	Ricardo Serrano:	https://r4ds.github.io/bookclub-feat_eng/handling-missing-data.html
+00:42:10	Ricardo Serrano:	naniar package
+00:42:52	Federica Gazzelloni:	https://cran.r-project.org/web/packages/naniar/readme/README.html
 ```
 </details>

@@ -172,12 +172,12 @@ No one set of preprocessing steps or model will work best in every situation. Fi
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/jMGv0RuQx_A")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:22:04	Ricardo Serrano:	Time series autocorrelation https://statisticsbyjim.com/time-series/autocorrelation-partial-autocorrelation/#:~:text=Autocorrelation%20is%20the%20correlation%20between,values%20influence%20the%20current%20value.
 ```
 </details>

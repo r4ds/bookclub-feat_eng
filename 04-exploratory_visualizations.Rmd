@@ -927,6 +927,8 @@ resid_hists | (day_resid / l14_PR_resid / hol_PR_resid)
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:12:51	Ricardo Serrano:	https://rkabacoff.github.io/datavis/
+00:27:24	ethan tenison:	You could maybe use Box Cox/Yeo-Johnson transformation
+01:01:45	Jim Gruman:	thank you Ricardo!👏🏼
 ```
 </details>

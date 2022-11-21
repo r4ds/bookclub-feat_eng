@@ -13,12 +13,38 @@
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/2_dW04HQ2Ck")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+00:11:35	Ben G:	Anyone know how to re-size an image for a Markdown slides presentation
+00:19:03	Federica Gazzelloni:	ops sorry just seen it
+00:20:15	Federica Gazzelloni:	anyway you can resize it using fig.dim=“some percentage” in the chunk
+00:30:51	Ricardo Serrano:	Cohen's Kappa metric https://thedatascientist.com/performance-measures-cohens-kappa-statistic/
+00:33:22	Federica Gazzelloni:	thanks @ricardo
+00:37:32	Ricardo Serrano:	H2O Metrics Masterclass https://youtu.be/0bZeTUOPDTQ
+00:37:47	Federica Gazzelloni:	{r pressure, echo=FALSE, fig.dim="50%"}
+plot(pressure)
+00:40:31	Jim Gruman:	roll_rs <- sliding_period(
+  train_df,
+  date,
+  period = "month",
+  every = 6L,
+  lookback = Inf,
+  skip = 2L
+)
+
+roll_rs |> 
+  tidy() |> 
+  ggplot(aes(x = Resample, 
+             y = Row, 
+             fill = Data)) +
+  geom_tile() +
+  scale_fill_viridis_d() +
+  theme_bw()
+00:46:17	ethan tenison:	In the book it recommends doing 10-fold cross validation  plus 5 iterations for small datasets. Would bootstrapping still be better?
+01:05:34	Jim Gruman:	thank you Ben!     I'm going to have to step away. See you all next week
 ```
 </details>

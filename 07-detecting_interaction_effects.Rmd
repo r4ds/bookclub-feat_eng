@@ -501,12 +501,12 @@ It is challeging to detect all the real interacting effects on a data set with m
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/uYOGgrRvjXQ")`
 
 <details>
 <summary> Meeting chat log </summary>
 
 ```
-LOG
+01:09:27	Ricardo Serrano:	FWDselect
 ```
 </details>
