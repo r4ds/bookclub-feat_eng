@@ -8,6 +8,8 @@
 
 ## 12.1 Naive Bayes Models
 
+**For the chapter, NB will be used in conjunction with global search method**
+
 -   The prior is the general probability of each class (e.g., the rate of STEM profiles)
 -   The likelihood measures the relative probability of the observed predictor data occurring for each class
 -   And the evidence is a normalization factor that can be computed from the prior and likelihood
@@ -25,7 +27,7 @@ For the continuous predictor, the number of punctuation marks, the distribution 
 Next, the predictor values can be multiplied together to form the likelihood statistic for both classes. To get the final prediction, the prior and likelihood are multiplied together and their values are normalized to sum to one to give us the *posterior probabilities* (which are just the class probability predictions).
 
 |           |              |                 |                |           |               |
-|------------|------------|------------|------------|------------|------------|
+|-----------|--------------|-----------------|----------------|-----------|---------------|
 | **Class** | **Religion** | **Punctuation** | **Likelihood** | **Prior** | **Posterior** |
 | STEM      | 0.213        | 0.697           | 0.148          | 0.185     | 0.37          |
 | other     | 0.103        | 0.558           | 0.057          | 0.815     | 0.63          |
@@ -57,7 +59,7 @@ This algorithm summarizes the basic simulated annealing algorithm for feature se
 The following is an example of how simulated annealing works across a number of iterations with a restart at iteration 14.
 
 | **Iteration** | **Size** | **ROC** | **Probability** | **Random Uniform** | **Status** |
-|-----------:|-----------:|-----------:|-----------:|-----------:|:-----------|
+|--------------:|---------:|--------:|----------------:|-------------------:|:-----------|
 |             1 |      122 |   0.776 |             --- |                --- | Improved   |
 |             2 |      120 |   0.781 |             --- |                --- | Improved   |
 |             3 |      122 |   0.770 |           0.958 |              0.767 | Accepted   |
@@ -126,6 +128,8 @@ Figure [12.7](http://www.feat.engineering/simulated-annealing.html#fig:global-sa
 
 ## 12.3 Genetic Algorithms
 
+![The basic procedure of a genetic algorithm](https://www.researchgate.net/publication/333603547/figure/fig3/AS:766028225212421@1559646769804/Genetic-Algorithm-flow-chart.png)
+
 Genetic Algorithms are optimization tools that allow us to find global optimum solutions by mimicing Charles Darwins theory of Natural Selection. Each GA starts with an initial populations. Those with the highest performance essentially 'mate' and there is a crossover of their genes (features). The offspring that are create also have a small subset of their genes randomly mutated. This helps the algorithm avoid local optimum.
 
 Unlike simulated annealing, the GA feature subsets are grouped into *generations* instead of considering one subset at a time. But a generation in a GAs is similar to an iteration in simulated annealing.
@@ -133,7 +137,7 @@ Unlike simulated annealing, the GA feature subsets are grouped into *generations
 The key is to setting the initial population size to something that will capture the maximum amount of variability in the system.
 
 | **ID** |     |     |     |     |     |     |     |     |     | **Performance** | **Probability (%)** |
-|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:----:|:-----:|:----:|
+|:------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---------------:|:-------------------:|
 |   1    |     |     |  C  |     |     |  F  |     |     |     |      0.54       |         6.4         |
 |   2    |  A  |     |     |  D  |  E  |  F  |     |  H  |     |      0.55       |         6.5         |
 |   3    |     |     |     |  D  |     |     |     |     |     |      0.51       |         6.0         |
@@ -147,7 +151,7 @@ The key is to setting the initial population size to something that will capture
 |   11   |  A  |  B  |     |  D  |  E  |     |  G  |  H  |     |      0.85       |        10.0         |
 |   12   |  A  |  B  |  C  |  D  |  E  |  F  |  G  |     |  I  |      0.91       |        10.7         |
 
-Higher performance is generally better, but in order to reduce the likelihood of getting stuck in a local optimum, a weight selection probability score is created. A simple way to compute the selection probability is to divide an individual feature subset\'s performance value by the the sum of all the performance values. The rightmost column in the table above shows the results for this generation.
+Higher performance is generally better, but in order to reduce the likelihood of getting stuck in a local optimum, a weight selection probability score is created. A simple way to compute the selection probability is to divide an individual feature subset's performance value by the the sum of all the performance values. The rightmost column in the table above shows the results for this generation.
 
 Selected parents from first generation:
 
