@@ -432,11 +432,3 @@ Text fields, too, can be viewed as an agglomeration of categorical predictors an
 ### Cohort 1
 
 `r knitr::include_url("https://www.youtube.com/embed/3FQaLXi-DZM")`
-
-<details>
-<summary> No chat for this session </summary>
-
-```
-LOG
-```
-</details>

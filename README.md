@@ -10,7 +10,7 @@ As we read, we are producing [notes about the book](https://r4ds.io/feat_eng).
 
 If you would like to present, please see the sign-up sheet for your cohort (linked below, and pinned in the [#book_club-feat_eng](https://rfordatascience.slack.com/archives/C02Q3JUL8BY) channel on Slack)!
 
-- [Cohort 1](https://docs.google.com/spreadsheets/d/1_7IxmdZf-3MRPDy-rlNHdzuI2d4QH7gG6LQQIQpDMnI/edit) (started 2022-08-19): [Fridays, 12:00 noon CST/CDT](https://www.timeanddate.com/worldclock/converter.html?iso=20220819T170000&p1=24&p2=179&p3=5148&p4=53&p5=1440) | [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGgVpjjKEIYzSu26ex6p78-W)
+- Cohort 1 (started 2022-08-19, ended 2022-11-18): [meeting videos](https://www.youtube.com/playlist?list=PL3x6DOfs2NGgVpjjKEIYzSu26ex6p78-W)
 
 <hr>
 
@@ -22,13 +22,8 @@ To present, follow these instructions:
 
 Do these steps once:
 
-1. [Setup Github Locally](https://www.youtube.com/watch?v=hNUNPkoledI) (also see [_Happy Git and GitHub for the useR_](https://happygitwithr.com/github-acct.html))
-2. Install {usethis} and {devtools} `install.packages(c("usethis", "devtools"))`
-3. Set up a default {usethis} directory:
-  - `usethis::edit_r_profile()` to open your profile for editing.
-  - Add this line: `options(usethis.destdir = "YOURDIR")` (replace `YOURDIR` with the root directory under which you want your R projects to appear; or you can skip these steps, and the project will be saved to your Desktop).
-  - Restart your R session (Session/Restart R in Rstudio).
-4. `usethis::create_from_github("r4ds/bookclub-feat_eng")` (cleanly creates your own copy of this repository).
+1. [Setup Git and GitHub to work with RStudio](https://github.com/r4ds/bookclub-setup) (click through for detailed, step-by-step instructions; I recommend checking this out even if you're pretty sure you're all set).
+2. `usethis::create_from_github("r4ds/bookclub-feat_eng")` (cleanly creates your own copy of this repository).
 
 Do these steps each time you present another chapter:
 

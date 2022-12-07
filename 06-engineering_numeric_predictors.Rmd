@@ -401,12 +401,12 @@ Distance and Depth Features take a semi-supervised approach for classification p
 
 ### Cohort 1
 
-`r knitr::include_url("https://www.youtube.com/embed/URL")`
+`r knitr::include_url("https://www.youtube.com/embed/w66B9ksinUg")`
 
 <details>
+<summary> No chat for this session </summary>
 
-<summary>Meeting chat log</summary>
-
-    LOG
-
+```
+00:11:54	Federica Gazzelloni:	save.image(file="1.RData")
+```
 </details>
