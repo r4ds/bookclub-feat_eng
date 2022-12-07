@@ -2,12 +2,239 @@
 
 **Learning objectives:**
 
-- THESE ARE NICE TO HAVE BUT NOT ABSOLUTELY NECESSARY
+-   Genetic Algorithms
+-   Simulated Annealing
+-   Other global search methods, such as particle swarm optimization and simultaneous perturbation stochastic approximation
 
-## SLIDE 1
+## 12.1 Naive Bayes Models
 
-- ADD SLIDES AS SECTIONS (`##`).
-- TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.
+**For the chapter, NB will be used in conjunction with global search method**
+
+-   The prior is the general probability of each class (e.g., the rate of STEM profiles)
+-   The likelihood measures the relative probability of the observed predictor data occurring for each class
+-   And the evidence is a normalization factor that can be computed from the prior and likelihood
+-   One key aspect of Naive Bayes is that it assumes that the predictors are independent
+-   Because they're independent we can compute the joint likelihood using a product of individual class-specific values
+
+### Computing the joint-likelihoods
+
+For categorical variables we can create a cross-tabulation between the values and the outcome and the probability of each religion value, within each class. **Fig. 12.1** (a) shows the results of the cross tabulation between religion and stem/non-stem variables.
+
+For the continuous predictor, the number of punctuation marks, the distribution of the predictor is computed separately for each class. One way to accomplish this is by binning the predictor and using the histogram frequencies to estimate the probabilities. You can also compute a nonparametric density function (through a log transform) as shown in **Fig. 12.1** (b)
+
+![Figure 12.1: Visualizations of the conditional distributions for a continuous and a discrete predictor for the OkCupid data.](http://www.feat.engineering/figures/global-bayes-pred-1.svg)
+
+Next, the predictor values can be multiplied together to form the likelihood statistic for both classes. To get the final prediction, the prior and likelihood are multiplied together and their values are normalized to sum to one to give us the *posterior probabilities* (which are just the class probability predictions).
+
+|           |              |                 |                |           |               |
+|-----------|--------------|-----------------|----------------|-----------|---------------|
+| **Class** | **Religion** | **Punctuation** | **Likelihood** | **Prior** | **Posterior** |
+| STEM      | 0.213        | 0.697           | 0.148          | 0.185     | 0.37          |
+| other     | 0.103        | 0.558           | 0.057          | 0.815     | 0.63          |
+
+: Table 12.1: Values used in the naive Bayes model computations.
+
+### Major Draw Backs
+
+Care must be taken to create a parsimonious model. Too many features and Naive Bayes tends to produce highly pathological class probability distributions as the number of predictors approaches the number of training set points. This is because of the assumption of independent variables.
+
+## 12.2 Simulated Annealing
+
+Annealing is the process of heating a metal or glass to remove imperfections and improve strength in the material. The annealing process that happens to particles within a material can be abstracted and applied for the purpose of feature selection.
+
+In the context of feature selection, features are particles. Simulated annealing works by iteritively testing how strong (predictive) each of the features are. After each iteration, the energy of the material (the features in your model) is testing tested for predictive power.
+
+Additionally, during each iteration a new subset of features are included and compared to previous iterations. If the subset of features reaches a certain threshold of predictive power it is kept for the next iteration, if it doesn't meet the threshold it is discarded.
+
+The acceptance probability formula is as follows:
+
+$Pr[accept] = \exp\left[-\frac{i}{c}\left(\frac{old-new}{old}\right)\right]$
+
+To understand the acceptance probability formula, consider an example where the objective is to optimize predictive accuracy. Suppose the previous solution had an accuracy of 85% and the current solution had an accuracy of 80%. The proportionate decrease of the current solution relative to the previous solution is 0.059. If this situation occurred in the first iteration, then the acceptance probability would be 0.94. If this situation occurred at iteration 5, the probability of accepting the inferior subset would be 0.75%. At iteration 50, this the acceptance probability drops to 0.05. Therefore, the probability of accepting a worse solution decreases as the algorithm iteration increases.
+
+This algorithm summarizes the basic simulated annealing algorithm for feature selection:
+
+![](http://www.feat.engineering/figures/algo-sa-basic.png)
+
+The following is an example of how simulated annealing works across a number of iterations with a restart at iteration 14.
+
+| **Iteration** | **Size** | **ROC** | **Probability** | **Random Uniform** | **Status** |
+|--------------:|---------:|--------:|----------------:|-------------------:|:-----------|
+|             1 |      122 |   0.776 |             --- |                --- | Improved   |
+|             2 |      120 |   0.781 |             --- |                --- | Improved   |
+|             3 |      122 |   0.770 |           0.958 |              0.767 | Accepted   |
+|             4 |      120 |   0.804 |             --- |                --- | Improved   |
+|             5 |      120 |   0.793 |           0.931 |              0.291 | Accepted   |
+|             6 |      118 |   0.779 |           0.826 |              0.879 | Discarded  |
+|             7 |      122 |   0.779 |           0.799 |              0.659 | Accepted   |
+|             8 |      124 |   0.776 |           0.756 |              0.475 | Accepted   |
+|             9 |      124 |   0.798 |           0.929 |              0.879 | Accepted   |
+|            10 |      124 |   0.774 |           0.685 |              0.846 | Discarded  |
+|            11 |      126 |   0.788 |           0.800 |              0.512 | Accepted   |
+|            12 |      124 |   0.783 |           0.732 |              0.191 | Accepted   |
+|            13 |      124 |   0.790 |           0.787 |              0.060 | Accepted   |
+|            14 |      124 |   0.778 |             --- |                --- | Restart    |
+|            15 |      120 |   0.790 |           0.982 |              0.049 | Accepted   |
+
+### Selecting Features without Overfitting
+
+An external resampling procedure should be used to determine how many iterations of the search are appropriate. This would average the assessment set predictions across all resamples to determine how long the search should proceed when it is directly applied to the entire training set. Basically, the number of iterations is a tuning parameter
+
+A good way to do this is with 10 fold cross validation. The author recommends separating the external resample into train and evaluation.
+
+![Figure 12.2: A diagram of external and internal cross-validation for global search.](http://www.feat.engineering/figures/resampling-global.svg)
+
+-   the internal resamples guide the subset selection process
+
+-   the external resamples help tune the number of search iterations to use.
+
+The resampling selection procedure is as follows:
+
+![](http://www.feat.engineering/figures/algo-sa-fs.png)
+
+### 12.2.2 Application to Modeling the OkCupid Data
+
+To put simulated annealing in practice, again the OkCupid data is used. The area under the ROC curve is used to optimize the models and to find the optimal number of SA iterations.
+
+![Figure 12.3: Internal performance profile for naive Bayes models selected via simulated annealing for each external resample.](http://www.feat.engineering/figures/global-external-sa-1.svg)
+
+Then both external and internal performance estimates are compared by using rank correlation. The average rank correlation between the two sets of ROC statistics is 0.622 with a range of (0.43, 0.85). This indicates fairly good consistency. While there is substantial variability in these values, the number of variables selected at those points in the process are more precise; the average was 56 predictors with a range of (49, 64)
+
+![Figure 12.4: Performance profile for naive Bayes models selected via simulated annealing where a random 50 percent of the features were seeded into the initial subset.](http://www.feat.engineering/figures/global-sa-perf-1.svg)
+
+For the final search, what was done inside of the external resamples is repeated to measure ROC and sample size.
+
+![Figure 12.5: Trends for the final SA search using the entire training set and a 10 percent internal validation set.](http://www.feat.engineering/figures/global-sa-final-1.svg)
+
+During this final search, the iteration with the best area under the ROC curve (0.837) was 356 where 63 predictors were used.
+
+### 12.2.3 Examining Changes in Performance
+
+In order to measure the importance of features a t-test for equality can be conducted to tease out the important variables from all of the subsets.
+
+### 12.2.4 Grouped Qualitative Predictors Versus Indicator Variables
+
+Using categorical features (one hot encoded) has the potential to dramatically increase computation time and slightly decrease the performance (not by much)
+
+![Figure 12.6: Results when qualitative variables are decomposed into individual predictors.](http://www.feat.engineering/figures/global-sa-perf-ind-1.svg)
+
+### 12.2.5 The Effect of the Initial Subset
+
+Figure [12.7](http://www.feat.engineering/simulated-annealing.html#fig:global-sa-sizes) shows the smoothed subset sizes for each external resample colored by the different initial percentages. In many instances, the three configurations converged to a subset size that was about half of the total number of possible predictors (although a few showed minimal change overall).
+
+![Figure 12.7: Resampling trends across iterations for different initial feature subset sizes. These results were achieved using simulated annealing applied to the OkCupid data.](http://www.feat.engineering/figures/global-sa-sizes-1.svg)
+
+**In terms of performance, the areas under the ROC curves for the three sets were 0.805 (10%), 0.799 (50%), and 0.804 (90%).**
+
+## 12.3 Genetic Algorithms
+
+![The basic procedure of a genetic algorithm](https://www.researchgate.net/publication/333603547/figure/fig3/AS:766028225212421@1559646769804/Genetic-Algorithm-flow-chart.png)
+
+Genetic Algorithms are optimization tools that allow us to find global optimum solutions by mimicing Charles Darwins theory of Natural Selection. Each GA starts with an initial populations. Those with the highest performance essentially 'mate' and there is a crossover of their genes (features). The offspring that are create also have a small subset of their genes randomly mutated. This helps the algorithm avoid local optimum.
+
+Unlike simulated annealing, the GA feature subsets are grouped into *generations* instead of considering one subset at a time. But a generation in a GAs is similar to an iteration in simulated annealing.
+
+The key is to setting the initial population size to something that will capture the maximum amount of variability in the system.
+
+| **ID** |     |     |     |     |     |     |     |     |     | **Performance** | **Probability (%)** |
+|:------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---------------:|:-------------------:|
+|   1    |     |     |  C  |     |     |  F  |     |     |     |      0.54       |         6.4         |
+|   2    |  A  |     |     |  D  |  E  |  F  |     |  H  |     |      0.55       |         6.5         |
+|   3    |     |     |     |  D  |     |     |     |     |     |      0.51       |         6.0         |
+|   4    |     |     |     |     |  E  |     |     |     |     |      0.53       |         6.2         |
+|   5    |     |     |     |  D  |     |     |  G  |  H  |  I  |      0.75       |         8.8         |
+|   6    |     |  B  |     |     |  E  |     |  G  |     |  I  |      0.64       |         7.5         |
+|   7    |     |  B  |  C  |     |     |  F  |     |     |  I  |      0.65       |         7.7         |
+|   8    |  A  |     |  C  |     |  E  |     |  G  |  H  |  I  |      0.95       |        11.2         |
+|   9    |  A  |     |  C  |  D  |     |  F  |  G  |  H  |  I  |      0.81       |         9.6         |
+|   10   |     |     |  C  |  D  |  E  |     |     |     |  I  |      0.79       |         9.3         |
+|   11   |  A  |  B  |     |  D  |  E  |     |  G  |  H  |     |      0.85       |        10.0         |
+|   12   |  A  |  B  |  C  |  D  |  E  |  F  |  G  |     |  I  |      0.91       |        10.7         |
+
+Higher performance is generally better, but in order to reduce the likelihood of getting stuck in a local optimum, a weight selection probability score is created. A simple way to compute the selection probability is to divide an individual feature subset's performance value by the the sum of all the performance values. The rightmost column in the table above shows the results for this generation.
+
+Selected parents from first generation:
+
+| **ID** |     |     |     |     |     |     |     |     |     |
+|:------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|   6    |     |  B  |     |     |  E  |     |  G  |     |  I  |
+|   12   |  A  |  B  |  C  |  D  |  E  |  F  |  G  |     |  I  |
+
+Their offspring
+
+| **ID** |     |     |     |     |     |     |     |     |     |
+|:------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|   13   |     |  B  |     |     |  E  |  F  |  G  |     |  I  |
+|   14   |  A  |  B  |  C  |  D  |  E  |     |  G  |     |  I  |
+
+After this, mutation kicks in, which is usually a low number (1-2% chance).
+
+| **ID** |     |     |     |     |     |     |     |     |     |
+|:------:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|   13   |     |  B  |     |     |  E  |  F  |  G  |     |     |
+|   14   |  A  |  B  |  C  |  D  |  E  |     |  G  |     |  I  |
+
+This process is continued for however many generations you set. The final suggested features will be evaluated across all generations, through a process known as elitism.
+
+### 12.3.1 External Validation
+
+Basically, the number of iterations is once again a tuning parameter, except the iterations are called generations.
+
+A genetic algorithm makes gradual improvements in predictive performance through changes to feature subsets over time. Similar to simulated annealing, an external resampling procedure should be used to select an optimal number of generations.This will help prevent the GA from overfitting.
+
+Just like SA, 10 fold cross validations was used. Here are the following defaults parameters of the GA:
+
+-   Generation size: 50,
+
+-   Crossover probability: 80%,
+
+-   Mutation probability: 1%,
+
+-   Elitism: No,
+
+-   Number of generations: 14
+
+Understanding characteristics of the members *within* a generation can also be useful. For example, the diversity of the subsets within and between generations can be quantified using a measure such as Jaccard similarity (Tan, Steinbach, and Kumar [2006](http://www.feat.engineering/references.html#ref-Tan2006)). This will show us how the GA is converging on a solution.
+
+![Figure 12.8: The change in subset size, similarity, and performance over time for each external resample of the genetic algorithm.](http://www.feat.engineering/figures/global-ga-size-sim-roc-1.svg)
+
+**Fig 12.8** shows that the subset size converges, generally the generations are becoming more similar, and that the ROC improves over time.
+
+Looking at the entire dataset:
+
+![Figure 12.9: Genetic algorithm results for the final search using the entire training set.](http://www.feat.engineering/figures/global-ga-perf-1.svg)
+
+To gauge the effectiveness of the search, 100 random subsets of size 63 were chosen and a naive Bayes model was developed for each. The GA selected subset performed better than 100% of the randomly selected subsets. This indicates that the GA did find a useful subset for predicting the response.
+
+### 12.3.2 Coercing Sparsity
+
+With GAs there is less of a penality for keeping a feature that has no impact on predictive performance. Ultimately this is not what we want.
+
+A simple method for reducing the number of predictors is to use a surrogate measure of performance that has an explicit penalty based on the number of features. Section [11.4](http://www.feat.engineering/greedy-stepwise-selection.html#greedy-stepwise-selection) introduced the Akaike information criterion (AIC) which augments the objective function with a penalty that is a function of the training set size and the number of model terms.
+
+At this point, you'll be optimizing two things, increasing model performance AND reducing the number of features, called multi-parameter optimization (MPO). Using these two parameters you can create a 'desirability' function which will reject certain solutions based on a specific threshold.
+
+![Figure 12.10: Examples of two types of desirability functions and the overall desirability surface when the two are combined.](http://www.feat.engineering/figures/global-desire-examples-1.svg)
+
+For the OkCupid data, a desirability function with the following objectives was used to guide the GA:
+
+-   maximize the area under the ROC curve between A=0.50A=0.50 and B=1.00B=1.00 with a scale factor of s=2.0s=2.0.
+
+-   minimize the subset size to be within A=10A=10 and B=100B=100 with s=1.0s=1.0.
+
+The result is a much smaller predictor space
+
+![Figure 12.11: Internal performance profiles for naive Bayes models using the genetic algorithm in conjunction with desirability functions.](http://www.feat.engineering/figures/global-ga-size-sim-roc-d-1.svg)
+
+Comparing unconstrained to constrained GA:
+
+![Figure 12.12: Test set results for two models derived from genetic algorithms.](http://www.feat.engineering/figures/global-roc-test-curve-1.svg)
+
+## 12.5 Summary
+
+Global search methods can be an effective tool for investigating the predictor space and identifying subsets of predictors that are optimally related to the response.
+
+Although the global search approaches are usually effective at finding optimal feature sets, they are computationally taxing. Using 10 fold cross validation allows you to run your evaluation in parallel, but it can still take awhile!
 
 ## Meeting Videos
 
@@ -16,8 +243,8 @@
 `r knitr::include_url("https://www.youtube.com/embed/wT3KfW2gUgM")`
 
 <details>
-<summary> Meeting chat log </summary>
 
+<summary>Meeting chat log</summary>
 ```
 00:57:29	Jim Gruman:	https://www.tmwr.org/pre-proc-table.html
 01:03:50	Jim Gruman:	new package name https://github.com/stevenpawley/colino
