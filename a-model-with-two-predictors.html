@@ -23,7 +23,7 @@
 <meta name="author" content="The R4DS Online Learning Community" />
 
 
-<meta name="date" content="2022-11-21" />
+<meta name="date" content="2022-12-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -386,10 +386,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="12" data-path="global-search-methods.html"><a href="global-search-methods.html"><i class="fa fa-check"></i><b>12</b> Global Search Methods</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="slide-1-1.html"><a href="slide-1-1.html"><i class="fa fa-check"></i><b>12.1</b> SLIDE 1</a></li>
-<li class="chapter" data-level="12.2" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html"><i class="fa fa-check"></i><b>12.2</b> Meeting Videos</a>
+<li class="chapter" data-level="12.1" data-path="naive-bayes-models.html"><a href="naive-bayes-models.html"><i class="fa fa-check"></i><b>12.1</b> 12.1 Naive Bayes Models</a>
 <ul>
-<li class="chapter" data-level="12.2.1" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html#cohort-1-11"><i class="fa fa-check"></i><b>12.2.1</b> Cohort 1</a></li>
+<li class="chapter" data-level="12.1.1" data-path="naive-bayes-models.html"><a href="naive-bayes-models.html#computing-the-joint-likelihoods"><i class="fa fa-check"></i><b>12.1.1</b> Computing the joint-likelihoods</a></li>
+<li class="chapter" data-level="12.1.2" data-path="naive-bayes-models.html"><a href="naive-bayes-models.html#major-draw-backs"><i class="fa fa-check"></i><b>12.1.2</b> Major Draw Backs</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="simulated-annealing.html"><a href="simulated-annealing.html"><i class="fa fa-check"></i><b>12.2</b> 12.2 Simulated Annealing</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="simulated-annealing.html"><a href="simulated-annealing.html#selecting-features-without-overfitting"><i class="fa fa-check"></i><b>12.2.1</b> Selecting Features without Overfitting</a></li>
+<li class="chapter" data-level="12.2.2" data-path="simulated-annealing.html"><a href="simulated-annealing.html#application-to-modeling-the-okcupid-data"><i class="fa fa-check"></i><b>12.2.2</b> 12.2.2 Application to Modeling the OkCupid Data</a></li>
+<li class="chapter" data-level="12.2.3" data-path="simulated-annealing.html"><a href="simulated-annealing.html#examining-changes-in-performance"><i class="fa fa-check"></i><b>12.2.3</b> 12.2.3 Examining Changes in Performance</a></li>
+<li class="chapter" data-level="12.2.4" data-path="simulated-annealing.html"><a href="simulated-annealing.html#grouped-qualitative-predictors-versus-indicator-variables"><i class="fa fa-check"></i><b>12.2.4</b> 12.2.4 Grouped Qualitative Predictors Versus Indicator Variables</a></li>
+<li class="chapter" data-level="12.2.5" data-path="simulated-annealing.html"><a href="simulated-annealing.html#the-effect-of-the-initial-subset"><i class="fa fa-check"></i><b>12.2.5</b> 12.2.5 The Effect of the Initial Subset</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="genetic-algorithms.html"><a href="genetic-algorithms.html"><i class="fa fa-check"></i><b>12.3</b> 12.3 Genetic Algorithms</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="genetic-algorithms.html"><a href="genetic-algorithms.html#external-validation"><i class="fa fa-check"></i><b>12.3.1</b> 12.3.1 External Validation</a></li>
+<li class="chapter" data-level="12.3.2" data-path="genetic-algorithms.html"><a href="genetic-algorithms.html#coercing-sparsity"><i class="fa fa-check"></i><b>12.3.2</b> 12.3.2 Coercing Sparsity</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="summary-3.html"><a href="summary-3.html"><i class="fa fa-check"></i><b>12.4</b> 12.5 Summary</a></li>
+<li class="chapter" data-level="12.5" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html"><i class="fa fa-check"></i><b>12.5</b> Meeting Videos</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="meeting-videos-11.html"><a href="meeting-videos-11.html#cohort-1-11"><i class="fa fa-check"></i><b>12.5.1</b> Cohort 1</a></li>
 </ul></li>
 </ul></li>
 <li class="divider"></li>
@@ -420,8 +438,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The data set includes a <strong>Case</strong> vector containing <strong>Train</strong> and <strong>Test</strong> variables, with a total of 61 different vectors, about cellular structures and morphology.</p>
 <p>Selected for this first example are two predictors: <strong>EqSphereAreaCh1</strong> and <strong>PerimCh1</strong>.
 The objective is to predict shape parameters of <strong>poorly-segmented (PS)</strong> and <strong>well-segmented (WS)</strong> cells from the <strong>Class</strong> variable.</p>
-<div id="htmlwidget-7f3feb020aedcc4f53b6" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7f3feb020aedcc4f53b6">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  A[outcome]\n  B[predictors]\n\n  H-->A\n  H-->B\n  A-->C(binary class variable)\n  C-->D[poorly-segmented PS]\n  C-->G[well-segmented WS]\n  B-->L[numeric]\n  L-->E[Area]\n  L-->F[Perimeter]\n"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d05c8038e43123080a8d" style="width:672px;height:480px;" class="DiagrammeR html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d05c8038e43123080a8d">{"x":{"diagram":"\n  graph TB\n  H[Model data]\n  A[outcome]\n  B[predictors]\n\n  H-->A\n  H-->B\n  A-->C(binary class variable)\n  C-->D[poorly-segmented PS]\n  C-->G[well-segmented WS]\n  B-->L[numeric]\n  L-->E[Area]\n  L-->F[Perimeter]\n"},"evals":[],"jsHooks":[]}</script>
 <p>This is the full list of variables in the set.</p>
 <pre><code>##  [1] &quot;Cell&quot;                    &quot;Case&quot;                   
 ##  [3] &quot;Class&quot;                   &quot;AngleCh1&quot;               
@@ -553,7 +571,7 @@ pr_class   0.63   0.37</code></pre>
 <span id="cb14-16"><a href="a-model-with-two-predictors.html#cb14-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb14-17"><a href="a-model-with-two-predictors.html#cb14-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <pre><code>   user  system elapsed 
-  7.085   0.032   7.117 </code></pre>
+  6.748   0.048   6.797 </code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="a-model-with-two-predictors.html#cb16-1" aria-hidden="true" tabindex="-1"></a>grid_results</span></code></pre></div>
 <pre><code># A workflow set/tibble: 2 × 4
   wflow_id                info             option    result   

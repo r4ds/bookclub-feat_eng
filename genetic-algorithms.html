@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3.1 SLIDE 1 | Feature Engineering and Selection Book Club</title>
+  <title>12.3 12.3 Genetic Algorithms | Feature Engineering and Selection Book Club</title>
   <meta name="description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3.1 SLIDE 1 | Feature Engineering and Selection Book Club" />
+  <meta property="og:title" content="12.3 12.3 Genetic Algorithms | Feature Engineering and Selection Book Club" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   <meta name="github-repo" content="r4ds/bookclub-feat_eng" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3.1 SLIDE 1 | Feature Engineering and Selection Book Club" />
+  <meta name="twitter:title" content="12.3 12.3 Genetic Algorithms | Feature Engineering and Selection Book Club" />
   
   <meta name="twitter:description" content="This is the product of the R4DS Online Learning Community’s Feature Engineering and Selection Book Club." />
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="a-review-of-the-predictive-modeling-process.html"/>
-<link rel="next" href="meeting-videos-2.html"/>
+<link rel="prev" href="simulated-annealing.html"/>
+<link rel="next" href="summary-3.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -430,20 +430,406 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="slide-1" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> SLIDE 1<a href="slide-1.html#slide-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="genetic-algorithms" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> 12.3 Genetic Algorithms<a href="genetic-algorithms.html#genetic-algorithms" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="figure">
+<img src="https://www.researchgate.net/publication/333603547/figure/fig3/AS:766028225212421@1559646769804/Genetic-Algorithm-flow-chart.png" alt="" />
+<p class="caption">The basic procedure of a genetic algorithm</p>
+</div>
+<p>Genetic Algorithms are optimization tools that allow us to find global optimum solutions by mimicing Charles Darwins theory of Natural Selection. Each GA starts with an initial populations. Those with the highest performance essentially ‘mate’ and there is a crossover of their genes (features). The offspring that are create also have a small subset of their genes randomly mutated. This helps the algorithm avoid local optimum.</p>
+<p>Unlike simulated annealing, the GA feature subsets are grouped into <em>generations</em> instead of considering one subset at a time. But a generation in a GAs is similar to an iteration in simulated annealing.</p>
+<p>The key is to setting the initial population size to something that will capture the maximum amount of variability in the system.</p>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="18%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"><strong>ID</strong></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"><strong>Performance</strong></th>
+<th align="center"><strong>Probability (%)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">C</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">F</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.54</td>
+<td align="center">6.4</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">A</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">D</td>
+<td align="center">E</td>
+<td align="center">F</td>
+<td align="center"></td>
+<td align="center">H</td>
+<td align="center"></td>
+<td align="center">0.55</td>
+<td align="center">6.5</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">D</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.51</td>
+<td align="center">6.0</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.53</td>
+<td align="center">6.2</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">D</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">G</td>
+<td align="center">H</td>
+<td align="center">I</td>
+<td align="center">0.75</td>
+<td align="center">8.8</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center"></td>
+<td align="center">B</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center">I</td>
+<td align="center">0.64</td>
+<td align="center">7.5</td>
+</tr>
+<tr class="odd">
+<td align="center">7</td>
+<td align="center"></td>
+<td align="center">B</td>
+<td align="center">C</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">F</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">I</td>
+<td align="center">0.65</td>
+<td align="center">7.7</td>
+</tr>
+<tr class="even">
+<td align="center">8</td>
+<td align="center">A</td>
+<td align="center"></td>
+<td align="center">C</td>
+<td align="center"></td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center">G</td>
+<td align="center">H</td>
+<td align="center">I</td>
+<td align="center">0.95</td>
+<td align="center">11.2</td>
+</tr>
+<tr class="odd">
+<td align="center">9</td>
+<td align="center">A</td>
+<td align="center"></td>
+<td align="center">C</td>
+<td align="center">D</td>
+<td align="center"></td>
+<td align="center">F</td>
+<td align="center">G</td>
+<td align="center">H</td>
+<td align="center">I</td>
+<td align="center">0.81</td>
+<td align="center">9.6</td>
+</tr>
+<tr class="even">
+<td align="center">10</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">C</td>
+<td align="center">D</td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">I</td>
+<td align="center">0.79</td>
+<td align="center">9.3</td>
+</tr>
+<tr class="odd">
+<td align="center">11</td>
+<td align="center">A</td>
+<td align="center">B</td>
+<td align="center"></td>
+<td align="center">D</td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center">G</td>
+<td align="center">H</td>
+<td align="center"></td>
+<td align="center">0.85</td>
+<td align="center">10.0</td>
+</tr>
+<tr class="even">
+<td align="center">12</td>
+<td align="center">A</td>
+<td align="center">B</td>
+<td align="center">C</td>
+<td align="center">D</td>
+<td align="center">E</td>
+<td align="center">F</td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center">I</td>
+<td align="center">0.91</td>
+<td align="center">10.7</td>
+</tr>
+</tbody>
+</table>
+<p>Higher performance is generally better, but in order to reduce the likelihood of getting stuck in a local optimum, a weight selection probability score is created. A simple way to compute the selection probability is to divide an individual feature subset’s performance value by the the sum of all the performance values. The rightmost column in the table above shows the results for this generation.</p>
+<p>Selected parents from first generation:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>ID</strong></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">6</td>
+<td align="center"></td>
+<td align="center">B</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center">I</td>
+</tr>
+<tr class="even">
+<td align="center">12</td>
+<td align="center">A</td>
+<td align="center">B</td>
+<td align="center">C</td>
+<td align="center">D</td>
+<td align="center">E</td>
+<td align="center">F</td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center">I</td>
+</tr>
+</tbody>
+</table>
+<p>Their offspring</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>ID</strong></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">13</td>
+<td align="center"></td>
+<td align="center">B</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">E</td>
+<td align="center">F</td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center">I</td>
+</tr>
+<tr class="even">
+<td align="center">14</td>
+<td align="center">A</td>
+<td align="center">B</td>
+<td align="center">C</td>
+<td align="center">D</td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center">I</td>
+</tr>
+</tbody>
+</table>
+<p>After this, mutation kicks in, which is usually a low number (1-2% chance).</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center"><strong>ID</strong></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">13</td>
+<td align="center"></td>
+<td align="center">B</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">E</td>
+<td align="center">F</td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="center">14</td>
+<td align="center">A</td>
+<td align="center">B</td>
+<td align="center">C</td>
+<td align="center">D</td>
+<td align="center">E</td>
+<td align="center"></td>
+<td align="center">G</td>
+<td align="center"></td>
+<td align="center">I</td>
+</tr>
+</tbody>
+</table>
+<p>This process is continued for however many generations you set. The final suggested features will be evaluated across all generations, through a process known as elitism.</p>
+<div id="external-validation" class="section level3 hasAnchor" number="12.3.1">
+<h3><span class="header-section-number">12.3.1</span> 12.3.1 External Validation<a href="genetic-algorithms.html#external-validation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Basically, the number of iterations is once again a tuning parameter, except the iterations are called generations.</p>
+<p>A genetic algorithm makes gradual improvements in predictive performance through changes to feature subsets over time. Similar to simulated annealing, an external resampling procedure should be used to select an optimal number of generations.This will help prevent the GA from overfitting.</p>
+<p>Just like SA, 10 fold cross validations was used. Here are the following defaults parameters of the GA:</p>
 <ul>
-<li>ADD SLIDES AS SECTIONS (<code>##</code>).</li>
-<li>TRY TO KEEP THEM RELATIVELY SLIDE-LIKE; THESE ARE NOTES, NOT THE BOOK ITSELF.</li>
+<li><p>Generation size: 50,</p></li>
+<li><p>Crossover probability: 80%,</p></li>
+<li><p>Mutation probability: 1%,</p></li>
+<li><p>Elitism: No,</p></li>
+<li><p>Number of generations: 14</p></li>
 </ul>
+<p>Understanding characteristics of the members <em>within</em> a generation can also be useful. For example, the diversity of the subsets within and between generations can be quantified using a measure such as Jaccard similarity (Tan, Steinbach, and Kumar <a href="http://www.feat.engineering/references.html#ref-Tan2006">2006</a>). This will show us how the GA is converging on a solution.</p>
+<div class="figure">
+<img src="http://www.feat.engineering/figures/global-ga-size-sim-roc-1.svg" alt="" />
+<p class="caption">Figure 12.8: The change in subset size, similarity, and performance over time for each external resample of the genetic algorithm.</p>
+</div>
+<p><strong>Fig 12.8</strong> shows that the subset size converges, generally the generations are becoming more similar, and that the ROC improves over time.</p>
+<p>Looking at the entire dataset:</p>
+<div class="figure">
+<img src="http://www.feat.engineering/figures/global-ga-perf-1.svg" alt="" />
+<p class="caption">Figure 12.9: Genetic algorithm results for the final search using the entire training set.</p>
+</div>
+<p>To gauge the effectiveness of the search, 100 random subsets of size 63 were chosen and a naive Bayes model was developed for each. The GA selected subset performed better than 100% of the randomly selected subsets. This indicates that the GA did find a useful subset for predicting the response.</p>
+</div>
+<div id="coercing-sparsity" class="section level3 hasAnchor" number="12.3.2">
+<h3><span class="header-section-number">12.3.2</span> 12.3.2 Coercing Sparsity<a href="genetic-algorithms.html#coercing-sparsity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>With GAs there is less of a penality for keeping a feature that has no impact on predictive performance. Ultimately this is not what we want.</p>
+<p>A simple method for reducing the number of predictors is to use a surrogate measure of performance that has an explicit penalty based on the number of features. Section <a href="http://www.feat.engineering/greedy-stepwise-selection.html#greedy-stepwise-selection">11.4</a> introduced the Akaike information criterion (AIC) which augments the objective function with a penalty that is a function of the training set size and the number of model terms.</p>
+<p>At this point, you’ll be optimizing two things, increasing model performance AND reducing the number of features, called multi-parameter optimization (MPO). Using these two parameters you can create a ‘desirability’ function which will reject certain solutions based on a specific threshold.</p>
+<div class="figure">
+<img src="http://www.feat.engineering/figures/global-desire-examples-1.svg" alt="" />
+<p class="caption">Figure 12.10: Examples of two types of desirability functions and the overall desirability surface when the two are combined.</p>
+</div>
+<p>For the OkCupid data, a desirability function with the following objectives was used to guide the GA:</p>
+<ul>
+<li><p>maximize the area under the ROC curve between A=0.50A=0.50 and B=1.00B=1.00 with a scale factor of s=2.0s=2.0.</p></li>
+<li><p>minimize the subset size to be within A=10A=10 and B=100B=100 with s=1.0s=1.0.</p></li>
+</ul>
+<p>The result is a much smaller predictor space</p>
+<div class="figure">
+<img src="http://www.feat.engineering/figures/global-ga-size-sim-roc-d-1.svg" alt="" />
+<p class="caption">Figure 12.11: Internal performance profiles for naive Bayes models using the genetic algorithm in conjunction with desirability functions.</p>
+</div>
+<p>Comparing unconstrained to constrained GA:</p>
+<div class="figure">
+<img src="http://www.feat.engineering/figures/global-roc-test-curve-1.svg" alt="" />
+<p class="caption">Figure 12.12: Test set results for two models derived from genetic algorithms.</p>
+</div>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="a-review-of-the-predictive-modeling-process.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="meeting-videos-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="simulated-annealing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="summary-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -474,7 +860,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/03-a_review_of_the_predictive_modeling_process.Rmd",
+"link": "https://github.com/r4ds/bookclub-feat_eng/edit/main/12-global_search_methods.Rmd",
 "text": "Edit"
 },
 "history": {
